@@ -24,3 +24,9 @@ txt=txt[:end].rstrip()+'\n'+entry+'\n'+txt[end:].lstrip('\n')
 pth.write_text(txt)
 subprocess.run(['git','add','-A'],check=True); subprocess.run(['git','commit','-m','Update resumable build checkpoint'],check=True)
 print(f'Checkpoint {now}; implementation {sha}')
+
+# Every completed user-authorized checkpoint is audited and pushed.
+auto=subprocess.run(['git','config','--get','pakkacover.autopush'],capture_output=True,text=True).stdout.strip()
+if auto=='true':
+ subprocess.run([str(Path('.venv/bin/python')),'scripts/secret_audit.py'],check=True)
+ subprocess.run(['git','-c','push.followTags=false','push','origin','HEAD:main'],check=True)
