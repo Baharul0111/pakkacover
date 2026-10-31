@@ -41,3 +41,9 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Passphrase Save authorizes a private per-browser journey instead of merging users into the architecture's fixed shared demo account. Tokens live for the hackathon session; no cross-device real identity is claimed.
 - Complex typed answers still use model extraction; a simple, explicit BP/diabetes answer can use a source-anchored code fallback after a model quote/schema failure. Negations and ambiguous/borderline answers do not use that fallback. Every voice-derived fact is marked for individual checking.
 - Full production-role provisioning, retention/erasure, log chains, load/security gates and operational systems remain deferred as authorized by AGENTS.md. The local demo keeps encryption, ownership, per-purpose consent, cap reservations, input bounds and the required correctness gates.
+
+## User change of plan — 31 Oct 2026 11:55 IST (supersedes prior freeze)
+- New final deadline 14:30 IST; main features13:45, polish/E2E14:15.
+- Remove staging Paytm and credential waiting; one explicitly labelled Demo payment sheet with UPI/Wallet/Card, paid DB status, timestamp, top notification and persisted bell list. No gateway calls, no real money and no S2S verification claim.
+- Replace earthy UI with a simple light-blue/navy visual flow, live form panel/drawer, mic and live understanding, timeline comparisons/Promise Card, calendar export and actionable policy flags.
+- Add Reset demo and verify three consecutive runs using that control. Update the local demo-1 tag after revised verification; prior freeze is historical.

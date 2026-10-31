@@ -49,6 +49,20 @@
 - 2026-10-31 11:46:21 IST | Freeze: all feature and rehearsal gates passed | All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked | Tests: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists | Commit: `b5a271e`
 - 2026-10-31 11:51:16 IST | FROZEN — demo complete | All seven build steps complete; fresh stage instance ready; DEMO.md and WebM/MP4 fallback recordings saved; original documents unchanged | Tests: Final run: 121 passed; G2 44 source clauses verified; 3 consecutive full HTTPS runs 39/44/40s with accepted live speech, correct clause taps, 3/3 audit mismatches and 0 clean false flags; secret scan passed | Commit: `fa851a2`
 
+## Revised schedule — user change of plan at 11:55 IST
+
+The earlier 11:51 freeze is superseded. Deadline is **14:30 IST**; owner testing/recording is 14:30–15:30. Preserve the verified engine, quotes, confirmation and numeric guard.
+
+| Time (IST) | Work |
+| --- | --- |
+| 11:55–12:15 | Demo-only payment, paid orders/notifications, reset |
+| 12:15–13:05 | Talk, live form, Check UI |
+| 13:05–13:45 | Compare/Promise/calendar/Policy check UI |
+| 13:45–14:15 | Responsive polish and 3 runs with Reset demo |
+| 14:15–14:30 | Final required gates, DEMO.md, FROZEN, demo-1 |
+
+Payment decision: `demo` only; remove real staging code and scheduled credential checks. UI: #00BAF2 / #002E6E, white/grey cards, big icons/buttons, minimal copy. Full current requirements are in AGENTS.md.
+
 ## Original orientation notes
 
 Historical review notes below are preserved as requested. The current state is always in **Resume here** above.

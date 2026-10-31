@@ -6,30 +6,32 @@ build is ONLY the hackathon demo described below. Where this file differs from
 architecture.md, this file wins. Do not edit goal.md, architecture.md or
 setup.md; record every hackathon deviation in HACKATHON.md.
 
-## HARD DEADLINE: 15:00 IST today. The demo must be frozen and runnable by 14:45.
+## HARD DEADLINE: 14:30 IST today (31 Oct 2026)
+
+Everything must be finished, tested and frozen by 14:30. The owner reserves
+14:30–15:30 for testing and recording. Main features by 13:45; UI polish and
+end-to-end checks by 14:15. This revision supersedes the previous demo freeze.
 
 Run `date` at the start of every step and log the time in TRACKING.md. Follow
 this schedule (IST):
 
 
-| Time           | Step                                              |
-| -------------- | ------------------------------------------------- |
-| 10:30 to 11:15 | Step 1: rules engine, Plans A/B/C, tests          |
-| 11:15 to 12:15 | Step 2: backend, consent, interview, Sarvam voice |
-| 12:15 to 12:50 | Step 3: medicine photo pipeline                   |
-| 12:50 to 13:35 | Step 4: review cards, ranking, Promise Card       |
-| 13:35 to 14:05 | Step 5: sample policies and the Day-12 audit      |
-| 14:05 to 14:20 | Step 6: payment (real staging or simulated)       |
-| 14:20 to 14:40 | Step 7: run_demo, tunnel, end-to-end checks       |
-| 14:40 to 14:45 | Freeze: DEMO.md, final test run, git tag demo-1   |
+| Time (IST) | Remaining work |
+| --- | --- |
+| 11:55–12:15 | Demo-only payment adapter, paid orders, notification persistence, reset |
+| 12:15–13:05 | Simple Talk UI, live transcript/understanding, live proposal form, Check cards |
+| 13:05–13:45 | Compare timeline cards, Promise timeline/calendar, Policy check actions |
+| 13:45–14:15 | Laptop/phone polish and 3 full Sunita runs with Reset demo between runs |
+| 14:15–14:30 | Final G0/G1/G2/G6/G7, DEMO.md, FROZEN tracking, update local demo-1 tag |
 
 Timing rules:
 
-- If a step runs more than 15 minutes over, apply the cut list immediately, log
-  it in TRACKING.md, and move on.
-- At 14:30 start no new feature; only fix, test and document.
-- At 14:45 freeze, whatever state the work is in. The app must be runnable at the
-  end of every step, so a frozen build is always demoable.
+- Run `date` at the start of every step and log the time.
+- If anything is late, apply the existing cut list immediately and log it.
+- Main features must be done by 13:45. UI polish and E2E must be done by 14:15.
+- From 14:15, only fix, test and document. At 14:30 freeze and tag `demo-1`.
+- Keep the app runnable at each completed small part. Never cut the engine,
+  quote check, confirm-per-line, numeric guard, visible Demo labels or tracking.
 
 ## Resumability: TRACKING.md is the source of truth
 
@@ -46,7 +48,7 @@ section "## Resume here" that you overwrite every time. It contains:
 - background processes that may still be running and how to stop them
 - what is done and verified, and what is half-done (file names)
 - open problems and decisions taken, with a one-line reason each
-- whether Paytm is in real-staging or simulated mode
+- Paytm mode: `demo` only (no real gateway calls or pending credentials)
 
 Below it, append to "## Implementation log" one timestamped line per completed
 small piece of work: what was done, its test result, the commit hash.
@@ -83,7 +85,7 @@ minutes. Use the real architecture for everything the story touches:
 - Plans A/B/C from public wordings with verified clause quotes (8, 10)
 - ranking by modelled payout with the published method and no "best" label (9)
 - Promise Card with exact dates (11) and the in-app upcoming dates list (12)
-- the ₹1 TEST payment (14)
+- the ₹1 Paytm-style demo payment, paid DB record and in-app notification
 - the Day-12 audit catching planted mismatches (15)
 - the advisor button labelled "Pilot callback within 24 h" (16)
 - the AI never deciding money or dates (18)
@@ -105,7 +107,7 @@ minutes. Use the real architecture for everything the story touches:
 - Keep: owner-scoped data access, Fernet encryption of health columns, no stored
   audio, photos or PDFs, and per-purpose consent rows.
 - Login: the demo-profile passphrase login only, using DEMO_LOGIN_PASSPHRASE.
-- Profile: demo (every question spoken aloud, ₹1 TEST payment on).
+- Profile: demo (Sarvam speaks every question; ₹1 Paytm-style demo payment on).
 - Interview: build the Sunita path fully. Other branches may be skeletons that
   fall back to typed answers.
 
@@ -132,30 +134,56 @@ minutes. Use the real architecture for everything the story touches:
   and log the returned id per call.
 - Every outside call has an explicit timeout.
 
-## Paytm: keys may or may not arrive
+## Paytm: demo only; no keys will be available
 
-I could not generate Paytm staging keys yet. I may add PAYTM_MID and
-PAYTM_MERCHANT_KEY to .env later today, or not at all. Build for both cases:
+- Drop the real staging integration and all waiting/checking for keys. Keep one
+  payment adapter, implemented only as `demo`. Never call Paytm hosts.
+- “Pay ₹1 with Paytm” opens a Paytm-style sheet with **UPI, Wallet and Card**
+  choices. Use simple original icons; no copied logos/images. These terms are
+  explicitly requested by the owner and override any skill vocabulary rule.
+- After choosing an option, show “Processing…” for about 2 seconds, then a big
+  green tick, “Payment successful via Paytm”, amount, order ID and time.
+- A subtle grey **Demo** chip stays visible on both sheet and success screen.
+  This is a simulation; no real money moves and no gateway verification is claimed.
+- At success, slide a phone-style banner from the top: “Paytm · ₹1 paid for your
+  health cover · Order PC…”. Also persist it in the owner-scoped in-app
+  notifications list, opened by a bell icon. Keep the demo context identifiable.
+- Mark the order paid in Postgres through the payment adapter. Preserve mode
+  `demo` and do not claim provider/S2S verification.
+- Show `demo` on `/ready` and in TRACKING.md. Cancel the obsolete 14:30 key check.
 
-- Put payments behind one adapter with two implementations, selected
-  automatically at startup:
-  - **staging**, used when both keys are present
-  - **simulated**, used when either is empty
-- **Simulated:** the same screens and order records, with a banner reading
-  "SIMULATED — Paytm test keys pending".
-- **Staging:** the real PG staging flow from architecture.md:
-  - Initiate Transaction with the paytmchecksum package (pin pycryptodome)
-  - CheckoutJS from PAYTM_HOST
-  - callback with checksum verification
-  - server-to-server order status check
-  - red TEST banner
-  - callbackUrl built from PUBLIC_URL
-    Write this code fully and unit-test the checksum round-trip with a dummy key,
-    even if real keys never arrive.
-- Re-check .env for the keys at the start of step 6 and again at 14:30. Switching
-  modes must need only a restart, never a code change.
-- Log the current mode in TRACKING.md and show it on /ready.
-- Never touch production Paytm hosts.
+## UI — very simple, visual first
+
+Use very little text, short sentences, large icons and large buttons. One font,
+rounded shapes, generous spacing. White background, light grey cards, primary
+light blue **#00BAF2**, navy **#002E6E** headings/top bar, green success and amber
+“please check”. It must work on the laptop for recording and on a phone.
+
+- Top progress: 4 icon steps **Talk → Check → Compare → Promise Card**, then a
+  fifth **Policy check** for the Day-12 audit. Hindi/English toggle top-right.
+- Talk: one short spoken question at top with replay speaker. Centre a BIG round
+  mic “Hold to talk / Bolne ke liye dabayein”, pulsing while recording. Tap mode
+  also works. Under it a small Live box: “You said: …” and “We understood: BP
+  since 2019”, with tick/? markers. Big Haan/Nahi chips for yes/no; a small
+  keyboard icon reveals typing. A camera button “Photo of medicine” supports
+  capture/upload, thumbnail, “Telmisartan 40 mg ✓”, and two choices on disagreement.
+- “Your form” fills live as she talks: Name, Age, Height/Weight, Illness, Since,
+  Medicine, Hospital stays. Right-side panel on laptop, pull-up drawer on phone.
+  Animate each field; green confirmed dot, amber AI-heard/check dot.
+- Check: one card per line, 3 big buttons **✓ Sahi hai / ✗ Galat / ✎ Badlo**;
+  no confirm-all. Read aloud. Green “Saved ✓” toast after every confirmation.
+- Compare: 3 cards side by side on laptop, stacked on phone. One large “Would
+  pay: ₹X”, BP cover timeline (grey waiting / blue covered), “Why?” opens the
+  clause. No best badge. Small “How we rank” link.
+- Promise Card: vertical icon timeline for accident, illness, BP, operations,
+  free-cancel date; one short line and date per row, hi/en toggle. Buttons
+  “Add to calendar” and “Pay ₹1 with Paytm”. Keep all engine-derived date facts.
+- Policy check: upload, Checking animation, then green ticks and red flags. Each
+  flag has both quotes side by side and buttons “Ask insurer to fix”, “Cancel
+  free by <date>”, “Talk to advisor”. Preserve generated clean/3-mismatch samples.
+- Everywhere: floating **Advisor** with headset icon bottom-right, notifications
+  bell, and **Reset demo** in a small menu. Reset must start a clean Sunita run.
+- Friendly empty/loading/error states with icons; never raw errors.
 
 ## Policy wording PDFs
 
@@ -176,7 +204,7 @@ saying what I can try on my phone.
 4. Review cards with read-back, the ranking screen with clause taps and the method
    page, the Promise Card (hi/en), the upcoming dates list.
 5. sample_policy.py (clean plus 3 planted mismatches) and the Day-12 audit.
-6. Payment adapter (staging or simulated, as above).
+6. Demo-only payment adapter, sheet/success, paid order and in-app notification.
 7. scripts/run_demo with the tunnel, then the end-to-end checks.
 
 If time runs short, cut in this order:
@@ -187,31 +215,29 @@ If time runs short, cut in this order:
 4. The audit runs on the generated sample PDFs only.
 
 Never cut: the engine tests, the quote check, confirm per line, the numeric guard,
-the TEST or SIMULATED labelling, and the TRACKING.md updates.
+the always-visible Demo labelling, and the TRACKING.md updates.
 
-## Done means (by 14:45)
+## Done means (by 14:30)
 
-- The G1 engine tests and G2 quote tests pass.
-- G6 catches 3/3 planted mismatches with 0 false alarms on the clean PDF.
-- G7 numeric guard shows 0 leaks.
-- A G0 test proves one session cannot read another's data.
-- My clips and photos, if present in evals/golden/, keep the demo slots and drug
-  names intact, with no invented medicine (blurred means ask the buyer).
-- A scripted end-to-end run of the Sunita story passes against the tunnel URL.
-- DEMO.md is written, containing:
-  - the stage script
-  - the start command
-  - where the demo passphrase is (in .env, never printed)
-  - how to flip the voice_in and voice_out kill switches if the Wi-Fi is bad
-  - how to recover if the tunnel dies
-  - the current payment mode
-- Git tag demo-1 is made, and TRACKING.md says "FROZEN" with the final state.
+- G1 engine, G2 quotes, G6 (3/3 planted mismatches, 0 clean false flags), G7
+  numeric guard (0 leaks), and G0 session isolation pass.
+- Full story: talk → medicine photo → confirm each line → compare → Promise Card
+  → Paytm demo payment with success/notification → Day-12 planted mismatch.
+- Three consecutive full runs through `scripts/run_demo`, using **Reset demo**
+  between runs, on the current laptop/phone-responsive UI.
+- Owner clips/photos, if present, preserve demo slots/drugs; blur means ask.
+- DEMO.md contains the stage script and the line: **“Paytm keys were not available;
+  this is a clearly labelled demo payment. No real money is moved.”**
+- DEMO.md also covers start, private passphrase location, voice kill switches,
+  recovery and demo payment mode. No secrets are printed.
+- Update/replace only our local `demo-1` tag with the revised frozen build;
+  TRACKING.md says **FROZEN**. The prior freeze is superseded by this plan.
 
 ## Rules for working
 
 - Work continuously through every build step. Do not stop at a "good stopping
   point" or hand me a summary of remaining work. Stop only when "Done means" is
-  true or 14:45 arrives.
+  true or 14:30 arrives.
 - Load .env values with python-dotenv. Never print, cat or log .env or any secret,
   and never write secrets into TRACKING.md.
 - Generate FERNET_KEYS, PEPPER and DEMO_LOGIN_PASSPHRASE yourself and write them
@@ -221,8 +247,8 @@ the TEST or SIMULATED labelling, and the TRACKING.md updates.
   tests.
 - Already provided by me, never ask for them:
   - in .env: ANTHROPIC_API_KEY, OPENAI_API_KEY, SARVAM_API_KEY,
-    SARVAM_BALANCE_INR, DATABASE_URL (or empty, meaning go local), and
-    PAYTM_WEBSITE / PAYTM_HOST (PAYTM_MID and PAYTM_MERCHANT_KEY may be empty)
+    SARVAM_BALANCE_INR, DATABASE_URL (or empty, meaning go local).
+    No Paytm credentials are needed or expected.
   - my clips in evals/golden/stt/ and photos in evals/golden/vision/ (they may
     arrive mid-build)
 - If something only I can provide is truly missing, list every missing item once
