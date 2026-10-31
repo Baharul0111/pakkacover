@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:31:41 IST. Step 7: final rehearsal 1/3 passed.
-- Next action: Run full HTTPS mobile rehearsal 2, then 3 consecutively on the same build; validate logs/video, finalize DEMO.md and freeze tag demo-1.
+- Time: 2026-10-31 11:33:55 IST. Step 7: final clause trace correction.
+- Next action: Run G1/G2 and full tests, restart API at same tunnel, then rerun all 3 final HTTPS rehearsals with an added Instant Cover citation assertion.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; preflight14:30 and caffeinate active; PIDs in .run/. Postgres55432.
-- Done and verified / half-done: First final live-voice/photo HTTPS rehearsal passed in 44s with 0 browser errors; fallback video saved at .run/sunita-fallback.webm; verification: 120 Python tests passed; real voice slot preserved; all 4 audit variants passed through live model extraction/comparison in the full browser flow. The next action above identifies unfinished work.
-- Open problems and decisions: No real owner golden media supplied; physical device hardware still requires owner use. Payment simulated; fully signed staging code has mocked coverage.
+- Background processes: Existing API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; restart-api pending. Preflight14:30 and caffeinate active.
+- Done and verified / half-done: Second HTTPS rehearsal passed; final review found a tied-date trace choosing the initial-wait clause instead of Instant Cover. Corrected trace priority without changing any date or payout.; verification: Added regression for Plan B BP citation and a browser assertion that its date opens the 31st-day add-on quote. Final rehearsal counter restarts after this source change.. The next action above identifies unfinished work.
+- Open problems and decisions: Date/payout values were correct; citation tie is now fixed but needs final verification. No owner media or staging keys.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -42,6 +42,7 @@
 - 2026-10-31 11:27:44 IST | Step 7: voice-path correctness fix | Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards | Tests: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts | Commit: `c552a16`
 - 2026-10-31 11:29:54 IST | Step 7: live voice probe passed; final rehearsal restart | Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected). | Tests: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next. | Commit: `6f1058a`
 - 2026-10-31 11:31:41 IST | Step 7: final rehearsal 1/3 passed | First final live-voice/photo HTTPS rehearsal passed in 44s with 0 browser errors; fallback video saved at .run/sunita-fallback.webm | Tests: 120 Python tests passed; real voice slot preserved; all 4 audit variants passed through live model extraction/comparison in the full browser flow | Commit: `23778c3`
+- 2026-10-31 11:33:55 IST | Step 7: final clause trace correction | Second HTTPS rehearsal passed; final review found a tied-date trace choosing the initial-wait clause instead of Instant Cover. Corrected trace priority without changing any date or payout. | Tests: Added regression for Plan B BP citation and a browser assertion that its date opens the 31st-day add-on quote. Final rehearsal counter restarts after this source change. | Commit: `74b2041`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
