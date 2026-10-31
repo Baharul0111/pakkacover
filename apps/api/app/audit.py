@@ -98,7 +98,11 @@ async def audit_pdf(data,context,generated=False):
  async with AUDIT_LOCK:
   async with asyncio.timeout(120):
    pages=await media.call('pdf',data)
-   fields,mode=await extract_fields(pages,generated)
+   fields,mode=await extract_fields(pages,False)
+   if generated and len(fields)<len(FIELDS):
+    # Network/model fallback stays quote-verified and is explicitly recorded.
+    fallback=deterministic_fields(pages)
+    fields={**fallback,**fields};mode='quote_verified_model_with_sample_fallback' if fields and mode=='quote_verified_model' else 'deterministic_sample_fallback'
    result=compare(fields,context)
    result['extraction_mode']=mode
    result['extracted']={k:v.model_dump() for k,v in fields.items()}

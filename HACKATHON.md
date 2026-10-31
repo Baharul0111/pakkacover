@@ -27,5 +27,5 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 ## Demo-specific implementation details
 - Household UI covers one explicitly attested member for the Sunita stage path; remaining family branches are outside today's demo.
 - The 60 generic names and demo brand/condition hints are hand-seeded. Conditions are always buyer-selected, not clinically inferred. Broader licensed datasets are deferred.
-- Generated policy fixtures use exact label parsing with page/quote verification so their G6 gate remains deterministic; arbitrary uploaded PDFs use Haiku section extraction and a single Sonnet retry. The comparison is always code.
+- All audits attempt Haiku section extraction and one Sonnet retry on failed quote/value verification. Generated fixtures additionally have a quote-verified deterministic label parser as the network/model fallback, explicitly recorded in extraction_mode. The comparison is always code. G6 unit fixtures exercise deterministic parsing; live and browser gates exercise the actual model path.
 - Promise Card shows the demo-relevant exclusion example (unproven treatments) and explicitly states other exclusions/conditions apply; full exclusion authoring is deferred.

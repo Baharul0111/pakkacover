@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:8000",
+  "full": true,
+  "ranking": [
+    "Plan B",
+    "Plan C",
+    "Plan A"
+  ],
+  "browserErrors": 0,
+  "durationSeconds": 10
+}

@@ -18,7 +18,7 @@ class Unavailable(Exception):pass
 
 def client(timeout=8):
  return httpx.AsyncClient(timeout=httpx.Timeout(timeout,connect=min(4,timeout)),verify=truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT),follow_redirects=False)
-def normal(text):return re.sub(r'\s+',' ',unicodedata.normalize('NFKC',str(text))).strip().casefold()
+def normal(text):return re.sub(r'\s+',' ',unicodedata.normalize('NFKC',str(text)).translate(str.maketrans('०१२३४५६७८९','0123456789'))).strip().casefold()
 WORDS={'bawan':'52','बावन':'52','paanch':'5','पाँच':'5','पांच':'5','ek':'1','एक':'1','do':'2','दो':'2','teen':'3','तीन':'3','chaar':'4','चार':'4','chhe':'6','छह':'6','chaalis':'40','चालीस':'40','pachaas':'50','पचास':'50'}
 def number_tokens(t):
  t=normal(t)
@@ -85,7 +85,7 @@ def pinned(provider,requested):
 async def structured(provider,requested,schema,system,user,*,image=None,timeout=3.5,step='slots'):
  f=await flags()
  if not f.get('vendor:'+provider):raise Unavailable('vendor_disabled')
- model=pinned(provider,requested);reservation=await reserve(provider,2.5 if step=='audit' else (1 if image else .40),model,step)
+ model=pinned(provider,requested);reservation=await reserve(provider,(3.0 if 'sonnet' in requested else .40) if step=='audit' else (1 if image else .40),model,step)
  try:
   async with client(timeout) as c:
    if provider=='anthropic':
