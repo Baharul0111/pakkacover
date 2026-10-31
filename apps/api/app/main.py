@@ -21,8 +21,11 @@ for name in ['httpx','httpcore','openai','anthropic','sqlalchemy.engine']:loggin
 async def lifespan(app):
  plans()
  async with Session() as s:await s.execute(text('SELECT 1'))
+ from apps.api.app.media import media
+ await media.warm()
  await gw.discover_models()
  yield
+ media.close()
  await engine.dispose()
 app=FastAPI(title='PakkaCover · Hackathon Demo',lifespan=lifespan)
 app.include_router(router)

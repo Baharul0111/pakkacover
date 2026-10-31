@@ -1,0 +1,6 @@
+generic,conditions,source
+Telmisartan,hypertension|heart|kidney,hand-curated demo disambiguation only
+Amlodipine,hypertension|heart,hand-curated demo disambiguation only
+Metformin,diabetes|other,hand-curated demo disambiguation only
+Levothyroxine,thyroid|other,hand-curated demo disambiguation only
+Atorvastatin,cholesterol|heart|other,hand-curated demo disambiguation only

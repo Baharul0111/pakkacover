@@ -213,3 +213,41 @@ async def change_switches(body:SwitchIn,x_demo_passphrase:str=Header(default='')
 @router.get('/usage')
 async def usage(x_demo_passphrase:str=Header(default='')):
  check_passphrase(x_demo_passphrase);return await gw.usage_status()
+
+@router.post('/journeys/{jid}/photo')
+async def photo(jid:str,owner=Depends(principal),image:UploadFile=File(...),idempotency_key:str|None=Header(default=None,max_length=50)):
+ from apps.api.app.medicine import read_strip
+ await require_consented(owner)
+ async with Session() as s:
+  j=await owned(s,Journey,jid,owner)
+  if idempotency_key:
+   prior=await s.get(Idempotency,owner+':photo:'+idempotency_key)
+   if prior:return prior.payload
+  if fsm.next_node(j.payload)['key']!='medicine':raise HTTPException(409,'Photo capture belongs to the medicine question')
+ data=await image.read(5*1024*1024+1);await image.close()
+ if len(data)>5*1024*1024:raise HTTPException(413,'Photo is too large')
+ try:
+  async with asyncio.timeout(25):result=await read_strip(data)
+ except (gw.Unavailable,ValueError,TimeoutError):result={'status':'manual','candidates':[],'readings':[],'must_ask_indication':True,'message':'Could not read this photo. Please type the printed name and strength.'}
+ finally:del data
+ async with Session() as s:
+  j=await owned(s,Journey,jid,owner,True);j.payload={**j.payload,'medicine_proposal':result}
+  if idempotency_key:s.add(Idempotency(key=owner+':photo:'+idempotency_key,journey_id=owner,payload=result))
+  await s.commit()
+ return result
+class MedicineChoice(Body):candidate:int=Field(ge=0,le=1)
+@router.post('/journeys/{jid}/medicine/choose')
+async def medicine_choose(jid:str,body:MedicineChoice,owner=Depends(principal)):
+ async with Session() as s:
+  j=await owned(s,Journey,jid,owner,True)
+  proposal=j.payload.get('medicine_proposal',{});candidates=proposal.get('candidates',[])
+  if body.candidate>=len(candidates):raise HTTPException(422,'Choose a printed reading or type it yourself')
+  chosen=candidates[body.candidate];value=f'{chosen["generic"]} {chosen["strength"]}'.strip()
+  slots={**j.payload.get('slots',{}),'medicine':value};slots.pop('indication',None)
+  j.payload={**j.payload,'slots':slots,'medicine_proposal':None,'selection':None}
+  line=await s.scalar(select(Line).where(Line.journey_id==owner,Line.slot=='medicine'))
+  payload=fsm.line_payload('medicine',value,j.payload['member'],'two_readers_buyer_choice')
+  if line:line.payload=payload;line.confirmed=False;line.version+=1
+  else:s.add(Line(journey_id=owner,slot='medicine',payload=payload))
+  await s.commit()
+ return {'accepted':True,'node':fsm.next_node(j.payload),'condition_choices':['BP / hypertension','Heart','Kidney','I do not know']}
