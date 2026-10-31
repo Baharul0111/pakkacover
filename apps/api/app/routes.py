@@ -77,7 +77,7 @@ async def member(jid:str,body:MemberIn,owner=Depends(principal)):
   s.add(Consent(journey_id=owner,purpose='P1_member_attest',granted=True));await s.commit()
  return await get_journey(jid,owner)
 
-async def answer_core(jid,body,owner,idempotency):
+async def answer_core(jid,body,owner,idempotency,input_source='typed'):
  await require_consented(owner)
  # Keep external I/O outside the DB transaction; version/node is rechecked afterwards.
  async with Session() as s:
@@ -89,6 +89,7 @@ async def answer_core(jid,body,owner,idempotency):
   if node['key'] in ('member','review'):raise HTTPException(409,'Finish the member form or review the lines')
  try:
   async with asyncio.timeout(8):vals,source=await fsm.extract(node,body.text)
+  if input_source=='voice':source='voice:'+source
  except TimeoutError:vals,source={},'deadline'
  async with Session() as s:
   j=await owned(s,Journey,jid,owner,True)
@@ -126,7 +127,7 @@ async def voice(jid:str,owner=Depends(principal),audio:UploadFile=File(...),dura
    measured=await media.call('audio',data)
    transcript=await gw.transcribe(data,mime,measured)
    if not transcript:raise gw.Unavailable('empty_transcript')
-   result=await answer_core(jid,AnswerIn(text=transcript),owner,None)
+   result=await answer_core(jid,AnswerIn(text=transcript),owner,None,'voice')
    result['transcript']=transcript
  except (gw.Unavailable,ValueError,TimeoutError):result={'accepted':False,'fallback':'Voice unavailable. Tap an answer or type; your progress is safe.'}
  finally:del data

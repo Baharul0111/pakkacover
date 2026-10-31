@@ -47,7 +47,7 @@ def next_node(payload):
 
 def canonical_condition(value):
  v=gw.normal(value)
- if any(x in v for x in ['hypertension','bp','बीपी','बी.पी','रक्तचाप']):return 'hypertension'
+ if any(x in v for x in ['hypertension','bp','blood pressure','बीपी','बी पी','बी.पी','ब्लड प्रेशर','रक्तचाप']):return 'hypertension'
  if any(x in v for x in ['diabetes','sugar','मधुमेह','शुगर']):return 'diabetes'
  if v in ('none','no','नहीं'):return None
  return 'condition_to_confirm'
@@ -73,6 +73,15 @@ def validate_turn(turn:Turn,transcript,node):
   if len(slot.value)>1000:raise ValueError('oversize_slot')
   out[slot.key]=slot.value
  return out
+def explicit_condition_answer(node,text):
+ if node['key']!='conditions':return None
+ value=gw.normal(text)
+ if re.search(r'(?<!\w)(no|not|never|nahi|nahin|border|maybe)(?!\w)',value) or any(w in value for w in ['नहीं','नही','बॉर्डर','शायद']):return None
+ condition=canonical_condition(value)
+ if condition=='hypertension' and any(w in value for w in ['hai','has','have','है','blood pressure','रक्तचाप']):return 'BP / hypertension'
+ if condition=='diabetes' and any(w in value for w in ['hai','has','have','है']):return 'Diabetes'
+ return None
+
 async def extract(node,text):
  direct=direct_value(node,text)
  if direct is not None:return {node['key']:direct},'manual'
@@ -86,7 +95,12 @@ async def extract(node,text):
     turn,returned=await gw.structured(provider,model,Turn,system,user,timeout=3.5 if provider=='anthropic' else 3,step='slots')
     vals=validate_turn(turn,text,node)
     if vals:return vals,returned
-   except (gw.Unavailable,ValueError):continue
+   except (gw.Unavailable,ValueError):
+    # For a literal, explicit condition statement only, code can bind the answer
+    # without repairing/inventing a model quote. It is still individually confirmed.
+    literal=explicit_condition_answer(node,text)
+    if literal is not None:return {node['key']:literal},'source_anchored_condition_fallback'
+    continue
  except gw.Unavailable:pass
  return {},'typed_chips_fallback'
 

@@ -62,3 +62,17 @@ async def test_switches_require_passphrase(client):
 async def test_oversize_body_rejected_before_parse(client):
  r=await client.post('/v1/session',content=b'X'*100,headers={'Content-Length':str(12*1024*1024)})
  assert r.status_code==413
+
+async def test_voice_values_are_always_marked_for_human_check(client,monkeypatch):
+ from apps.api.app import gateway as gw
+ from apps.api.app.media import media
+ async def stt(*args,**kwargs):return '158'
+ async def measured(*args,**kwargs):return 2.0
+ monkeypatch.setattr(gw,'transcribe',stt);monkeypatch.setattr(media,'call',measured)
+ j,h=await start(client)
+ await client.post(f'/v1/journeys/{j}/consent',headers=h,json={'disclosure':True})
+ await client.post(f'/v1/journeys/{j}/member',headers=h,json={'age':52,'sex':'F','relation':'self','attested':True})
+ r=await client.post(f'/v1/journeys/{j}/voice',headers=h,files={'audio':('test.wav',b'synthetic placeholder','audio/wav')},data={'duration':'2'})
+ assert r.status_code==200 and r.json()['accepted']
+ line=(await client.get(f'/v1/journeys/{j}',headers=h)).json()['lines'][0]
+ assert line['ai_guess'] and not line['confirmed'] and line['source'].startswith('voice:')

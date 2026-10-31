@@ -1,0 +1,10 @@
+{
+  "tts_bytes": 122924,
+  "measured_seconds": 2.56,
+  "transcript_present": true,
+  "recognized_bp_alias": true,
+  "extracted": false,
+  "source": "typed_chips_fallback",
+  "correct_condition": false,
+  "seconds": 10.07
+}
