@@ -55,6 +55,10 @@
 - Vercel: authenticated CLI, project pakkacover. Same React/FastAPI app, relative /api routes, bounded inline media on serverless, Supabase transaction pooler6543 + NullPool. Deployment around13:45; stop trying at14:15 if unsuccessful.
 - 14:30 freeze unchanged. Current live fallback: https://slide-stage-seller-republican.trycloudflare.com. Production URL pending deployment.
 
+## Talk priority add-on — 12:32 IST
+
+Replace separate member form with spoken Q1 relation → one-tap attestation → name → age → sex, then health questions. Reset must go to empty Q1. Form fields and twelve-group counter must reflect actual answers. Verify Reset-to-Check Sunita run, commit/push, then return to rehearsals/freeze. Remote Supabase transaction-pooler preflight failed DNS outside sandbox; Vercel skipped per user rule. Active HTTPS fallback remains https://slide-stage-seller-republican.trycloudflare.com.
+
 ## Takeover schedule — latest user instruction
 
 | Time (IST) | Work |

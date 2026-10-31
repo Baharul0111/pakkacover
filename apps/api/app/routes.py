@@ -183,7 +183,14 @@ async def confirmed_context(owner):
 async def simulation(jid:str,body:ScenarioIn,owner=Depends(principal)):
  if jid!=owner:raise HTTPException(404,'Not found')
  j,lines=await confirmed_context(owner)
- return simulate(body.d0,fsm.confirmed_conditions(lines),j.payload['member']['age'],body.model_dump(exclude={'d0'}))
+ conditions=fsm.confirmed_conditions(lines)
+ rows=simulate(body.d0,conditions,j.payload['member']['age'],body.model_dump(exclude={'d0'}))
+ from apps.api.app.engine.rules import cover_start
+ for row in rows:
+  condition='hypertension' if 'hypertension' in conditions else (conditions[0] if conditions else None)
+  row['condition_key']=condition
+  row['condition_start']=cover_start(plans()[row['plan_id']],body.d0,condition,set(conditions)) if condition else None
+ return rows
 @router.post('/journeys/{jid}/select')
 async def select_plan(jid:str,body:SelectIn,owner=Depends(principal)):
  if jid!=owner:raise HTTPException(404,'Not found')

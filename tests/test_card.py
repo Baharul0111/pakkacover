@@ -17,3 +17,14 @@ async def test_advisor_button_records_real_request(client):
  j,h=await start(client)
  r=await client.post(f'/api/journeys/{j}/advisor',headers=h)
  assert r.status_code==200 and r.json()['request_id'] and r.json()['label']=='Pilot callback within 24 h'
+
+async def test_comparison_timeline_dates_are_engine_facts_with_bp_clause(client):
+ j,h=await start(client);body=await interview(client,j,h)
+ for line in body['lines']:
+  await client.post(f'/api/lines/{line["id"]}/confirm',headers=h,json={'version':line['version']})
+ r=await client.post(f'/api/journeys/{j}/simulate',headers=h,json={'d0':'2026-10-31'})
+ assert r.status_code==200
+ rows=r.json()
+ assert [row['condition_start']['value'] for row in rows]==['2026-11-30','2028-10-31','2029-10-31']
+ assert '31st day' in rows[0]['condition_start']['clause_ref']['quote']
+ assert [row['total'] for row in rows]==[644000,300000,100000]

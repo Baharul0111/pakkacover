@@ -17,7 +17,7 @@ if '--live-voice' in sys.argv:
 base=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8000'
 for _ in range(40):
  try:
-  if httpx.get(base+'/health',timeout=2).status_code==200:break
+  if httpx.get(base+'/api/health',timeout=2).status_code==200:break
  except httpx.HTTPError:pass
  time.sleep(.5)
 raise SystemExit(subprocess.call(['node',str(ROOT/'apps/web/e2e.mjs'),*sys.argv[1:]],cwd=ROOT,env=env))
