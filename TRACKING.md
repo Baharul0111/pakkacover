@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:12:15 IST. Step 7: final fallback and media checks.
-- Next action: Run updated tests and web build, fix any compile/runtime failures; rerun live HTTPS E2E after latest audio/manual-audit changes.
+- Time: 2026-10-31 11:13:15 IST. Step 7: correcting final hardening failures.
+- Next action: Install PyAV to replace broken system ffprobe, rerun audio/audit/medicine/cap tests and TypeScript build, then restart and repeat HTTPS E2E.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel old revision at https://east-guru-howard-larry.trycloudflare.com. Postgres55432. Stop: scripts/run_demo --stop.
-- Done and verified / half-done: Added measured audio duration in worker, worker allocation cap, handwriting/unit guards and manual audit entry fallback; verification: New tests cover actual audio bounds, concurrent cost-cap reservations and manual audit comparison; execution next. The next action above identifies unfinished work.
-- Open problems and decisions: Current running API is previous tested revision until restart. Ensure latest code/build before freeze. No real golden media yet.
+- Background processes: Passing old API/tunnel at https://east-guru-howard-larry.trycloudflare.com; do not restart until build/tests pass. Postgres55432.
+- Done and verified / half-done: HTTPS full story passed in 38s with real Haiku audit; final tests exposed Mac resource-limit hard ceiling, broken ffprobe binary and one manual-form JSX parenthesis; verification: Last run: 103 passed, 2 failed (audio tool and worker initialization); web build failed on new manual form. All three causes addressed in source; verification next.. The next action above identifies unfinished work.
+- Open problems and decisions: Current live demo still serves previous passing revision. PyAV dependency and new-source tests pending; no feature cuts.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -33,6 +33,7 @@
 - 2026-10-31 11:08:22 IST | Step 7: full local browser pass; requirement hardening | Full local mobile story passed in 10 seconds with live dual-reader photo, per-line confirmation, ranking, simulation and 4 audit variants; audit now attempts actual Haiku before sample fallback | Tests: Local browser passed with 0 runtime errors; 99 Python tests previously passed; updated code requires regression run | Commit: `b99098c`
 - 2026-10-31 11:10:23 IST | Step 7: actual-model audit and HTTPS E2E verification | Rebuilt and restarted latest code; 99 Python tests passed again; tracked files and built JS pass secret leakage scan | Tests: G1/G2/G0/G6/G7/payment checks green. Current tunnel ready; no real golden media present. | Commit: `c7c6a17`
 - 2026-10-31 11:12:15 IST | Step 7: final fallback and media checks | Added measured audio duration in worker, worker allocation cap, handwriting/unit guards and manual audit entry fallback | Tests: New tests cover actual audio bounds, concurrent cost-cap reservations and manual audit comparison; execution next | Commit: `62c32df`
+- 2026-10-31 11:13:15 IST | Step 7: correcting final hardening failures | HTTPS full story passed in 38s with real Haiku audit; final tests exposed Mac resource-limit hard ceiling, broken ffprobe binary and one manual-form JSX parenthesis | Tests: Last run: 103 passed, 2 failed (audio tool and worker initialization); web build failed on new manual form. All three causes addressed in source; verification next. | Commit: `4c3f593`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
