@@ -16,8 +16,9 @@ txt=re.sub(r'## Resume here\n.*?(?=## Implementation log)',lambda _:resume,txt,f
 entry=f'- {now} | {a.step} | {a.done} | Tests: {a.tests} | Commit: `{sha}`\n'
 pos=txt.index('## Implementation log')+len('## Implementation log')
 # Keep historical orientation below implementation entries.
-marker='\nUpdated: 2026-10-31 (Asia/Kolkata)'
+marker='\n## Original orientation notes'
 end=txt.find(marker,pos)
+if end<0:end=txt.find('\nUpdated: 2026-10-31 (Asia/Kolkata)',pos)
 if end<0: end=len(txt)
 txt=txt[:end].rstrip()+'\n'+entry+'\n'+txt[end:].lstrip('\n')
 pth.write_text(txt)

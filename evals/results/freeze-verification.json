@@ -1,0 +1,39 @@
+{
+  "status": "verified_before_freeze",
+  "python_tests": 121,
+  "clause_references": 44,
+  "payment_mode": "simulated",
+  "rehearsals": [
+    {
+      "file": "evals/results/browser-1793426900784.json",
+      "seconds": 39,
+      "voice_accepted": true
+    },
+    {
+      "file": "evals/results/browser-1793427066518.json",
+      "seconds": 44,
+      "voice_accepted": true
+    },
+    {
+      "file": "evals/results/browser-1793427218160.json",
+      "seconds": 40,
+      "voice_accepted": true
+    }
+  ],
+  "live_audit_each_run": {
+    "planted_flags": [
+      1,
+      1,
+      1
+    ],
+    "clean_flags": 0,
+    "verified_fields_each_pdf": 11
+  },
+  "owner_golden_media": {
+    "clips": 0,
+    "photos": 0
+  },
+  "physical_phone_hardware": "not verified by browser automation",
+  "fallback_video": ".run/sunita-fallback.webm",
+  "fallback_video_bytes": 3649944
+}

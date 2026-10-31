@@ -47,6 +47,10 @@
 - 2026-10-31 11:40:19 IST | Step 7: final revised-build rehearsal 1/3 passed | Revised build passed full HTTPS story in 39s: voice accepted, live dual readers, correct Instant Cover citation, all 3 model-verified mismatches and clean PDF; fallback video refreshed | Tests: 121 Python tests passed; G2 validates 44 clauses; all 4 live audits verified 11 fields each, with flags 1/1/1/0; browser errors 0 | Commit: `47bbda8`
 - 2026-10-31 11:42:54 IST | Step 7: final revised-build rehearsal 2/3 passed | Second revised-build full HTTPS story passed in 44s with accepted live voice, dual-reader photo, correct clause tap and audit flags 1/1/1/0 | Tests: 121 Python tests passed; 44 clause references verified; both final rehearsals have 0 browser errors and all audit fields model/quote verified | Commit: `d2e868f`
 
+## Original orientation notes
+
+Historical review notes below are preserved as requested. The current state is always in **Resume here** above.
+
 Updated: 2026-10-31 (Asia/Kolkata)
 
 ## Working agreement

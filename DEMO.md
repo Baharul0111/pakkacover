@@ -67,7 +67,7 @@ A new quick-tunnel hostname is a new browser origin, so start a fresh demo there
 
 ## Payment mode and 14:30 check
 
-Current frozen mode will be recorded below after final verification. The adapter is selected on server startup: both staging keys present → staging; either absent → simulated. The production Paytm host is rejected before networking.
+**Frozen payment mode: simulated.** Staging keys were absent at freeze; no real Paytm transaction is claimed. The staging adapter is implemented and covered by dummy-key/signed-response tests. The adapter is selected on server startup: both staging keys present → staging; either absent → simulated. The production Paytm host is rejected before networking.
 
 Check current state without exposing keys:
 
@@ -97,3 +97,12 @@ The stable fallback recording path is `.run/sunita-fallback.webm` after the reco
 ## Scope
 
 This is the local hackathon demo, **not a pilot**. Retention jobs, export/delete screens, production infrastructure, real identity, staff TOTP, backups, licensed-partner integration and a real insurance sale are intentionally out of scope. The remote database URL that failed DNS is preserved privately as `DATABASE_URL_REMOTE`; the active database is local PostgreSQL on loopback port 55432. All deviations are in `HACKATHON.md`.
+
+## Verified freeze results
+
+- Python suite: **121 passed** (including G0, G1, G2, G6, G7, payment signatures, media limits and cost caps).
+- Source fidelity: **44 clause references verified** against pinned downloaded PDFs.
+- Three consecutive full HTTPS mobile-browser rehearsals: **39 s, 44 s, 40 s**, no browser runtime errors; each included accepted live speech, live dual-reader synthetic photo, per-line confirmation, correct Instant Cover clause tap, Promise Card and simulated payment.
+- Each rehearsal ran all four audits through real model extraction: all **11 fields** quote verified, planted flags **1 / 1 / 1**, clean flags **0**.
+- Owner golden files at freeze: **0 clips, 0 photos**; synthetic checks are clearly separate from real-media/hardware testing.
+- Machine-readable evidence: `evals/results/freeze-verification.json`. Frozen source tag: `demo-1` once final bookkeeping is committed.

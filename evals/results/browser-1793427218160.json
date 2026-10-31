@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "base": "https://shortcuts-foreign-categories-medicines.trycloudflare.com",
+  "full": true,
+  "ranking": [
+    "Plan B",
+    "Plan C",
+    "Plan A"
+  ],
+  "browserErrors": 0,
+  "audits": [
+    {
+      "variant": "m1_ped_addon_missing",
+      "mode": "quote_verified_model",
+      "flags": 1,
+      "verifiedFields": 11
+    },
+    {
+      "variant": "m2_declared_condition_missing",
+      "mode": "quote_verified_model",
+      "flags": 1,
+      "verifiedFields": 11
+    },
+    {
+      "variant": "m3_dob_wrong",
+      "mode": "quote_verified_model",
+      "flags": 1,
+      "verifiedFields": 11
+    },
+    {
+      "variant": "clean",
+      "mode": "quote_verified_model",
+      "flags": 0,
+      "verifiedFields": 11
+    }
+  ],
+  "voice": {
+    "attempted": true,
+    "accepted": true,
+    "fallbackUsed": false,
+    "source": "voice:source_anchored_condition_fallback"
+  },
+  "durationSeconds": 40
+}
