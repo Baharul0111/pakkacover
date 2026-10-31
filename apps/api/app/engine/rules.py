@@ -98,15 +98,19 @@ def payout(plan:Plan,d0:date,declared:set[str],claim:Claim)->dict:
     if claim.condition_key in {x['key'] for x in plan.exclusions}:
         return {'amount':0,'fact':fact(0,'permanent_exclusion',plan.exclusion_clause,'This example matches a permanent exclusion.'),'steps':steps}
     eligible=claim.billed_inr
+    calculation=[f'Example bill ₹{claim.billed_inr}']
     if not plan.consumables_covered:
         eligible*=1-claim.consumables_share
+        calculation.append(f'Less {claim.consumables_share*100}% assumed non-payable items = ₹{eligible}')
         steps.append(fact(str(eligible),'non_payable_items',plan.consumables_clause,'Illustrative non-payable items are deducted; the actual item list must be checked.'))
     if claim.sub_limit_inr is not None:
         eligible=min(eligible,claim.sub_limit_inr)
+        calculation.append(f'Condition cap ₹{claim.sub_limit_inr} gives ₹{eligible}')
     eligible=max(Decimal(0),eligible-claim.deductible_inr)
+    calculation.append(f'Assumed deductible ₹{claim.deductible_inr}; assumed co-pay {claim.copay_pct+Decimal(plan.copay_pct)}%')
     eligible*=1-min(Decimal(100),claim.copay_pct+Decimal(plan.copay_pct))/100
     amount=int(min(claim.sum_insured,eligible).quantize(Decimal(1),rounding=ROUND_FLOOR))
-    final=fact(amount,'illustrative_payout',plan.consumables_clause,'Illustrative eligible expenses, after deductions and the assumed sum-insured cap; independent examples, not one policy-year total.','कटौतियों और मानी हुई बीमा राशि के बाद उदाहरण का भुगतान। हर उदाहरण अलग है।')
+    final=fact(amount,'illustrative_payout',plan.consumables_clause,'; '.join(calculation)+f'; cap ₹{claim.sum_insured}; payout rounded down = ₹{amount}. Independent examples, not one policy-year total.','; '.join(calculation)+f'; बीमा राशि की मानी हुई सीमा ₹{claim.sum_insured}; रुपये में नीचे की ओर पूर्णांक = ₹{amount}। हर उदाहरण अलग है।')
     steps.append(final)
     return {'amount':amount,'fact':final,'steps':steps}
 

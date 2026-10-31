@@ -29,3 +29,7 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - The 60 generic names and demo brand/condition hints are hand-seeded. Conditions are always buyer-selected, not clinically inferred. Broader licensed datasets are deferred.
 - All audits attempt Haiku section extraction and one Sonnet retry on failed quote/value verification. Generated fixtures additionally have a quote-verified deterministic label parser as the network/model fallback, explicitly recorded in extraction_mode. The comparison is always code. G6 unit fixtures exercise deterministic parsing; live and browser gates exercise the actual model path.
 - Promise Card shows the demo-relevant exclusion example (unproven treatments) and explicitly states other exclusions/conditions apply; full exclusion authoring is deferred.
+
+## macOS media verification
+- System ffprobe aborts on this Mac, so bundled PyAV decodes microphone bytes in the isolated worker and measures actual duration without disk files.
+- This macOS environment rejects RLIMIT_DATA/RLIMIT_AS changes even below the reported limit. A parent RSS watchdog checks the worker every 50 ms against measured baseline + 150 MB (200 MB minimum), kills/respawns on breach, and retains wall-clock deadlines and input/pixel limits. Unsupported kernel caps no longer prevent startup.

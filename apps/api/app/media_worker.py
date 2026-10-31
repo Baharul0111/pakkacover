@@ -40,7 +40,8 @@ def initialize():
  cap=768*1024*1024
  _,hard=resource.getrlimit(resource.RLIMIT_DATA)
  if hard!=resource.RLIM_INFINITY:cap=min(cap,hard)
- resource.setrlimit(resource.RLIMIT_DATA,(cap,hard))
+ try:resource.setrlimit(resource.RLIMIT_DATA,(cap,hard))
+ except (ValueError,OSError):pass # Parent RSS watchdog enforces the measured budget on macOS.
 
 def audio_duration(data):
  import av

@@ -1,5 +1,6 @@
 """One spawned, bounded worker with hard wall timeouts and immediate warm respawn."""
 import asyncio,multiprocessing,os,signal,subprocess
+import psutil
 from concurrent.futures import ProcessPoolExecutor
 from apps.api.app import media_worker
 
@@ -21,8 +22,21 @@ class Media:
    async with asyncio.timeout(20 if kind in ('image','audio') else 60):
     async with self.lock:
      self.start()
-     try:return await asyncio.wait_for(asyncio.get_running_loop().run_in_executor(self.pool,{'image':media_worker.image_clean,'audio':media_worker.audio_duration,'pdf':media_worker.pdf_text}[kind],data),4 if kind in ('image','audio') else 45)
+     try:
+      task=asyncio.get_running_loop().run_in_executor(self.pool,{'image':media_worker.image_clean,'audio':media_worker.audio_duration,'pdf':media_worker.pdf_text}[kind],data)
+      async with asyncio.timeout(4 if kind in ('image','audio') else 45):
+       while not task.done():
+        await asyncio.wait([task],timeout=.05)
+        cap=max(200*1024*1024,(self.baseline or {}).get('rss_bytes',0)+150*1024*1024)
+        for process in (getattr(self.pool,'_processes',{}) or {}).values():
+         try:
+          if psutil.Process(process.pid).memory_info().rss>cap:raise ValueError('media_memory_limit')
+         except psutil.NoSuchProcess:pass
+       return task.result()
      except Exception:
-      self.close();await self.warm();raise
+      self.close()
+      try:await self.warm()
+      except Exception:pass
+      raise ValueError('media_unavailable') from None
   finally:self.queued-=1
 media=Media()
