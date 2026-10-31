@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:42:54 IST. Step 7: final revised-build rehearsal 2/3 passed.
-- Next action: Run third consecutive full HTTPS mobile rehearsal. Then save freeze evidence, finalize DEMO.md, run final required checks and tag demo-1.
+- Time: 2026-10-31 11:46:21 IST. Freeze: all feature and rehearsal gates passed.
+- Next action: Run the final required tests/quote check and golden-file presence check, stop QA API/tunnel, launch fresh stage instance, update final URL/evidence and create demo-1 tag.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Current HTTPS https://shortcuts-foreign-categories-medicines.trycloudflare.com; API/tunnel/preflight/caffeinate .run/*.pid. Postgres55432.
-- Done and verified / half-done: Second revised-build full HTTPS story passed in 44s with accepted live voice, dual-reader photo, correct clause tap and audit flags 1/1/1/0; verification: 121 Python tests passed; 44 clause references verified; both final rehearsals have 0 browser errors and all audit fields model/quote verified. The next action above identifies unfinished work.
-- Open problems and decisions: Only final rehearsal and freeze bookkeeping remain. No real staging keys or owner golden media; limitations recorded in DEMO.md.
+- Background processes: QA API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; stop via scripts/run_demo --stop, then launch stage instance. Postgres55432; preflight/awake will be restarted.
+- Done and verified / half-done: All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked; verification: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists. The next action above identifies unfinished work.
+- Open problems and decisions: No unfinished demo feature. Only freeze bookkeeping remains. Simulated payment and absence of owner media/physical-device testing are documented.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -46,6 +46,7 @@
 - 2026-10-31 11:37:17 IST | Step 7: final source fidelity and real-network fallback check | Fixed Instant Cover citation tie and completed five cited exclusion examples per plan. Rehearsal now records voice success/fallback instead of treating a deliberate network fallback as a crash. | Tests: 121 Python tests passed before exclusion/data updates. Live route has succeeded previously; transient provider/deadline fallback must also complete the journey. Final tests/rehearsals pending. | Commit: `bdaa247`
 - 2026-10-31 11:40:19 IST | Step 7: final revised-build rehearsal 1/3 passed | Revised build passed full HTTPS story in 39s: voice accepted, live dual readers, correct Instant Cover citation, all 3 model-verified mismatches and clean PDF; fallback video refreshed | Tests: 121 Python tests passed; G2 validates 44 clauses; all 4 live audits verified 11 fields each, with flags 1/1/1/0; browser errors 0 | Commit: `47bbda8`
 - 2026-10-31 11:42:54 IST | Step 7: final revised-build rehearsal 2/3 passed | Second revised-build full HTTPS story passed in 44s with accepted live voice, dual-reader photo, correct clause tap and audit flags 1/1/1/0 | Tests: 121 Python tests passed; 44 clause references verified; both final rehearsals have 0 browser errors and all audit fields model/quote verified | Commit: `d2e868f`
+- 2026-10-31 11:46:21 IST | Freeze: all feature and rehearsal gates passed | All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked | Tests: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists | Commit: `b5a271e`
 
 ## Original orientation notes
 
