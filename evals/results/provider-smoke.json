@@ -1,0 +1,38 @@
+{
+  "models": {
+    "openai": {
+      "status": "ok",
+      "selected": {
+        "gpt-6.1-terra": "gpt-6.1-terra",
+        "gpt-6-luna": "gpt-6-luna",
+        "omni-moderation-latest": "omni-moderation-latest"
+      }
+    },
+    "anthropic": {
+      "status": "ok",
+      "selected": {
+        "claude-haiku-5-5": "claude-haiku-5-5",
+        "claude-sonnet-5-5": "claude-sonnet-5-5"
+      }
+    }
+  },
+  "slot_extraction": {
+    "passed": true,
+    "returned_model": "claude-haiku-5-5"
+  },
+  "tts": {
+    "passed": true,
+    "bytes": 65324,
+    "mime": "audio/wav"
+  },
+  "stt": {
+    "passed": true,
+    "model": "saaras:v4"
+  },
+  "usage": {
+    "daily_estimate_inr": 0.45,
+    "daily_cap_inr": 150,
+    "sarvam_remaining_estimate_inr": 999.95,
+    "sarvam_floor_inr": 20
+  }
+}

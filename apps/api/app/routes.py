@@ -95,7 +95,11 @@ async def answer_core(jid,body,owner,idempotency):
   if fsm.next_node(j.payload)['key']!=node['key']:raise HTTPException(409,'Question changed; refresh your session')
   if vals:
    j.payload={**j.payload,'slots':{**j.payload.get('slots',{}),**vals}}
-   for k,v in vals.items():s.add(Line(journey_id=owner,slot=k,payload=fsm.line_payload(k,v,j.payload['member'],source)))
+   for k,v in vals.items():
+    existing=await s.scalar(select(Line).where(Line.journey_id==owner,Line.slot==k))
+    if existing:
+     existing.payload=fsm.line_payload(k,v,j.payload['member'],source);existing.confirmed=False;existing.version+=1
+    else:s.add(Line(journey_id=owner,slot=k,payload=fsm.line_payload(k,v,j.payload['member'],source)))
   result={'accepted':bool(vals),'source':source,'node':fsm.next_node(j.payload),'fallback':None if vals else 'Please tap an answer or type the details again.'}
   if idempotency:s.add(Idempotency(key=owner+':'+idempotency,journey_id=owner,payload=result))
   await s.commit()
@@ -157,8 +161,8 @@ async def reopen(lid:str,owner=Depends(principal)):
   j=await owned(s,Journey,owner,owner,True)
   slots=dict(j.payload.get('slots',{}));slots.pop(line.slot,None)
   j.payload={**j.payload,'slots':slots,'selection':None}
-  # Preserve the old line as an unconfirmed correction card; next answer replaces it.
-  await s.delete(line);await s.commit()
+  # The next answer updates this same card and preserves the version check.
+  await s.commit()
  return {'status':'reopened'}
 async def confirmed_context(owner):
  async with Session() as s:
