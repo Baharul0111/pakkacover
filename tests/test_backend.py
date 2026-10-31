@@ -22,7 +22,7 @@ async def test_consent_and_member_attestation_required(client):
 
 async def test_confirmation_gate_encrypted_health_and_correction(client):
  j,h=await start(client);body=await interview(client,j,h)
- assert body['node']['key']=='review' and len(body['lines'])==15
+ assert body['node']['key']=='review' and len(body['lines'])==17
  r=await client.post(f'/api/journeys/{j}/simulate',headers=h,json={});assert r.status_code==409
  for line in body['lines']:
   r=await client.post(f'/api/lines/{line["id"]}/confirm',headers=h,json={'version':line['version']});assert r.status_code==200
@@ -86,7 +86,7 @@ async def test_identity_reopen_requires_fresh_member_attestation_and_review(clie
   await client.post(f'/api/lines/{line["id"]}/confirm',headers=h,json={'version':line['version']})
  assert (await client.post(f'/api/lines/{identity["id"]}/reopen',headers=h)).status_code==200
  fresh=(await client.get(f'/api/journeys/{j}',headers=h)).json()
- assert fresh['node']['key']=='member' and not fresh['member'] and not fresh['lines']
+ assert fresh['node']['key']=='relation' and not fresh['member'] and not fresh['lines']
  assert (await client.post(f'/api/journeys/{j}/simulate',headers=h,json={})).status_code==409
  assert (await client.post(f'/api/journeys/{j}/member',headers=h,json={'name':'Corrected demo','age':53,'sex':'F','relation':'mother','attested':False})).status_code==422
  updated=await client.post(f'/api/journeys/{j}/member',headers=h,json={'name':'Corrected demo','age':53,'sex':'F','relation':'mother','attested':True})

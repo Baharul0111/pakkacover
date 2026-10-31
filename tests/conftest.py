@@ -12,7 +12,7 @@ async def start(client):
 async def interview(client,jid,headers):
  assert (await client.post(f'/api/journeys/{jid}/consent',headers=headers,json={'disclosure':True,'alerts':True,'audit':True})).status_code==200
  assert (await client.post(f'/api/journeys/{jid}/member',headers=headers,json={'age':52,'sex':'F','relation':'mother','attested':True})).status_code==200
- answers=['158','64','BP / hypertension','2019','Yes','No','Telma 40 mg','BP / hypertension','Once daily','None','None','No','No','No']
+ answers=['158','64','BP / hypertension','2019','Yes','No','Yes','Telma 40 mg','1 tablet','Once daily','BP / hypertension','None','None','No','No','No']
  for a in answers:
   r=await client.post(f'/api/journeys/{jid}/answer',headers=headers,json={'text':a});assert r.status_code==200,r.text
   assert r.json()['accepted'],r.text

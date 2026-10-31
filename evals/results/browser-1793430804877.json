@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "run": 1,
+      "passed": true,
+      "base": "http://127.0.0.1:8000",
+      "full": false,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [],
+      "voice": {
+        "attempted": false,
+        "accepted": false,
+        "fallbackUsed": false
+      },
+      "paymentMethod": null,
+      "durationSeconds": 7
+    },
+    {
+      "run": 2,
+      "passed": true,
+      "base": "http://127.0.0.1:8000",
+      "full": false,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [],
+      "voice": {
+        "attempted": false,
+        "accepted": false,
+        "fallbackUsed": false
+      },
+      "paymentMethod": null,
+      "durationSeconds": 6
+    }
+  ],
+  "totalSeconds": 16
+}

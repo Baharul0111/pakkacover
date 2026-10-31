@@ -24,37 +24,46 @@ try{
    const oldJourney=await page.evaluate(()=>localStorage.getItem('pc_jid'));
    await page.getByRole('button',{name:'Menu',exact:true}).click();
    await postResponse('/reset',()=>page.getByRole('button',{name:'Reset demo',exact:true}).click());
-   await page.getByRole('heading',{name:'Health cover, made clear.',exact:true}).waitFor();
+   await page.getByRole('heading',{name:'Who is this cover for?',exact:true}).waitFor();
+   if((await page.locator('.form-row strong').allTextContents()).some(v=>v&&v!=='—'))throw new Error('Reset form is not empty');
    if(await page.evaluate(()=>localStorage.getItem('pc_jid'))===oldJourney)throw new Error('Reset did not replace journey');
    await page.getByRole('button',{name:'Notifications',exact:true}).click();await page.getByText('No notifications yet',{exact:true}).waitFor();await page.getByRole('button',{name:'Notifications',exact:true}).click();
   }
-  await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:/I agree/}).click();
-  await page.getByRole('heading',{name:'Who are we looking after?',exact:true}).waitFor();
-  await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:'Continue',exact:true}).click();
-  await page.getByRole('heading',{name:'Your height, in centimetres?',exact:true}).waitFor();
+  if(run===1){await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:/I agree/}).click();}
+  await page.getByRole('heading',{name:'Who is this cover for?',exact:true}).waitFor();
   if(run===1){await shot('talk');await desktopShot('talk');await page.getByRole('button',{name:/Your form/}).click();await page.locator('.live-form.drawer-open').waitFor();await shot('form-drawer');await page.getByRole('button',{name:/Your form/}).click();}
-  const answers=['158','64','BP / hypertension','2019','Yes','No','Telma 40 mg','BP / hypertension','Once daily','None','None','No','No','No'];
+  const answers=['Mother','I agree','Sunita','52','Female','5 foot 2','68 kilo','BP / hypertension','2019','Yes','No','Yes','Telma 40 mg','1 tablet','Once daily','BP / hypertension','None','None','No','No','No'];
+  const groups=[1,1,2,3,4,5,6,7,7,7,7,7,8,8,8,8,9,10,11,11,12];
   for(let i=0;i<answers.length;i++){
-   if(full&&i===2&&process.env.PCC_E2E_AUDIO_B64){
+   if((await page.locator('.question-count').textContent()).trim()!==groups[i]+' / 12')throw new Error('Question counter incorrect at '+i);
+   if(full&&i===7&&process.env.PCC_E2E_AUDIO_B64){
     const out=await page.evaluate(async(encoded)=>{const f=new FormData();f.append('audio',new Blob([Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))],{type:'audio/wav'}),'answer.wav');f.append('duration','6');const r=await fetch('/api/journeys/'+localStorage.getItem('pc_jid')+'/voice',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('pc_token'),'Idempotency-Key':crypto.randomUUID()},body:f});return r.json();},process.env.PCC_E2E_AUDIO_B64);
     voice={attempted:true,accepted:!!out.accepted,fallbackUsed:!out.accepted,source:out.source||'speech_or_media_fallback'};
     if(!out.accepted){if(!out.fallback)throw new Error('Speech failed without a fallback');await postResponse('/answer',()=>page.getByRole('button',{name:'BP / hypertension',exact:true}).click());}
     await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:/Since when/}).waitFor();
-   }else if(full&&i===6){
+   }else if(full&&i===12){
     const encoded=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=1000;c.height=500;const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,1000,500);ctx.fillStyle='black';ctx.font='48px Arial';['TELMA 40','Telmisartan Tablets IP','Each tablet contains:','Telmisartan 40 mg'].forEach((line,n)=>ctx.fillText(line,40,80+n*85));return c.toDataURL('image/png').split(',')[1];});
     const out=await postResponse('/photo',()=>page.locator('input[type=file][accept="image/*"]').setInputFiles({name:'synthetic-printed-strip.png',mimeType:'image/png',buffer:Buffer.from(encoded,'base64')}));
     if(out.status!=='agree')throw new Error('Synthetic printed strip readers did not agree');
     await page.getByRole('button',{name:/Telmisartan 40\s?mg/}).first().click();
-    await page.getByRole('heading',{name:/What do you take this medicine for/}).waitFor();
+    await page.getByRole('heading',{name:'What dose do you take each time?',exact:true}).waitFor();
    }else{
-    await postResponse('/answer',()=>page.getByRole('button',{name:answers[i],exact:true}).click());
+    const chip=page.getByRole('button',{name:answers[i],exact:true});
+    if(await chip.count())await postResponse('/answer',()=>chip.click());
+    else{
+     if(!await page.locator('#answer-input').count())await page.getByRole('button',{name:'Type instead',exact:false}).click();
+     await page.locator('#answer-input').fill(answers[i]);await postResponse('/answer',()=>page.getByRole('button',{name:'Send answer',exact:true}).click());
+    }
     await page.waitForTimeout(120);
    }
+   const fieldChecks={0:['relation','mother'],2:['name','Sunita'],3:['age','52'],4:['sex','F'],5:['height','157 cm'],6:['weight','68 kg'],7:['conditions','BP / hypertension'],8:['since','2019'],12:['medicine',full?'Telmisartan':'Telma'],16:['hospital','None'],17:['tests','None'],18:['tobacco','No'],19:['tobacco','No'],20:['family_history','No']};
+   if(fieldChecks[i]){const [field,value]=fieldChecks[i];if(!(await page.locator('.form-row[data-field="'+field+'"] strong').textContent()).includes(value))throw new Error('Live form missing '+field);}
+   if((await page.locator('.form-row strong').allTextContents()).some(v=>v.includes('Not sure')))throw new Error('Unexpected unknown value');
    await noOverflow('interview '+i);
   }
   await page.getByRole('heading',{name:'Does this look right?',exact:true}).waitFor();
   if(run===1)await shot('review');
-  for(let i=0;i<15;i++){
+  for(let i=0;i<20;i++){
    await page.getByRole('button',{name:'Sahi hai',exact:true}).click();
    await page.waitForFunction(n=>document.querySelector('.review-progress')?.textContent?.trim().startsWith(String(n)+' /'),i+1);
   }

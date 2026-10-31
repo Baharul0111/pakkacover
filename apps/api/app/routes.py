@@ -89,7 +89,7 @@ async def answer_core(jid,body,owner,idempotency,input_source='typed'):
    old=await s.get(Idempotency,owner+':'+idempotency)
    if old:return old.payload
   node=fsm.next_node(j.payload)
-  if node['key'] in ('member','review'):raise HTTPException(409,'Finish the member form or review the lines')
+  if node['key']=='review':raise HTTPException(409,'Please check your declaration lines')
  try:
   async with asyncio.timeout(8):vals,source=await fsm.extract(node,body.text)
   if input_source=='voice':source='voice:'+source
@@ -98,12 +98,17 @@ async def answer_core(jid,body,owner,idempotency,input_source='typed'):
   j=await owned(s,Journey,jid,owner,True)
   if fsm.next_node(j.payload)['key']!=node['key']:raise HTTPException(409,'Question changed; refresh your session')
   if vals:
-   j.payload={**j.payload,'slots':{**j.payload.get('slots',{}),**vals}}
+   slots={**j.payload.get('slots',{}),**vals}
+   member=fsm.member_from_slots(slots) or j.payload.get('member')
+   j.payload={**j.payload,'slots':slots,**({'member':member} if member else {})}
+   if node['key'] in ('attestation','guardian'):
+    s.add(Consent(journey_id=owner,purpose='P1_member_attest' if node['key']=='attestation' else 'P1_guardian_attest',granted=True))
    for k,v in vals.items():
+    if k in ('attestation','guardian'):continue
     existing=await s.scalar(select(Line).where(Line.journey_id==owner,Line.slot==k))
     if existing:
-     existing.payload=fsm.line_payload(k,v,j.payload['member'],source);existing.confirmed=False;existing.version+=1
-    else:s.add(Line(journey_id=owner,slot=k,payload=fsm.line_payload(k,v,j.payload['member'],source)))
+     existing.payload=fsm.line_payload(k,v,j.payload.get('member'),source);existing.confirmed=False;existing.version+=1
+    else:s.add(Line(journey_id=owner,slot=k,payload=fsm.line_payload(k,v,j.payload.get('member'),source)))
   result={'accepted':bool(vals),'source':source,'node':fsm.next_node(j.payload),'fallback':None if vals else 'Please tap an answer or type the details again.'}
   if idempotency:s.add(Idempotency(key=owner+':'+idempotency,journey_id=owner,payload=result))
   await s.commit()
@@ -165,9 +170,9 @@ async def reopen(lid:str,owner=Depends(principal)):
  async with Session() as s:
   line=await owned(s,Line,lid,owner,True);line.confirmed=False;line.version+=1
   j=await owned(s,Journey,owner,owner,True)
-  if line.slot=='member':
+  if line.slot=='member' or line.slot in fsm.IDENTITY_KEYS:
    await s.execute(delete(Line).where(Line.journey_id==owner))
-   j.payload={'slots':{}};await s.commit();return {'status':'reopened','node':'member'}
+   j.payload={'slots':{}};await s.commit();return {'status':'reopened','node':'relation'}
   slots=dict(j.payload.get('slots',{}));slots.pop(line.slot,None)
   j.payload={**j.payload,'slots':slots,'selection':None}
   # The next answer updates this same card and preserves the version check.
@@ -365,10 +370,15 @@ async def reset_demo(jid:str,owner=Depends(principal)):
  # Remove only this browser's journey. Provider spend is deliberately retained.
  async with Session() as s:
   old=await owned(s,Journey,jid,owner,True);lang=old.lang
+  # Reset health data, while retaining only this browser's explicit purpose choices.
+  previous=(await s.scalars(select(Consent).where(Consent.journey_id==owner).order_by(Consent.created_at))).all()
+  purposes={c.purpose:c.granted for c in previous if c.purpose in ('P1_disclosure','P2_alerts','P3_audit')}
   await s.execute(delete(AuthToken).where(AuthToken.journey_id==owner));await s.delete(old)
   token=secrets.token_urlsafe(32);j=Journey(lang=lang,payload={'slots':{}});s.add(j);await s.flush()
-  s.add(AuthToken(token_hash=hashlib.sha256(token.encode()).hexdigest(),journey_id=j.id,expires_at=now()+timedelta(hours=24)));await s.commit()
- return {'token':token,'journey_id':j.id}
+  s.add(AuthToken(token_hash=hashlib.sha256(token.encode()).hexdigest(),journey_id=j.id,expires_at=now()+timedelta(hours=24)))
+  for purpose,granted in purposes.items():s.add(Consent(journey_id=j.id,purpose=purpose,granted=granted))
+  await s.commit()
+ return {'token':token,'journey_id':j.id,'disclosure_consented':purposes.get('P1_disclosure',False)}
 @router.get('/journeys/{jid}/calendar')
 async def calendar(jid:str,owner=Depends(principal)):
  await require_consented(owner,'P2_alerts');result=await card(jid,owner)
