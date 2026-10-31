@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:27:44 IST. Step 7: voice-path correctness fix.
-- Next action: Run interview/voice/numeric regressions, then live voice probe; restart API without rotating tunnel and repeat final three HTTPS mobile runs.
+- Time: 2026-10-31 11:29:54 IST. Step 7: live voice probe passed; final rehearsal restart.
+- Next action: Run full regression suite, restart only API at same HTTPS URL, run recorded live-voice full browser rehearsal, then two further consecutive full HTTPS runs.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Current tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; API/tunnel/preflight/caffeinate in .run/. Postgres55432.
-- Done and verified / half-done: Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards; verification: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts. The next action above identifies unfinished work.
-- Open problems and decisions: Current running API predates this voice fix. Need targeted tests, live probe and API restart. No owner golden media; simulation remains active.
+- Background processes: Current API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; --restart-api preserves URL, preflight remains scheduled.
+- Done and verified / half-done: Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected).; verification: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next.. The next action above identifies unfinished work.
+- Open problems and decisions: Need final consecutive HTTPS rehearsals. No golden media or Paytm keys; documented simulation and physical-device limit.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -40,6 +40,7 @@
 - 2026-10-31 11:22:57 IST | Step 7: final HTTPS rehearsals about to run | 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified | Tests: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending. | Commit: `b15bc83`
 - 2026-10-31 11:24:53 IST | Step 7: live speech route diagnosis | Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed. | Tests: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals. | Commit: `56fa41e`
 - 2026-10-31 11:27:44 IST | Step 7: voice-path correctness fix | Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards | Tests: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts | Commit: `c552a16`
+- 2026-10-31 11:29:54 IST | Step 7: live voice probe passed; final rehearsal restart | Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected). | Tests: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next. | Commit: `6f1058a`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
