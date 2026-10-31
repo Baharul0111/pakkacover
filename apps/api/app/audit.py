@@ -101,8 +101,8 @@ async def audit_pdf(data,context,generated=False):
    fields,mode=await extract_fields(pages,False)
    if generated and len(fields)<len(FIELDS):
     # Network/model fallback stays quote-verified and is explicitly recorded.
-    fallback=deterministic_fields(pages)
-    fields={**fallback,**fields};mode='quote_verified_model_with_sample_fallback' if fields and mode=='quote_verified_model' else 'deterministic_sample_fallback'
+    verified_model_count=len(fields);fallback=deterministic_fields(pages)
+    fields={**fallback,**fields};mode='quote_verified_model_with_sample_fallback' if verified_model_count else 'deterministic_sample_fallback'
    result=compare(fields,context)
    result['extraction_mode']=mode
    result['extracted']={k:v.model_dump() for k,v in fields.items()}

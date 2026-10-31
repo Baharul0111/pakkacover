@@ -1,11 +1,13 @@
 import asyncio,csv,re
 from pydantic import BaseModel,ConfigDict
+from typing import Literal
 from rapidfuzz import fuzz,process
 from apps.api.app.config import ROOT
 from apps.api.app import gateway as gw
 from apps.api.app.media import media
 class Reading(BaseModel):
  model_config=ConfigDict(extra='forbid')
+ source_type:Literal["printed","handwritten","unclear"]
  brand:str
  salt_text:str
  strength:str
@@ -19,9 +21,9 @@ GENERICS=[r['generic'] for r in table('generics')]
 BRANDS={gw.normal(r['brand']):r['generic'] for r in table('brand_aliases')}
 CONDITIONS={r['generic']:r['conditions'].split('|') for r in table('generic_conditions')}
 def normalize_reading(reading):
- if reading is None or not reading.visible_text.strip():return None
+ if reading is None or reading.source_type!='printed' or not reading.visible_text.strip():return None
  if reading.salt_text and gw.normal(reading.salt_text) not in gw.normal(reading.visible_text):return None
- if reading.strength and not gw.number_tokens(reading.strength)<=gw.number_tokens(reading.visible_text):return None
+ if reading.strength and (not gw.number_tokens(reading.strength)<=gw.number_tokens(reading.visible_text) or re.sub(r'\s','',gw.normal(reading.strength)) not in re.sub(r'\s','',gw.normal(reading.visible_text))):return None
  salt=reading.salt_text
  # Strip pharmacopeia/form words; do not silently accept combination products as single drugs.
  if '+' in salt or re.search(r'\band\b',salt,re.I):return None

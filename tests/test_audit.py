@@ -43,3 +43,14 @@ async def test_audit_requires_save_purpose_and_owner_and_returns_no_pdf(client):
  assert (await client.post(f'/v1/journeys/{j}/audit',headers=ho,data={'variant':'clean'})).status_code==404
  from apps.api.app.media import media
  media.close()
+
+async def test_manual_audit_still_compares_when_ai_is_off(client):
+ j,h=await start(client);body=await interview(client,j,h)
+ for l in body['lines']:await client.post(f'/v1/lines/{l["id"]}/confirm',headers=h,json={'version':l['version']})
+ await client.post(f'/v1/journeys/{j}/select',headers=h,json={'plan_id':'care_supreme_ic','d0':'2026-10-31','receipt':'2026-10-31'})
+ await client.post(f'/v1/journeys/{j}/save',headers=h,json={'passphrase':get('DEMO_LOGIN_PASSPHRASE')})
+ fields={'uin':'CHIHLIP25047V022425','inception':'2026-10-31','sum_insured':'500000','age':'52','sex':'F','declared':'hypertension','instant_cover':'No','ped_months':'36','initial_days':'30','specific_months':'24'}
+ r=await client.post(f'/v1/journeys/{j}/audit/manual',headers=h,json={'fields':fields,'checked':True})
+ assert r.status_code==200,r.text
+ assert r.json()['extraction_mode']=='buyer_checked_manual' and [f['key'] for f in r.json()['flags']]==['instant_cover']
+ assert all(f['page']==0 for f in r.json()['extracted'].values())

@@ -33,3 +33,20 @@ def pdf_text(data):
   if contents is not None and len(contents.get_data())>8*1024*1024:raise ValueError('expanded_pdf_limit')
   pages.append(p.extract_text()[:50000])
  return pages
+
+def initialize():
+ import resource
+ # A local Mac has no Render cgroup; bound per-worker data allocation instead.
+ cap=768*1024*1024
+ resource.setrlimit(resource.RLIMIT_DATA,(cap,cap))
+
+def audio_duration(data):
+ import subprocess,json
+ result=subprocess.run(['ffprobe','-v','error','-show_entries','format=duration:packet=pts_time,duration_time','-of','json','-i','pipe:0'],input=data,capture_output=True,timeout=3,check=True)
+ result=json.loads(result.stdout)
+ length=float(result.get('format',{}).get('duration') or 0)
+ for p in result.get('packets',[]):
+  try:length=max(length,float(p.get('pts_time',0))+float(p.get('duration_time',0)))
+  except (ValueError,TypeError):continue
+ if not 0<length<=25.6:raise ValueError('audio_duration_limit')
+ return length

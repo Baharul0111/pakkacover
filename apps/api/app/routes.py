@@ -122,11 +122,13 @@ async def voice(jid:str,owner=Depends(principal),audio:UploadFile=File(...),dura
  if len(data)>1024*1024:raise HTTPException(413,'Audio is too large')
  try:
   async with asyncio.timeout(12):
-   transcript=await gw.transcribe(data,mime,duration)
+   from apps.api.app.media import media
+   measured=await media.call('audio',data)
+   transcript=await gw.transcribe(data,mime,measured)
    if not transcript:raise gw.Unavailable('empty_transcript')
    result=await answer_core(jid,AnswerIn(text=transcript),owner,None)
    result['transcript']=transcript
- except (gw.Unavailable,TimeoutError):result={'accepted':False,'fallback':'Voice unavailable. Tap an answer or type; your progress is safe.'}
+ except (gw.Unavailable,ValueError,TimeoutError):result={'accepted':False,'fallback':'Voice unavailable. Tap an answer or type; your progress is safe.'}
  finally:del data
  if idempotency_key:
   async with Session() as s:
@@ -348,3 +350,23 @@ async def pay_callback(request:Request):
  async with Session() as s:
   row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.mode=='staging').with_for_update());row.status=result['status'];row.verified=result['verified'];await s.commit()
  return RedirectResponse(url='/?test_payment=returned',status_code=303)
+
+class ManualAuditIn(Body):
+ fields:dict[str,str]
+ checked:bool
+@router.post('/journeys/{jid}/audit/manual')
+async def manual_audit(jid:str,body:ManualAuditIn,owner=Depends(principal)):
+ from apps.api.app.audit import compare,FieldValue,FIELDS
+ from apps.api.app.db import AuditRun
+ if jid!=owner:raise HTTPException(404,'Not found')
+ await require_consented(owner,'P3_audit');j,lines=await confirmed_context(owner)
+ if not j.saved or not j.payload.get('selection'):raise HTTPException(409,'Save your Promise Card first')
+ if not body.checked or not body.fields or set(body.fields)-set(FIELDS) or any(not v.strip() or len(v)>500 for v in body.fields.values()):raise HTTPException(422,'Enter policy fields and confirm you checked them')
+ context={'member':j.payload['member'],'selection':j.payload['selection'],'conditions':fsm.confirmed_conditions(lines)}
+ # Manual inputs are explicitly human-confirmed, never presented as AI/PDF-verified quotes.
+ fields={k:FieldValue(key=k,found=True,value=v.strip(),page=0,quote=f'Buyer-checked manual entry — {FIELDS[k]}: {v.strip()}') for k,v in body.fields.items()}
+ result=compare(fields,context);result['extraction_mode']='buyer_checked_manual';result['extracted']={k:f.model_dump() for k,f in fields.items()}
+ result['free_look_last_day']=(date.fromisoformat(context['selection']['receipt'])+timedelta(days=plans()[context['selection']['plan_id']].free_look.value-1)).isoformat()
+ digest=hashlib.sha256(str(body.fields).encode()).hexdigest()
+ async with Session() as s:s.add(AuditRun(journey_id=owner,pdf_sha=digest,payload=result));await s.commit()
+ return result
