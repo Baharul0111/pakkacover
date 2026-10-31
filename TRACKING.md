@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:08:22 IST. Step 7: full local browser pass; requirement hardening.
-- Next action: Restart the API/build, run live Haiku audit on all fixtures and three mobile journeys over the HTTPS tunnel; inspect compact card and finish DEMO.md.
+- Time: 2026-10-31 11:10:23 IST. Step 7: actual-model audit and HTTPS E2E verification.
+- Next action: Run full mobile story over the current HTTPS tunnel, inspect audit extraction modes; add actual audio-duration validation and final cost-cap checks.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel running via .run/*.pid. Rebuild/restart pending. Stop: scripts/run_demo --stop.
-- Done and verified / half-done: Full local mobile story passed in 10 seconds with live dual-reader photo, per-line confirmation, ranking, simulation and 4 audit variants; audit now attempts actual Haiku before sample fallback; verification: Local browser passed with 0 runtime errors; 99 Python tests previously passed; updated code requires regression run. The next action above identifies unfinished work.
-- Open problems and decisions: Adjusted generated audit to use real model extraction first, matching the requested architecture. Fixed pre-consent advisor request flow. No golden media yet.
+- Background processes: API/tunnel current URL https://east-guru-howard-larry.trycloudflare.com; PIDs .run/api.pid and .run/tunnel.pid; Postgres55432. Stop: scripts/run_demo --stop.
+- Done and verified / half-done: Rebuilt and restarted latest code; 99 Python tests passed again; tracked files and built JS pass secret leakage scan; verification: G1/G2/G0/G6/G7/payment checks green. Current tunnel ready; no real golden media present.. The next action above identifies unfinished work.
+- Open problems and decisions: Audit now uses model extraction first; must verify live path rather than relying solely on generated-label fallback.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -31,6 +31,7 @@
 - 2026-10-31 11:04:07 IST | Step 7: launcher written; tunnel validation next | Created background API/quick-tunnel launcher, local Postgres recovery, migrations/build, PUBLIC_URL update, --status/--stop/--retunnel | Tests: 99 Python tests and production web build passed before launcher work | Commit: `a940d47`
 - 2026-10-31 11:05:31 IST | Step 7: HTTPS preview running; full browser synchronization fixes | One-command launcher started HTTPS demo and background API/tunnel; full browser test reached simulated payment after photo, confirmation, ranking and Promise Card | Tests: 99 Python tests and Vite build passed. Browser script needed an explicit wait for order panel after async order creation; fixed test race. | Commit: `291537e`
 - 2026-10-31 11:08:22 IST | Step 7: full local browser pass; requirement hardening | Full local mobile story passed in 10 seconds with live dual-reader photo, per-line confirmation, ranking, simulation and 4 audit variants; audit now attempts actual Haiku before sample fallback | Tests: Local browser passed with 0 runtime errors; 99 Python tests previously passed; updated code requires regression run | Commit: `b99098c`
+- 2026-10-31 11:10:23 IST | Step 7: actual-model audit and HTTPS E2E verification | Rebuilt and restarted latest code; 99 Python tests passed again; tracked files and built JS pass secret leakage scan | Tests: G1/G2/G0/G6/G7/payment checks green. Current tunnel ready; no real golden media present. | Commit: `c7c6a17`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
