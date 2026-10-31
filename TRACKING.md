@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:58:24 IST. Step 5: audit implementation written.
-- Next action: Run G6 four-PDF fixture tests, quote validation and real-route checks; inspect mobile browser result; then Step 6 payments.
+- Time: 2026-10-31 10:59:17 IST. Step 6 starting: payment adapter.
+- Next action: Implement fully signed Paytm staging adapter and explicit simulated adapter; unit-test checksum/callback/status and no production host access; rerun mobile UI.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432; temporary QA API in .run/qa-api.pid on 8000 still serves Step 4 code until restarted.
-- Done and verified / half-done: Generated clean plus 3 planted sample PDFs in memory; added quote-verified extraction, deterministic comparison and encrypted audit persistence; verification: G6 tests written; sample labels use deterministic verified parsing; arbitrary uploads use Haiku sections and one Sonnet retry. The next action above identifies unfinished work.
-- Open problems and decisions: Generated fixtures intentionally use exact label parser for deterministic demo; model extraction retained for uploaded PDFs. No golden media.
+- Background processes: Postgres 55432; QA API on 8000 PID in .run/qa-api.pid. It needs restart after payment code.
+- Done and verified / half-done: Step 5 audit written; sample G6 and quote-grounding tests executed; mobile test synchronization fixed; verification: See G6 test output; Step 4 build and 68 regressions passed; mobile browser test initially clicked old checkbox before member screen, test now waits for heading. The next action above identifies unfinished work.
+- Open problems and decisions: Paytm keys still pending; rechecking key-presence without exposing values. No other owner inputs needed.
 - Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
@@ -25,6 +25,7 @@
 - 2026-10-31 10:56:25 IST | Step 4: mobile browser verification | React build succeeded; added automated mobile Sunita browser journey and card/backend checks | Tests: TypeScript/Vite build passed; card and backend regressions running; browser check next | Commit: `98adf31`
 - 2026-10-31 10:57:48 IST | Step 5 starting: generated policies and Day-12 audit | Step 4 UI builds; bilingual review/ranking/card APIs and 68 regressions pass; mobile browser check running | Tests: TypeScript/Vite passed; 68 backend/card/numeric/medicine checks passed; initial browser launch raced server startup, readiness wait added | Commit: `2a39ed7`
 - 2026-10-31 10:58:24 IST | Step 5: audit implementation written | Generated clean plus 3 planted sample PDFs in memory; added quote-verified extraction, deterministic comparison and encrypted audit persistence | Tests: G6 tests written; sample labels use deterministic verified parsing; arbitrary uploads use Haiku sections and one Sonnet retry | Commit: `4335043`
+- 2026-10-31 10:59:17 IST | Step 6 starting: payment adapter | Step 5 audit written; sample G6 and quote-grounding tests executed; mobile test synchronization fixed | Tests: See G6 test output; Step 4 build and 68 regressions passed; mobile browser test initially clicked old checkbox before member screen, test now waits for heading | Commit: `e2dd64d`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
