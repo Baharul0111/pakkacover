@@ -65,3 +65,6 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Both medicine readers now work: fresh live printed fixture has two agreeing readers; blank fixture has no candidates. The explicit one-reader buyer-confirmation fallback remains available for genuine provider outages.
 - Live policy extraction is restored after using the correct key. Generated samples retain quote-verified deterministic fallback for outages; arbitrary PDFs retain manual field entry. No audit cut is currently required.
 - Known rejected, unexecuted credit requests release their spend reservation and trigger a bounded 60-second provider cooldown. All actual/uncertain calls retain conservative reservations and the original app caps. Automatic retry after cooldown supports restored credit without a code change.
+
+## Header overlay recovery — 13:07 IST
+- The failed consecutive-run reset was a visible overlay bug: a still-open notification panel covered the Reset menu. Bell/Menu are now mutually exclusive and disabled while the current request finishes. The reset endpoint itself passed local and HTTPS paid-session reproductions. Final consecutive runs restart after this UI fix.

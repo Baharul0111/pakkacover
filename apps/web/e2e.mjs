@@ -24,6 +24,7 @@ try{
    await page.locator('.workspace[aria-busy="false"]').waitFor();
    const oldJourney=await page.evaluate(()=>localStorage.getItem('pc_jid'));
    await page.getByRole('button',{name:'Menu',exact:true}).click();
+   if(await page.locator('.notification-list').count())throw new Error('Notifications overlap Reset menu');
    await postResponse('/reset',()=>page.getByRole('button',{name:'Reset demo',exact:true}).click());
    await page.getByRole('heading',{name:'Who is this cover for?',exact:true}).waitFor();
    if((await page.locator('.form-row strong').allTextContents()).some(v=>v&&v!=='—'))throw new Error('Reset form is not empty');
