@@ -2,14 +2,14 @@
 
 ## Resume here
 - Live URL: https://camping-leon-rider-performer.trycloudflare.com
-- Time: 2026-10-31 15:10:11 IST. FROZEN app unchanged; GitHub README rewritten.
-- Next action: Review README.md on GitHub for the plain-English overview, architecture diagram, run commands, sample PDFs and demo limitations. Continue owner demo recording as needed; application code and release tags remain unchanged.
+- Time: 2026-10-31 15:12:22 IST. FROZEN app unchanged; README now links recorded demo.
+- Next action: View GitHub README: its introduction now links the owner-provided Google Drive demo video. Highlighted live-demo/script/guide link row and Mac/tunnel paragraph were removed as requested. Application and frozen release tags are unchanged.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --restart-api; scripts/run_demo --stop
 - Run tests: .venv/bin/python -m pytest -q; .venv/bin/python scripts/check_quotes.py; npm --prefix apps/web run build
-- Background processes: Stage API/tunnel/caffeinate and local PostgreSQL55432 may remain running; scripts/run_demo --status checks, scripts/run_demo --stop stops app/tunnel.
-- Done and verified / half-done: Rewrote README.md in plain English with problem/solution, screen-by-screen features, why the approach helps, deterministic rules, architecture diagram and stack table, macOS setup/configuration, sample policy PDFs, verification, privacy/fallbacks, scope and project map.; verification: README relative links, required sections and code fences PASS; secret scan PASS; git diff whitespace check PASS. Verified commands/stack/features against repository source. Documentation only; prior150 tests/44 clauses and demo-3 code unchanged.. The next action above identifies unfinished work.
-- Open problems and decisions: Temporary demo URL needs the owner Mac/tunnel online and can change on retunnel, explained in README. Real payments, production hosting and licensed advisor integration remain outside the built demo.
-- Paytm mode: demo only; README explicitly states no real money or gateway verification.
+- Background processes: Existing stage services may still be running; scripts/run_demo --status checks and scripts/run_demo --stop stops app/tunnel.
+- Done and verified / half-done: Replaced the highlighted README introduction links and temporary-hosting paragraph with Watch the demo video linking the exact owner-provided Google Drive URL.; verification: Requested text removals and exact video URL verified; git diff whitespace check PASS. Documentation-only change; app code/tests and release tags unchanged. Secret audit runs before push.. The next action above identifies unfinished work.
+- Open problems and decisions: None for the requested README edit. Video sharing permissions were not changed; the supplied link is used as provided.
+- Paytm mode: demo only.
 
 ## Implementation log
 - 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
@@ -102,6 +102,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 13:59:11 IST | FROZEN — demo-3 finishing step complete | FROZEN demo-3: Finish review and persisted bilingual completion screen, with unresolved flags/deadline kept visible, clean completion, actual payment status, reload restoration and Reset. Renewed expired tunnel; updated live links, operator guide and honest baseline/current test evidence. | Tests: 150 Python tests PASS;44 clauses PASS;production TypeScript/Vite PASS;4 new backend completion tests PASS;local and renewed-HTTPS completion browser checks PASS with no runtime errors, acknowledgment, persistence, clean/flagged results and Reset. Prior demo-2 base story has3 live full HTTPS Reset runs49/42/44s; not relabelled as new runs. Secret scan/diff checks PASS. | Commit: `96dbf02`
 - 2026-10-31 14:14:15 IST | FROZEN app unchanged; three-minute narration prepared | Prepared an English screen-by-screen three-minute video script covering the problem, verified Indian market premium figure, built solution, Sunita workflow, user control, clause/date safeguards, demo payment, policy mismatch, Finish review and proposed future business model. | Tests: Documentation only; spoken word count checked. Market figure verified against Ministry of Finance/PIB26Mar2026. Current app150 tests/44 clauses and completion checks unchanged; no app code or release tags modified. | Commit: `15edd1c`
 - 2026-10-31 15:10:11 IST | FROZEN app unchanged; GitHub README rewritten | Rewrote README.md in plain English with problem/solution, screen-by-screen features, why the approach helps, deterministic rules, architecture diagram and stack table, macOS setup/configuration, sample policy PDFs, verification, privacy/fallbacks, scope and project map. | Tests: README relative links, required sections and code fences PASS; secret scan PASS; git diff whitespace check PASS. Verified commands/stack/features against repository source. Documentation only; prior150 tests/44 clauses and demo-3 code unchanged. | Commit: `a10c975`
+- 2026-10-31 15:12:22 IST | FROZEN app unchanged; README now links recorded demo | Replaced the highlighted README introduction links and temporary-hosting paragraph with Watch the demo video linking the exact owner-provided Google Drive URL. | Tests: Requested text removals and exact video URL verified; git diff whitespace check PASS. Documentation-only change; app code/tests and release tags unchanged. Secret audit runs before push. | Commit: `cb307e1`
 
 ## Original orientation notes
 
