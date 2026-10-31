@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:33:48 IST. Comparison and audit display verified; new Talk priority begins.
-- Next action: Implement voice-first relation/attestation/name/age/sex questions, deterministic height/weight parsing, fully empty reset and accurate 12-group counter; run Reset-to-Check browser test before returning to schedule.
+- Time: 2026-10-31 12:44:06 IST. Talk flow fixed and verified; Compare priority begins.
+- Next action: Diagnose confirmation/select inconsistency using metadata; add structured redirect to the exact pending line, clear stale notices, engine-based For you facts and shared 0–36 month timelines; test all three plan selections.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel/caffeinate active, local PostgreSQL55432; scripts/run_demo --stop.
-- Done and verified / half-done: Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight.; verification: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed.. The next action above identifies unfinished work.
-- Open problems and decisions: New user priority: replace member form with voice questions; preserve typed/chip fallbacks and per-line review. demo-1 remains immutable; tag demo-2 at final freeze.
+- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432; scripts/run_demo --stop.
+- Done and verified / half-done: Removed separate member screen; sequential relation/attestation/name/age/sex voice questions, treatment/dose, 12-group counter, immediate 13-field live form, deterministic feet/kg parsing and empty Q1 reset. Legacy member API retained for compatibility only.; verification: 139 Python tests PASS including all-voice Reset-to-Check contract, guardian/minor and unit conversion cases; production web build PASS; two browser Q1-to-Check-to-Compare/Promise runs PASS with Reset between, zero runtime errors and correct live form/counters.. The next action above identifies unfinished work.
+- Open problems and decisions: Latest user priority Compare bug and For you summaries. Supabase DNS failed; Vercel skipped per instruction. demo-1 immutable; revised freeze demo-2.
 - Paytm mode: demo only.
 
 ## Implementation log
@@ -89,6 +89,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 12:07:12 IST | Demo payment backend complete; Vercel preparation | Replaced all payment networking with demo-only paid orders; added idempotent owner-scoped notifications, Reset demo retaining spend, privacy-safe calendar export and unified /api routes; stopped obsolete key watcher | Tests: 113 baseline/new tests passed; calendar health-bearing UID caught by test and fixed; 3 focused payment/reset/calendar tests and production web build now pass | Commit: `6b08921`
 - 2026-10-31 12:28:04 IST | Takeover UI and identity baseline verified | Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy. | Tests: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run. | Commit: `55bdaf0`
 - 2026-10-31 12:33:48 IST | Comparison and audit display verified; new Talk priority begins | Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight. | Tests: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed. | Commit: `87896aa`
+- 2026-10-31 12:44:06 IST | Talk flow fixed and verified; Compare priority begins | Removed separate member screen; sequential relation/attestation/name/age/sex voice questions, treatment/dose, 12-group counter, immediate 13-field live form, deterministic feet/kg parsing and empty Q1 reset. Legacy member API retained for compatibility only. | Tests: 139 Python tests PASS including all-voice Reset-to-Check contract, guardian/minor and unit conversion cases; production web build PASS; two browser Q1-to-Check-to-Compare/Promise runs PASS with Reset between, zero runtime errors and correct live form/counters. | Commit: `09e2ba4`
 
 ## Original orientation notes
 
