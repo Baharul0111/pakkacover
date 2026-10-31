@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:44:06 IST. Talk flow fixed and verified; Compare priority begins.
-- Next action: Diagnose confirmation/select inconsistency using metadata; add structured redirect to the exact pending line, clear stale notices, engine-based For you facts and shared 0–36 month timelines; test all three plan selections.
+- Time: 2026-10-31 12:48:32 IST. Compare fix verified on all three plans.
+- Next action: Diagnose live two-reader timeout (printed smoke gave one candidate); run full HTTPS story with payment and audit, then three consecutive Reset runs, update DEMO.md, final gates and demo-2 freeze.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432; scripts/run_demo --stop.
-- Done and verified / half-done: Removed separate member screen; sequential relation/attestation/name/age/sex voice questions, treatment/dose, 12-group counter, immediate 13-field live form, deterministic feet/kg parsing and empty Q1 reset. Legacy member API retained for compatibility only.; verification: 139 Python tests PASS including all-voice Reset-to-Check contract, guardian/minor and unit conversion cases; production web build PASS; two browser Q1-to-Check-to-Compare/Promise runs PASS with Reset between, zero runtime errors and correct live form/counters.. The next action above identifies unfinished work.
-- Open problems and decisions: Latest user priority Compare bug and For you summaries. Supabase DNS failed; Vercel skipped per instruction. demo-1 immutable; revised freeze demo-2.
-- Paytm mode: demo only.
+- Background processes: API/tunnel/caffeinate active, local PostgreSQL55432. Stop with scripts/run_demo --stop.
+- Done and verified / half-done: Fixed confirmation mismatch with structured exact-line or unanswered-question recovery and a locked selection recheck; cleared stale notices; added clause-linked bilingual For you summaries and actual-date timeline positions on one 0–36 month scale.; verification: 143 Python tests PASS; TypeScript/Vite build PASS; two fresh browser runs PASS with Reset, 20 individual confirmations, correction-to-exact-card recovery, and successful Promise Cards for C/A/B. No runtime errors. Vision smoke: blank asks; printed currently one valid reader, diagnosing.. The next action above identifies unfinished work.
+- Open problems and decisions: No confirmation bypass; old sessions may need newly added Talk questions. Hosted Supabase DNS failed; Vercel skipped per owner. Live photo agreement must be restored before full rehearsals.
+- Paytm mode: demo only; no real payment hosts or verification.
 
 ## Implementation log
 - 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
@@ -90,6 +90,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 12:28:04 IST | Takeover UI and identity baseline verified | Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy. | Tests: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run. | Commit: `55bdaf0`
 - 2026-10-31 12:33:48 IST | Comparison and audit display verified; new Talk priority begins | Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight. | Tests: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed. | Commit: `87896aa`
 - 2026-10-31 12:44:06 IST | Talk flow fixed and verified; Compare priority begins | Removed separate member screen; sequential relation/attestation/name/age/sex voice questions, treatment/dose, 12-group counter, immediate 13-field live form, deterministic feet/kg parsing and empty Q1 reset. Legacy member API retained for compatibility only. | Tests: 139 Python tests PASS including all-voice Reset-to-Check contract, guardian/minor and unit conversion cases; production web build PASS; two browser Q1-to-Check-to-Compare/Promise runs PASS with Reset between, zero runtime errors and correct live form/counters. | Commit: `09e2ba4`
+- 2026-10-31 12:48:32 IST | Compare fix verified on all three plans | Fixed confirmation mismatch with structured exact-line or unanswered-question recovery and a locked selection recheck; cleared stale notices; added clause-linked bilingual For you summaries and actual-date timeline positions on one 0–36 month scale. | Tests: 143 Python tests PASS; TypeScript/Vite build PASS; two fresh browser runs PASS with Reset, 20 individual confirmations, correction-to-exact-card recovery, and successful Promise Cards for C/A/B. No runtime errors. Vision smoke: blank asks; printed currently one valid reader, diagnosing. | Commit: `69c3f14`
 
 ## Original orientation notes
 
