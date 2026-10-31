@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:24:53 IST. Step 7: live speech route diagnosis.
-- Next action: Run synthetic voice-path probe to distinguish media, speech transcription, extraction and deadline failure; correct it, then repeat three consecutive HTTPS rehearsals.
+- Time: 2026-10-31 11:27:44 IST. Step 7: voice-path correctness fix.
+- Next action: Run interview/voice/numeric regressions, then live voice probe; restart API without rotating tunnel and repeat final three HTTPS mobile runs.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Current demo https://shortcuts-foreign-categories-medicines.trycloudflare.com with API/tunnel/preflight/caffeinate PIDs in .run/. Postgres55432.
-- Done and verified / half-done: Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed.; verification: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals.. The next action above identifies unfinished work.
-- Open problems and decisions: Live voice failure is the remaining software gate. Simulation mode confirmed, no owner golden media. 14:30 check is scheduled.
+- Background processes: Current tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; API/tunnel/preflight/caffeinate in .run/. Postgres55432.
+- Done and verified / half-done: Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards; verification: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts. The next action above identifies unfinished work.
+- Open problems and decisions: Current running API predates this voice fix. Need targeted tests, live probe and API restart. No owner golden media; simulation remains active.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -39,6 +39,7 @@
 - 2026-10-31 11:20:14 IST | Step 7: ready for final production-build rehearsals | Added golden-media A/B/no-fabrication runner (no media supplied), startup pin reload, timed 14:30 read-only key check, and fallback-video/live-voice browser rehearsal support | Tests: 105 tests passed before these small operator/test additions; golden runner reports 0 clips/0 photos and pins v4. Final checks next. | Commit: `e04766e`
 - 2026-10-31 11:22:57 IST | Step 7: final HTTPS rehearsals about to run | 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified | Tests: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending. | Commit: `b15bc83`
 - 2026-10-31 11:24:53 IST | Step 7: live speech route diagnosis | Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed. | Tests: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals. | Commit: `56fa41e`
+- 2026-10-31 11:27:44 IST | Step 7: voice-path correctness fix | Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards | Tests: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts | Commit: `c552a16`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
