@@ -35,7 +35,13 @@
     "bytes": 384745
   },
   "optima_secure_current": {
-    "url": "https://www.hdfcergo.com/docs/default-source/downloads/policy-wordings/health/optima-secure-revision-pw.pdf",
-    "file": "optima_secure_current.pdf"
+    "url": "https://s3.ap-south-1.amazonaws.com/ditto-partners/HDFC_Ergo_Optima_Secure_Policy_Wording_0c72f5369e.pdf",
+    "file": "optima_secure_current.pdf",
+    "status": "downloaded",
+    "error": "curl: (22) The requested URL returned error: 406",
+    "official_url": "https://www.hdfcergo.com/docs/default-source/downloads/policy-wordings/health/optima-secure-revision-pw.pdf",
+    "sha256": "694c0540cb341ec9254c08a41668174b60d4a7ebc4833d78505052367c0b6ab3",
+    "bytes": 928993,
+    "uin": "HDFHLIP26058V082526"
   }
 }

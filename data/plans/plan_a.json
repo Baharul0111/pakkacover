@@ -1,0 +1,108 @@
+{
+  "rules_version": "1.0.0-demo",
+  "sample_notice": "Sample terms from public policy wording — education only",
+  "specific_list": [
+    "cataract"
+  ],
+  "copay_pct": 0,
+  "copay_clause": null,
+  "instant_cover": null,
+  "instant_conditions": [],
+  "instant_conditions_clause": null,
+  "exclusions": [
+    {
+      "key": "unproven_treatment",
+      "text_en": "Unproven treatments: see exact exclusion and its scope.",
+      "text_hi": "अप्रमाणित उपचार: पूरा अपवाद देखें।"
+    }
+  ],
+  "plan_id": "optima_secure",
+  "display_label": "Plan A",
+  "product_name": "HDFC ERGO my:Optima Secure",
+  "uin": "HDFHLIP26058V082526",
+  "source_doc": "optima_secure_current",
+  "initial_wait": {
+    "value": 30,
+    "clause_ref": {
+      "doc_id": "optima_secure_current",
+      "page": 32,
+      "section": "C.1.c Excl03",
+      "quote": "illness within 30 days from the first Policy commencement date shall be excluded except claims arising due to an accident, provided the same are covered. ii. This exclusion shall not, however, apply if the Insured Person has continuous coverage for more than twelve",
+      "quote_sha": "b4d635be0dc626982da9c8ee0edd2ee55f3a2adff39a58fb3e902985aa3c9c29"
+    }
+  },
+  "ped_wait": {
+    "value": 36,
+    "clause_ref": {
+      "doc_id": "optima_secure_current",
+      "page": 30,
+      "section": "C.1.a Excl01",
+      "quote": "expiry of 36 months (Unless specified otherwise in the Policy Schedule) of continuous coverage after the date of inception of the first policy with insurer. ii. In case of enhancement of Sum Insured the exclusion shall apply afresh to the extent of Sum",
+      "quote_sha": "227ba7bd9a6b1ffc6b7b07461290368706d407e1f9af184fd974854d997e4169"
+    }
+  },
+  "specific_wait": {
+    "value": 24,
+    "clause_ref": {
+      "doc_id": "optima_secure_current",
+      "page": 31,
+      "section": "C.1.b Excl02",
+      "quote": "expiry of 24 months of continuous coverage after the date of inception of the first Policy with us. This exclusion shall not be applicable for clai ms arising due to an Accident. ii. In case of enhancement of sum insured the exclusion shall apply afresh to the extent",
+      "quote_sha": "0e080632b3c57d41c96899656c3b98c420eb7c60f8af2e290ca49d2548c25559"
+    }
+  },
+  "moratorium": {
+    "value": 60,
+    "clause_ref": {
+      "doc_id": "optima_secure_current",
+      "page": 36,
+      "section": "D.1.6",
+      "quote": "After completion of sixty continuous months of coverage (including portability and migration) in health insurance policy, no policy and claim shall be contestable by the insurer on grounds of non-disclosure, misrepresentation, except on grounds of established fraud.",
+      "quote_sha": "78ea74db93c338b39852041a6f1b21dad62a1a629044e3a9a3cc37569a1c4f07"
+    }
+  },
+  "free_look": {
+    "value": 30,
+    "clause_ref": {
+      "doc_id": "optima_secure_current",
+      "page": 37,
+      "section": "D.1.8",
+      "quote": "free look period of thirty days from date of receipt of the policy document to review the terms and conditions of the policy, and to return the same if not acceptable. If the insured has not made any claim during the Free Look Period, the insured shall be entitled to:",
+      "quote_sha": "da1bb415696847211624732af625484551c2cebd2d14cc683dfc2b8a73876c4c"
+    }
+  },
+  "room_rent": {
+    "doc_id": "optima_secure_current",
+    "page": 11,
+    "section": "B.1.1",
+    "quote": "Room rent limit shall be ‘At Actuals’ unless otherwise specified in the Policy Schedule. b. Intensive Care Unit (ICU) / Intensive Cardiac Care Unit (ICCU) expenses. ICU limit (including ICCU) for bed charges shall be ‘At Actuals’ unless otherwise specified in the",
+    "quote_sha": "cfc880c09f5b50968dc681f09a6a5375d546b7baa71a080ce6dd93bfd483bf34"
+  },
+  "specific_list_clause": {
+    "doc_id": "optima_secure_current",
+    "page": 31,
+    "section": "C.1.b list",
+    "quote": "Cataract and other disorders of lens and Retina Fissure/fistula in anus, Haemorrhoids including Gout and rheumatism Tonsillitis Osteoarthritis and osteoporosis Fibroids ( fibromyoma) Benign Hyperplasia of Prostate Surgical Procedures Adenoidectomy, tonsillectomy",
+    "quote_sha": "34edfb4ee75372e4f3d38f2a4efe08568ca357451ab0b9367c3e54212c699bcf"
+  },
+  "exclusion_clause": {
+    "doc_id": "optima_secure_current",
+    "page": 34,
+    "section": "C.2 Excl16",
+    "quote": "Unproven Treatments: Code – Excl16: Expenses related to any unproven treatment, services and supplies for or in connection with any treatment. Unproven treatments are treatments, procedures or supplies that lack significant medical documentation to support their",
+    "quote_sha": "8190ada5cb1cb03694d335843fa53059a1dd127fa71bee66bc91b5398a74c922"
+  },
+  "consumables_covered": true,
+  "consumables_clause": {
+    "doc_id": "optima_secure_current",
+    "page": 16,
+    "section": "B.2.3 Protect Benefit",
+    "quote": "The Company shall indemnify the Insured Person for the Non -Medical Expenses listed under Annexure B to this Policy incurred in relation to a claim admissible as per Section B -1 (Base",
+    "quote_sha": "aef57d0c6cd51ccd07b9e679a5e68c0845ac0d6206e870aa41f614effe50dce9"
+  },
+  "assumptions": [
+    "Current downloaded wording UIN differs from architecture; source pinned by SHA256.",
+    "Optima Secure with default Protect Benefit retained; example non-medical items assumed listed in Annexure B.",
+    "No voluntary deductible or room modification. Independent claims; no reinstatement or bonus modeled."
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "rules_version": "1.0.0-demo",
+  "sample_notice": "Sample terms from public policy wording — education only",
+  "specific_list": [
+    "cataract"
+  ],
+  "copay_pct": 0,
+  "copay_clause": null,
+  "instant_cover": {
+    "value": 31,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 25,
+      "section": "3.2.5",
+      "quote": "the 31st day of Policy start date after serving Initial wait period of 30 days. Note: i) The above Optional Benefit can be opted only if this policy is issued for the first time with the Company and on continues renewal without break in policy. ii) Either Optional",
+      "quote_sha": "4f6d4b32575833f3cbac458606e52189c1925485c9ba678236c132e0a7bce726"
+    }
+  },
+  "instant_conditions": [
+    "diabetes",
+    "hypertension",
+    "hyperlipidemia",
+    "asthma"
+  ],
+  "instant_conditions_clause": {
+    "doc_id": "care_supreme",
+    "page": 24,
+    "section": "3.2.5",
+    "quote": "waive off the applicable PED waiting period on Diabetes/ Hypertension/ Hyperlipidemia/ Asthma at the time of issuance of first Policy with the Company and coverage shall start from Care Supreme - UIN: CHIHLIP25047V022425",
+    "quote_sha": "1c85b1b82055cbbfba3234fc0a11e0b6018427f753c375e5250ae96cf63d9e54"
+  },
+  "exclusions": [
+    {
+      "key": "unproven_treatment",
+      "text_en": "Unproven treatments: see exact exclusion and its scope.",
+      "text_hi": "अप्रमाणित उपचार: पूरा अपवाद देखें।"
+    }
+  ],
+  "plan_id": "care_supreme_ic",
+  "display_label": "Plan B",
+  "product_name": "Care Supreme + Instant Cover",
+  "uin": "CHIHLIP25047V022425",
+  "source_doc": "care_supreme",
+  "initial_wait": {
+    "value": 30,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 35,
+      "section": "4.1(a)(iii) Excl03",
+      "quote": "illness within 30 days from the first policy commencement date shall be excluded except claims arising due to an accident, provided the same are covered. b. This exclusion shall not, however, apply if the Insured Person has Continuous Coverage for more than twelve",
+      "quote_sha": "5e0d16ab5fbfeca74fd4625cb2aca17cbbc27904165fee8ac380298a3d8197af"
+    }
+  },
+  "ped_wait": {
+    "value": 36,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 33,
+      "section": "4.1(a)(i) Excl01",
+      "quote": "expiry of 36 months of continuous coverage after the date of inception of the first policy with insurer. b. In case of enhancement of sum insured the exclusion shall apply a fresh to the extent of sum insured increase. c. If the Insured Person is continuously covered",
+      "quote_sha": "d008d4b12d9ce3b799202137e5d0ef1cc24787a8d2d7dc1b823d710334af5eee"
+    }
+  },
+  "specific_wait": {
+    "value": 24,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 34,
+      "section": "4.1(a)(ii) Excl02",
+      "quote": "expiry of 24 months of continuous coverage, as may be the case after the date of inception of the first policy with the Company. This exclusion shall not be applicable for claims arising due to an accident. b. In case of enhancement of sum insured the exclusion shall",
+      "quote_sha": "6a4b4181a1ad0d1a6a4db314cc2727a8878d5ea6a329c4ef45b967a15a08102b"
+    }
+  },
+  "moratorium": {
+    "value": 60,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 46,
+      "section": "5.12",
+      "quote": "After completion of five continuous years under the policy no look back to be applied. This period of five years is called as moratorium period. The moratorium would be applicable for the sums insured of the first policy and subsequently completion of five continuous",
+      "quote_sha": "96aa4de784434b78d2629852916259fe46bf60ad9e51f26571d57c63e4963ac5"
+    }
+  },
+  "free_look": {
+    "value": 30,
+    "clause_ref": {
+      "doc_id": "care_supreme",
+      "page": 47,
+      "section": "5.15",
+      "quote": "free look period of thirty days from date of receipt of the policy document to review the terms and conditions of the policy, and to return the same if not acceptable. If the Insured has not made any claim during the Free Look Period, the Insured shall be entitled to",
+      "quote_sha": "c845709019cae0abac688028282cb493db1b0514b2924a7587c4e77fb6c87c4b"
+    }
+  },
+  "room_rent": {
+    "doc_id": "care_supreme",
+    "page": 20,
+    "section": "3.1(ix)",
+    "quote": "The eligible Room Rent or Room Category applicable for the Insured Person under the Policy is 'No limit', which means that there is no separate restriction on Room Charges incurred towards stay during Hospitalization ii. Intensive Care Unit Charges (ICU Charges): The",
+    "quote_sha": "edfe923fe8491bc4016b09448fa04833ee745fc37fe96ded50f1dc19d86452a3"
+  },
+  "specific_list_clause": {
+    "doc_id": "care_supreme",
+    "page": 34,
+    "section": "4.1(a)(ii) list",
+    "quote": "4. Cataract 5. Dilatation and Curettage 33 Care Supreme - UIN: CHIHLIP25047V022425",
+    "quote_sha": "f935e1970b47c11ae5d9aff101eae189e978964fe86fbb11ea1aaaf5334ce2be"
+  },
+  "exclusion_clause": {
+    "doc_id": "care_supreme",
+    "page": 38,
+    "section": "4.1(b) Excl16",
+    "quote": "Unproven Treatments: (Code- Excl16) Expenses related to any unproven treatment, services and supplies for or in connection with any treatment. Unproven treatments are treatments, procedures or supplies that lack significant medical documentation to support their",
+    "quote_sha": "9cb887a18e5b18f4d92fbba93a80b880dd2417c1b31f4329fe3b2d4e0878279b"
+  },
+  "consumables_covered": false,
+  "consumables_clause": {
+    "doc_id": "care_supreme",
+    "page": 38,
+    "section": "4.2(1)",
+    "quote": "Any item or condition or treatment specified in List of Non-Medical Items (Annexure – I to Policy Terms & Conditions). 37 Care Supreme - UIN: CHIHLIP25047V022425",
+    "quote_sha": "f194aa3d021fd8e6b04d793e5c42ce32aa76c33c570ae770762beb05dd359bd3"
+  },
+  "assumptions": [
+    "Paid Instant Cover selected on first policy; declared conditions assumed accepted by insurer.",
+    "Smart Select not selected: no automatic 20% outside-listed-hospital copay.",
+    "Claim Shield not selected; illustrative non-medical share is not payable."
+  ]
+}
