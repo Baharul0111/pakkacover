@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:05:31 IST. Step 7: HTTPS preview running; full browser synchronization fixes.
-- Next action: Rerun full browser story locally, then 3 consecutive runs at the public HTTPS URL. Inspect screenshots and fix observed UI issues.
+- Time: 2026-10-31 11:08:22 IST. Step 7: full local browser pass; requirement hardening.
+- Next action: Restart the API/build, run live Haiku audit on all fixtures and three mobile journeys over the HTTPS tunnel; inspect compact card and finish DEMO.md.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API .run/api.pid; tunnel .run/tunnel.pid; Postgres 55432. HTTPS https://act-analyzed-firefox-seekers.trycloudflare.com. Stop QA via scripts/run_demo --stop.
-- Done and verified / half-done: One-command launcher started HTTPS demo and background API/tunnel; full browser test reached simulated payment after photo, confirmation, ranking and Promise Card; verification: 99 Python tests and Vite build passed. Browser script needed an explicit wait for order panel after async order creation; fixed test race.. The next action above identifies unfinished work.
-- Open problems and decisions: No application defect at that point; full browser/payment/audit verification still pending. Real golden media absent.
+- Background processes: API/tunnel running via .run/*.pid. Rebuild/restart pending. Stop: scripts/run_demo --stop.
+- Done and verified / half-done: Full local mobile story passed in 10 seconds with live dual-reader photo, per-line confirmation, ranking, simulation and 4 audit variants; audit now attempts actual Haiku before sample fallback; verification: Local browser passed with 0 runtime errors; 99 Python tests previously passed; updated code requires regression run. The next action above identifies unfinished work.
+- Open problems and decisions: Adjusted generated audit to use real model extraction first, matching the requested architecture. Fixed pre-consent advisor request flow. No golden media yet.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -30,6 +30,7 @@
 - 2026-10-31 11:02:59 IST | Step 7 starting: one-command launcher and tunnel | Payment adapters complete, staging cryptography covered with dummy key, simulation stays explicit; entering launcher/E2E stage | Tests: Full pytest suite and Vite build just run; check previous output. Temporary Step 4 QA API stopped cleanly. | Commit: `fb8940b`
 - 2026-10-31 11:04:07 IST | Step 7: launcher written; tunnel validation next | Created background API/quick-tunnel launcher, local Postgres recovery, migrations/build, PUBLIC_URL update, --status/--stop/--retunnel | Tests: 99 Python tests and production web build passed before launcher work | Commit: `a940d47`
 - 2026-10-31 11:05:31 IST | Step 7: HTTPS preview running; full browser synchronization fixes | One-command launcher started HTTPS demo and background API/tunnel; full browser test reached simulated payment after photo, confirmation, ranking and Promise Card | Tests: 99 Python tests and Vite build passed. Browser script needed an explicit wait for order panel after async order creation; fixed test race. | Commit: `291537e`
+- 2026-10-31 11:08:22 IST | Step 7: full local browser pass; requirement hardening | Full local mobile story passed in 10 seconds with live dual-reader photo, per-line confirmation, ranking, simulation and 4 audit variants; audit now attempts actual Haiku before sample fallback | Tests: Local browser passed with 0 runtime errors; 99 Python tests previously passed; updated code requires regression run | Commit: `b99098c`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
