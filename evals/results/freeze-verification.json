@@ -1,47 +1,201 @@
 {
   "status": "FROZEN",
-  "python_tests": 121,
+  "frozen_at": "2026-10-31T13:11:47.318947+05:30",
+  "git_tag": "demo-2",
+  "immutable_fallback_tag": "demo-1",
+  "immutable_fallback_commit": "3be16f73aacde128aa6b1caf6d8146f4f98f4402",
+  "python_tests": 146,
   "clause_references": 44,
-  "payment_mode": "simulated",
+  "gates": {
+    "G0_session_isolation": "PASS",
+    "G1_engine": "PASS",
+    "G2_quotes": "PASS",
+    "G6_planted_mismatches": "3/3; clean0",
+    "G7_numeric_guard": "0 leaks"
+  },
+  "payment_mode": "demo",
+  "real_gateway_calls": false,
+  "provider_verification_claimed": false,
+  "rehearsal_report": "evals/results/browser-1793432425840.json",
+  "reset_between_runs": true,
   "rehearsals": [
     {
-      "file": "evals/results/browser-1793426900784.json",
-      "seconds": 39,
-      "voice_accepted": true
+      "run": 1,
+      "passed": true,
+      "base": "https://slide-stage-seller-republican.trycloudflare.com",
+      "full": true,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [
+        {
+          "variant": "m1_ped_addon_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m2_declared_condition_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m3_dob_wrong",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "clean",
+          "mode": "quote_verified_model",
+          "flags": 0,
+          "verifiedFields": 11
+        }
+      ],
+      "voice": {
+        "attempted": true,
+        "accepted": true,
+        "fallbackUsed": false,
+        "source": "voice:source_anchored_condition_fallback"
+      },
+      "photo": {
+        "status": "agree",
+        "availableReaders": 2,
+        "candidateCount": 2,
+        "buyerConfirmed": true
+      },
+      "paymentMethod": "UPI",
+      "durationSeconds": 49
     },
     {
-      "file": "evals/results/browser-1793427066518.json",
-      "seconds": 44,
-      "voice_accepted": true
+      "run": 2,
+      "passed": true,
+      "base": "https://slide-stage-seller-republican.trycloudflare.com",
+      "full": true,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [
+        {
+          "variant": "m1_ped_addon_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m2_declared_condition_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m3_dob_wrong",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "clean",
+          "mode": "quote_verified_model",
+          "flags": 0,
+          "verifiedFields": 11
+        }
+      ],
+      "voice": {
+        "attempted": true,
+        "accepted": true,
+        "fallbackUsed": false,
+        "source": "voice:source_anchored_condition_fallback"
+      },
+      "photo": {
+        "status": "agree",
+        "availableReaders": 2,
+        "candidateCount": 2,
+        "buyerConfirmed": true
+      },
+      "paymentMethod": "Wallet",
+      "durationSeconds": 42
     },
     {
-      "file": "evals/results/browser-1793427218160.json",
-      "seconds": 40,
-      "voice_accepted": true
+      "run": 3,
+      "passed": true,
+      "base": "https://slide-stage-seller-republican.trycloudflare.com",
+      "full": true,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [
+        {
+          "variant": "m1_ped_addon_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m2_declared_condition_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m3_dob_wrong",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "clean",
+          "mode": "quote_verified_model",
+          "flags": 0,
+          "verifiedFields": 11
+        }
+      ],
+      "voice": {
+        "attempted": true,
+        "accepted": true,
+        "fallbackUsed": false,
+        "source": "voice:source_anchored_condition_fallback"
+      },
+      "photo": {
+        "status": "agree",
+        "availableReaders": 2,
+        "candidateCount": 2,
+        "buyerConfirmed": true
+      },
+      "paymentMethod": "Card",
+      "durationSeconds": 44
     }
   ],
-  "live_audit_each_run": {
-    "planted_flags": [
-      1,
-      1,
-      1
-    ],
-    "clean_flags": 0,
-    "verified_fields_each_pdf": 11
-  },
+  "all_three_plan_selection": "PASS in first final rehearsal",
+  "exact_changed_line_recovery": "PASS in first final rehearsal",
+  "live_identity_voice_report": "evals/results/talk-voice.json",
+  "live_identity_voice": "7/7 actual Sarvam questions and accepted answers",
   "owner_golden_media": {
     "clips": 0,
-    "photos": 0
+    "photos": 0,
+    "status": "not supplied; saaras:v4 pinned"
   },
   "physical_phone_hardware": "not verified by browser automation",
-  "fallback_video": ".run/sunita-fallback.webm",
-  "fallback_video_bytes": 3649944,
+  "responsive_viewports": [
+    "390x844",
+    "1440x1000"
+  ],
   "stage_url": "https://slide-stage-seller-republican.trycloudflare.com",
-  "fresh_stage_readiness": "passed",
-  "qa_processes_stopped_before_stage_start": true,
+  "hosting": "Mac/PostgreSQL/Cloudflare HTTPS; Vercel skipped after supplied Supabase DNS failure",
+  "fallback_video": ".run/sunita-fallback.webm",
+  "fallback_video_bytes": 14202278,
   "fallback_video_mp4": ".run/sunita-fallback.mp4",
-  "fallback_video_mp4_bytes": 7147458,
-  "frozen_at": "2026-10-31T11:51:16.358210+05:30",
-  "git_tag": "demo-1",
-  "timed_payment_key_check": "Read-only 14:30 IST check scheduled; output .run/payment-preflight-1430.json"
+  "fallback_video_mp4_bytes": 4798683,
+  "secret_scan": "tracked files and full history passed",
+  "scheduled_payment_key_check": "cancelled; compatibility command immediately reports demo only"
 }

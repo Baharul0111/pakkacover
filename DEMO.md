@@ -87,3 +87,14 @@ GitHub: https://github.com/Baharul0111/pakkacover
 The authorized Vercel attempt was skipped under the owner's explicit rule because the supplied remote Supabase hostname failed DNS outside the sandbox. No localhost database credentials were uploaded. Local PostgreSQL on port **55432** and the HTTPS tunnel remain the stage demo. The remote configuration stays private as `DATABASE_URL_REMOTE`.
 
 This hackathon build defers real identity, retention/export/delete screens, production operations, backups, staff TOTP and licensed-partner integration. The required rules engine, quote checks, numeric guard, individual confirmation, ownership, consent, encryption, app-side caps and visible Demo labels remain in place.
+
+## Revised frozen build
+
+**FROZEN: 2026-10-31T13:11:47.318947+05:30 — demo-2.** Original demo-1 is unchanged.
+
+- 146 Python tests; 44 source-aligned clauses; G0/G1/G2/G6/G7 pass.
+- Three consecutive HTTPS runs with Reset: 49 s /42 s /44 s, no browser errors.
+- Each run: live accepted voice, two agreeing medicine readers, four live 11-field quote-verified audits with flags1/1/1/0, paid demo order and persisted notification.
+- All three plans and exact corrected-line recovery pass; seven real Hindi identity/measurement voice probes pass.
+- Both WebM and MP4 local fallback recordings refreshed. Stage API restarted cleanly while preserving the URL.
+- No owner media or physical-phone hardware validation was supplied; synthetic/provider and responsive-browser evidence is identified above.

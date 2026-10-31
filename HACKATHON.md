@@ -68,3 +68,8 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 
 ## Header overlay recovery — 13:07 IST
 - The failed consecutive-run reset was a visible overlay bug: a still-open notification panel covered the Reset menu. Bell/Menu are now mutually exclusive and disabled while the current request finishes. The reset endpoint itself passed local and HTTPS paid-session reproductions. Final consecutive runs restart after this UI fix.
+
+## Revised final freeze — 13:12 IST
+- All requested functional and required test gates completed before the hard deadline. The final three HTTPS runs (49/42/44s) use the repaired current UI and Reset between runs, with accepted live voice, two readers, per-line review, all plan selection, demo payment/notification and four live audits each.
+- demo-1 remains at 3be16f73aacde128aa6b1caf6d8146f4f98f4402. Revised source freezes as demo-2; no tag is moved. Original freeze evidence is archived as evals/results/freeze-verification-demo-1.json.
+- Current stage API was restarted cleanly on the same HTTPS tunnel. Both local fallback video formats are refreshed. Obsolete timed payment checks no longer inspect credentials or wait until14:30.

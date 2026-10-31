@@ -1,0 +1,47 @@
+{
+  "status": "FROZEN",
+  "python_tests": 121,
+  "clause_references": 44,
+  "payment_mode": "simulated",
+  "rehearsals": [
+    {
+      "file": "evals/results/browser-1793426900784.json",
+      "seconds": 39,
+      "voice_accepted": true
+    },
+    {
+      "file": "evals/results/browser-1793427066518.json",
+      "seconds": 44,
+      "voice_accepted": true
+    },
+    {
+      "file": "evals/results/browser-1793427218160.json",
+      "seconds": 40,
+      "voice_accepted": true
+    }
+  ],
+  "live_audit_each_run": {
+    "planted_flags": [
+      1,
+      1,
+      1
+    ],
+    "clean_flags": 0,
+    "verified_fields_each_pdf": 11
+  },
+  "owner_golden_media": {
+    "clips": 0,
+    "photos": 0
+  },
+  "physical_phone_hardware": "not verified by browser automation",
+  "fallback_video": ".run/sunita-fallback.webm",
+  "fallback_video_bytes": 3649944,
+  "stage_url": "https://slide-stage-seller-republican.trycloudflare.com",
+  "fresh_stage_readiness": "passed",
+  "qa_processes_stopped_before_stage_start": true,
+  "fallback_video_mp4": ".run/sunita-fallback.mp4",
+  "fallback_video_mp4_bytes": 7147458,
+  "frozen_at": "2026-10-31T11:51:16.358210+05:30",
+  "git_tag": "demo-1",
+  "timed_payment_key_check": "Read-only 14:30 IST check scheduled; output .run/payment-preflight-1430.json"
+}
