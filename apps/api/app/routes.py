@@ -258,3 +258,33 @@ async def language(jid:str,body:LanguageIn,owner=Depends(principal)):
  async with Session() as s:
   j=await owned(s,Journey,jid,owner);j.lang=body.lang;await s.commit()
  return {'lang':body.lang}
+
+@router.post('/journeys/{jid}/audit')
+async def audit_policy(jid:str,owner=Depends(principal),policy:UploadFile|None=File(default=None),variant:str|None=Form(default=None)):
+ from apps.api.app.audit import audit_pdf
+ from apps.api.app.sample_policy import make_policy,VARIANTS
+ from apps.api.app.db import AuditRun
+ if jid!=owner:raise HTTPException(404,'Not found')
+ await require_consented(owner,'P3_audit')
+ j,lines=await confirmed_context(owner)
+ if not j.saved:raise HTTPException(409,'Save with the demo passphrase before checking a policy')
+ selection=j.payload.get('selection')
+ if not selection:raise HTTPException(409,'Choose a sample plan first')
+ context={'member':j.payload['member'],'selection':selection,'conditions':fsm.confirmed_conditions(lines)}
+ if policy:
+  data=await policy.read(10*1024*1024+1);await policy.close()
+  if len(data)>10*1024*1024:raise HTTPException(413,'PDF is too large')
+  if not data.startswith(b'%PDF-'):raise HTTPException(415,'Please choose a PDF')
+  generated=False
+ else:
+  if variant not in VARIANTS:raise HTTPException(422,'Choose a valid sample variant')
+  data=make_policy(plans()[selection['plan_id']],context['member'],context['conditions'],date.fromisoformat(selection['d0']),variant);generated=True
+ digest=hashlib.sha256(data).hexdigest()
+ try:result=await audit_pdf(data,context,generated)
+ except (ValueError,TimeoutError):
+  result={'flags':[{'key':'document','status':'check_manually','title':'Please check this PDF manually','title_hi':'कृपया यह पीडीएफ खुद जाँचें','expected_quote':'Your confirmed declaration and Promise Card','actual_quote':'The PDF could not be safely read.','impact':'Use a text PDF or ask the advisor to compare the fields.','impact_hi':'टेक्स्ट वाली पीडीएफ दें या सलाहकार से क्षेत्रों की तुलना करवाएं।'}],'matches':[],'verified_field_count':0,'extraction_mode':'manual_required','extracted':{}}
+ finally:del data
+ result['free_look_last_day']=(date.fromisoformat(selection['receipt'])+timedelta(days=plans()[selection['plan_id']].free_look.value-1)).isoformat()
+ async with Session() as s:
+  record=AuditRun(journey_id=owner,pdf_sha=digest,payload=result);s.add(record);await s.commit()
+ return result
