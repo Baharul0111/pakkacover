@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:33:55 IST. Step 7: final clause trace correction.
-- Next action: Run G1/G2 and full tests, restart API at same tunnel, then rerun all 3 final HTTPS rehearsals with an added Instant Cover citation assertion.
+- Time: 2026-10-31 11:37:17 IST. Step 7: final source fidelity and real-network fallback check.
+- Next action: Run full tests and build with 44 clause references, restart API, then run three full HTTPS rehearsals. Each must complete safely; record whether speech succeeded or used the explicit chip fallback.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Existing API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; restart-api pending. Preflight14:30 and caffeinate active.
-- Done and verified / half-done: Second HTTPS rehearsal passed; final review found a tied-date trace choosing the initial-wait clause instead of Instant Cover. Corrected trace priority without changing any date or payout.; verification: Added regression for Plan B BP citation and a browser assertion that its date opens the 31st-day add-on quote. Final rehearsal counter restarts after this source change.. The next action above identifies unfinished work.
-- Open problems and decisions: Date/payout values were correct; citation tie is now fixed but needs final verification. No owner media or staging keys.
+- Background processes: Current API/tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; current API predates final source changes, restart pending. Preflight14:30 remains active.
+- Done and verified / half-done: Fixed Instant Cover citation tie and completed five cited exclusion examples per plan. Rehearsal now records voice success/fallback instead of treating a deliberate network fallback as a crash.; verification: 121 Python tests passed before exclusion/data updates. Live route has succeeded previously; transient provider/deadline fallback must also complete the journey. Final tests/rehearsals pending.. The next action above identifies unfinished work.
+- Open problems and decisions: No cuts. All dates/payouts unchanged. Need latest-code verification; owner media and staging keys absent.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -43,6 +43,7 @@
 - 2026-10-31 11:29:54 IST | Step 7: live voice probe passed; final rehearsal restart | Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected). | Tests: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next. | Commit: `6f1058a`
 - 2026-10-31 11:31:41 IST | Step 7: final rehearsal 1/3 passed | First final live-voice/photo HTTPS rehearsal passed in 44s with 0 browser errors; fallback video saved at .run/sunita-fallback.webm | Tests: 120 Python tests passed; real voice slot preserved; all 4 audit variants passed through live model extraction/comparison in the full browser flow | Commit: `23778c3`
 - 2026-10-31 11:33:55 IST | Step 7: final clause trace correction | Second HTTPS rehearsal passed; final review found a tied-date trace choosing the initial-wait clause instead of Instant Cover. Corrected trace priority without changing any date or payout. | Tests: Added regression for Plan B BP citation and a browser assertion that its date opens the 31st-day add-on quote. Final rehearsal counter restarts after this source change. | Commit: `74b2041`
+- 2026-10-31 11:37:17 IST | Step 7: final source fidelity and real-network fallback check | Fixed Instant Cover citation tie and completed five cited exclusion examples per plan. Rehearsal now records voice success/fallback instead of treating a deliberate network fallback as a crash. | Tests: 121 Python tests passed before exclusion/data updates. Live route has succeeded previously; transient provider/deadline fallback must also complete the journey. Final tests/rehearsals pending. | Commit: `bdaa247`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
