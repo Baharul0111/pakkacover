@@ -6,11 +6,11 @@ const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors
 try{
  await page.goto(base,{waitUntil:'networkidle'});await page.getByRole('button',{name:'English',exact:true}).click();
  await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:/I agree/}).click();
- await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:'Continue',exact:true}).click();
+ await page.getByRole('heading',{name:'Who are we looking after?',exact:true}).waitFor();await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:'Continue',exact:true}).click();
  // Avoid speech spend during automated UI checks while preserving real backend interview controls.
  await page.route('**/speak',route=>route.fulfill({status:204}));
  const answers=['158','64','BP / hypertension','2019','Yes','No','Telma 40 mg','BP / hypertension','Once daily','None','None','No','No','No'];
- for(const answer of answers){await page.getByRole('button',{name:answer,exact:true}).click();}
+ for(const answer of answers){const response=page.waitForResponse(r=>r.url().endsWith('/answer')&&r.request().method()==='POST');await page.getByRole('button',{name:answer,exact:true}).click();await response;await page.waitForTimeout(80);}
  await page.getByRole('heading',{name:'Does this look right?',exact:true}).waitFor();
  for(let i=0;i<14;i++){await page.getByRole('button',{name:'Sahi hai — confirm this line',exact:true}).click();await page.waitForFunction(n=>document.querySelector('.review-progress')?.textContent?.trim().startsWith(String(n)+' /'),i+1);}
  await page.getByRole('button',{name:'Explore sample plan payouts',exact:true}).click();

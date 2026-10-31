@@ -23,3 +23,9 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Supplied DATABASE_URL hostname failed DNS resolution. Preserved its value only in local `.env` as DATABASE_URL_REMOTE and bootstrapped local Homebrew PostgreSQL 16 on loopback port 55432, data in ignored `.run/postgres`. DATABASE_URL now targets that local database. Single demo role/schema and Alembic retained.
 - No golden audio clips or strip photos present at Step 2 start; pin saaras:v4 until supplied sets appear.
 - Startup discovery confirmed requested OpenAI and Anthropic model IDs are available on the provided keys.
+
+## Demo-specific implementation details
+- Household UI covers one explicitly attested member for the Sunita stage path; remaining family branches are outside today's demo.
+- The 60 generic names and demo brand/condition hints are hand-seeded. Conditions are always buyer-selected, not clinically inferred. Broader licensed datasets are deferred.
+- Generated policy fixtures use exact label parsing with page/quote verification so their G6 gate remains deterministic; arbitrary uploaded PDFs use Haiku section extraction and a single Sonnet retry. The comparison is always code.
+- Promise Card shows the demo-relevant exclusion example (unproven treatments) and explicitly states other exclusions/conditions apply; full exclusion authoring is deferred.
