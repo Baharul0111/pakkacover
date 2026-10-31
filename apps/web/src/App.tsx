@@ -23,6 +23,7 @@ export default function App(){
  const refresh=async(go?:Phase)=>{const j=await(await api(`/v1/journeys/${jid}`)).json();setJourney(j);if(go)setPhase(go);return j;};
  const dateText=(v:string)=>new Intl.DateTimeFormat(hi?'hi-IN':'en-IN',{day:'numeric',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00'));
  const stopAudio=()=>{audioPlayer.current?.pause();setSpeaking(false);if(audioURL.current){URL.revokeObjectURL(audioURL.current);audioURL.current='';}};
+ useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});},[phase,journey?.node.key]);
  useEffect(()=>{document.documentElement.lang=lang;localStorage.setItem('pc_lang',lang)},[lang]);
  useEffect(()=>{fetch('/ready').then(r=>r.json()).then(setReady).catch(()=>{});if(token&&jid){api(`/v1/journeys/${jid}`).then(r=>r.json()).then(j=>{setJourney(j);setPhase(infer(j));if(j.selection){setStartDate(j.selection.d0);setReceipt(j.selection.receipt);}}).catch(()=>{localStorage.removeItem('pc_token');localStorage.removeItem('pc_jid');setToken('');setJid('');});}},[]);
  const speak=async(lineId?:string)=>{if(!jid)return;stopAudio();try{const r=await api(`/v1/journeys/${jid}/speak`,{method:'POST',body:JSON.stringify(lineId?{line_id:lineId}:{})});if(r.status===204)return;const blob=await r.blob();const url=URL.createObjectURL(blob);audioURL.current=url;const a=new Audio(url);audioPlayer.current=a;a.onended=()=>setSpeaking(false);await a.play();setSpeaking(true);}catch{setSpeaking(false);}};
