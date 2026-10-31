@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import create_async_engine,async_sessionmaker,AsyncS
 from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column
 from sqlalchemy.types import TypeDecorator,LargeBinary
 from ulid import ULID
-from apps.api.app.config import get,fernet
+from apps.api.app.config import get,fernet,SERVERLESS
 
 def uid():return str(ULID())
 def now():return datetime.now(timezone.utc)
@@ -98,7 +98,13 @@ url=url.replace('postgres://','postgresql://',1).replace('postgresql://','postgr
 from sqlalchemy.engine import make_url
 u=make_url(url); q=dict(u.query);q.pop('sslmode',None);q.pop('ssl',None)
 ssl_value='require' if u.host not in ('localhost','127.0.0.1','::1') else False
-engine=create_async_engine(u.set(query=q),pool_size=5,max_overflow=2,pool_pre_ping=True,pool_recycle=300,connect_args={'statement_cache_size':0,'ssl':ssl_value,'timeout':10})
+from sqlalchemy.pool import NullPool
+if SERVERLESS:
+ if u.host in ('localhost','127.0.0.1','::1'):raise RuntimeError('Hosted database must be remote')
+ u=u.set(port=6543)
+ pool_options={'poolclass':NullPool}
+else:pool_options={'pool_size':5,'max_overflow':2,'pool_pre_ping':True,'pool_recycle':300}
+engine=create_async_engine(u.set(query=q),**pool_options,connect_args={'statement_cache_size':0,'ssl':ssl_value,'timeout':10})
 Session=async_sessionmaker(engine,expire_on_commit=False)
 async def session():
  async with Session() as s:yield s

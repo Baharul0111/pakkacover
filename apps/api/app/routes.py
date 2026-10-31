@@ -17,6 +17,7 @@ class ConsentIn(Body):
  alerts:bool=False
  audit:bool=False
 class MemberIn(Body):
+ name:str=Field(default="",max_length=80)
  age:int=Field(ge=0,le=120)
  sex:str=Field(pattern='^(F|M|Other)$')
  relation:str=Field(min_length=1,max_length=32)
@@ -74,6 +75,8 @@ async def member(jid:str,body:MemberIn,owner=Depends(principal)):
   j=await owned(s,Journey,jid,owner,True)
   if j.payload.get('member'):raise HTTPException(409,'Member already exists; start a fresh demo for another family')
   j.payload={**j.payload,'member':body.model_dump()}
+  identity=f'{body.name or "Member 1"} · {body.age} · {body.sex}'
+  s.add(Line(journey_id=owner,slot='member',payload={'key':'member','value':identity,'text_en':'Name, age and sex: '+identity,'text_hi':'नाम, उम्र और लिंग: '+identity,'ai_guess':False,'source':'manual'}))
   s.add(Consent(journey_id=owner,purpose='P1_member_attest',granted=True));await s.commit()
  return await get_journey(jid,owner)
 
@@ -162,6 +165,9 @@ async def reopen(lid:str,owner=Depends(principal)):
  async with Session() as s:
   line=await owned(s,Line,lid,owner,True);line.confirmed=False;line.version+=1
   j=await owned(s,Journey,owner,owner,True)
+  if line.slot=='member':
+   await s.execute(delete(Line).where(Line.journey_id==owner))
+   j.payload={'slots':{}};await s.commit();return {'status':'reopened','node':'member'}
   slots=dict(j.payload.get('slots',{}));slots.pop(line.slot,None)
   j.payload={**j.payload,'slots':slots,'selection':None}
   # The next answer updates this same card and preserves the version check.

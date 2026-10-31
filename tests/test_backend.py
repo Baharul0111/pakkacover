@@ -22,7 +22,7 @@ async def test_consent_and_member_attestation_required(client):
 
 async def test_confirmation_gate_encrypted_health_and_correction(client):
  j,h=await start(client);body=await interview(client,j,h)
- assert body['node']['key']=='review' and len(body['lines'])==14
+ assert body['node']['key']=='review' and len(body['lines'])==15
  r=await client.post(f'/api/journeys/{j}/simulate',headers=h,json={});assert r.status_code==409
  for line in body['lines']:
   r=await client.post(f'/api/lines/{line["id"]}/confirm',headers=h,json={'version':line['version']});assert r.status_code==200
@@ -54,7 +54,9 @@ async def test_turn_retry_is_idempotent(client):
  a=await client.post(f'/api/journeys/{j}/answer',headers=hh,json={'text':'158'})
  b=await client.post(f'/api/journeys/{j}/answer',headers=hh,json={'text':'158'})
  assert a.json()==b.json()
- assert len((await client.get(f'/api/journeys/{j}',headers=h)).json()['lines'])==1
+ lines=(await client.get(f'/api/journeys/{j}',headers=h)).json()['lines']
+ assert len([line for line in lines if line['key']=='height'])==1
+ assert len([line for line in lines if line['key']=='member'])==1
 
 async def test_switches_require_passphrase(client):
  assert (await client.post('/api/switches',json={'changes':{'voice_in':False}})).status_code==403
@@ -74,5 +76,20 @@ async def test_voice_values_are_always_marked_for_human_check(client,monkeypatch
  await client.post(f'/api/journeys/{j}/member',headers=h,json={'age':52,'sex':'F','relation':'self','attested':True})
  r=await client.post(f'/api/journeys/{j}/voice',headers=h,files={'audio':('test.wav',b'synthetic placeholder','audio/wav')},data={'duration':'2'})
  assert r.status_code==200 and r.json()['accepted']
- line=(await client.get(f'/api/journeys/{j}',headers=h)).json()['lines'][0]
+ line=next(l for l in (await client.get(f'/api/journeys/{j}',headers=h)).json()['lines'] if l['key']=='height')
  assert line['ai_guess'] and not line['confirmed'] and line['source'].startswith('voice:')
+
+async def test_identity_reopen_requires_fresh_member_attestation_and_review(client):
+ j,h=await start(client);body=await interview(client,j,h)
+ identity=next(line for line in body['lines'] if line['key']=='member')
+ for line in body['lines']:
+  await client.post(f'/api/lines/{line["id"]}/confirm',headers=h,json={'version':line['version']})
+ assert (await client.post(f'/api/lines/{identity["id"]}/reopen',headers=h)).status_code==200
+ fresh=(await client.get(f'/api/journeys/{j}',headers=h)).json()
+ assert fresh['node']['key']=='member' and not fresh['member'] and not fresh['lines']
+ assert (await client.post(f'/api/journeys/{j}/simulate',headers=h,json={})).status_code==409
+ assert (await client.post(f'/api/journeys/{j}/member',headers=h,json={'name':'Corrected demo','age':53,'sex':'F','relation':'mother','attested':False})).status_code==422
+ updated=await client.post(f'/api/journeys/{j}/member',headers=h,json={'name':'Corrected demo','age':53,'sex':'F','relation':'mother','attested':True})
+ assert updated.status_code==200
+ assert updated.json()['lines'][0]['value']=='Corrected demo · 53 · F'
+ assert not updated.json()['lines'][0]['confirmed']

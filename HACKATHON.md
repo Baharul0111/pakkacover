@@ -2,13 +2,13 @@
 
 Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.md remain unchanged.
 
-- Demo only, frozen by 14:45 IST today; replaces the original 29–30 Oct build schedule.
-- macOS local FastAPI serves React; Cloudflare quick tunnel supplies same-origin HTTPS. No production hosting or real users.
+- Demo only, final freeze by 14:30 IST today; replaces all earlier deadlines. Preserve demo-1 as the safe fallback; the revised freeze is demo-2.
+- macOS local FastAPI serves React; Cloudflare quick tunnel supplies same-origin HTTPS. GitHub/Vercel deployment is now authorized by the latest add-on; local HTTPS remains the fallback. No real users.
 - One Postgres database/role with Alembic, owner-scoped queries and Fernet health fields.
 - Passphrase demo login only. No Google/Mini App login, retention/export/delete screens, staff/admin console, backups, standby, email, or cloud CI/monitoring.
 - Sunita interview complete; other branches may use typed/manual fallbacks.
 - Sarvam demo cap ₹150/day and minimum remaining balance ₹20, overriding architecture profile caps. App caps do not assume provider budgets are hard stops.
-- Payment adapter automatically selects staging with both keys, otherwise explicitly simulated. Production payment hosts forbidden.
+- Payment adapter is demo only. No payment provider hosts are contacted and no gateway verification is claimed.
 - Provider IDs verified at startup; unavailable requested IDs must be recorded honestly and a supported ID or deterministic fallback used.
 
 ## Source corrections found during Step 1
@@ -46,4 +46,9 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - New final deadline 14:30 IST; main features13:45, polish/E2E14:15.
 - Remove staging Paytm and credential waiting; one explicitly labelled Demo payment sheet with UPI/Wallet/Card, paid DB status, timestamp, top notification and persisted bell list. No gateway calls, no real money and no S2S verification claim.
 - Replace earthy UI with a simple light-blue/navy visual flow, live form panel/drawer, mic and live understanding, timeline comparisons/Promise Card, calendar export and actionable policy flags.
-- Add Reset demo and verify three consecutive runs using that control. Update the local demo-1 tag after revised verification; prior freeze is historical.
+- Add Reset demo and verify three consecutive runs using that control. Preserve the existing demo-1 tag; create demo-2 after revised verification (latest takeover instruction).
+
+## Takeover revision (12:13 IST)
+- Latest user schedule takes precedence: UI working by13:30, hosted attempt13:30–14:00 (30 minutes maximum), rehearsals14:00–14:20, freeze14:30. No UI additions after14:00; fallback if broken14:10.
+- Identity now has its own individual review card. Correcting identity restarts member attestation and answers so health facts cannot retain stale age/sex context.
+- Rewritten React UI retained after a successful TypeScript/Vite build. Plain responsive CSS provides the requested blue/navy theme, live-form drawer, recording/payment/audit animations, and original Lucide icons.
