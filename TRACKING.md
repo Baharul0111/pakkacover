@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:04:07 IST. Step 7: launcher written; tunnel validation next.
-- Next action: Run scripts/run_demo, capture public HTTPS URL, and execute full mobile Playwright journey through individual confirmation, photo, payment and all audit variants.
+- Time: 2026-10-31 11:05:31 IST. Step 7: HTTPS preview running; full browser synchronization fixes.
+- Next action: Rerun full browser story locally, then 3 consecutive runs at the public HTTPS URL. Inspect screenshots and fix observed UI issues.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432 only. Launcher will write API/tunnel PIDs into .run/. Stop: scripts/run_demo --stop.
-- Done and verified / half-done: Created background API/quick-tunnel launcher, local Postgres recovery, migrations/build, PUBLIC_URL update, --status/--stop/--retunnel; verification: 99 Python tests and production web build passed before launcher work. The next action above identifies unfinished work.
-- Open problems and decisions: Current mode simulated; no live Paytm transaction possible without keys. Real golden media absent.
+- Background processes: API .run/api.pid; tunnel .run/tunnel.pid; Postgres 55432. HTTPS https://act-analyzed-firefox-seekers.trycloudflare.com. Stop QA via scripts/run_demo --stop.
+- Done and verified / half-done: One-command launcher started HTTPS demo and background API/tunnel; full browser test reached simulated payment after photo, confirmation, ranking and Promise Card; verification: 99 Python tests and Vite build passed. Browser script needed an explicit wait for order panel after async order creation; fixed test race.. The next action above identifies unfinished work.
+- Open problems and decisions: No application defect at that point; full browser/payment/audit verification still pending. Real golden media absent.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -29,6 +29,7 @@
 - 2026-10-31 11:01:20 IST | Step 6: staging and simulation adapters written | Implemented signed staging init, signature-verified callback and S2S status, exact ₹1 amount checks, simulated adapter and mode on /ready | Tests: Dummy-key roundtrip, tamper, host allowlist, mocked staging and simulated-route tests written; execution next | Commit: `a997934`
 - 2026-10-31 11:02:59 IST | Step 7 starting: one-command launcher and tunnel | Payment adapters complete, staging cryptography covered with dummy key, simulation stays explicit; entering launcher/E2E stage | Tests: Full pytest suite and Vite build just run; check previous output. Temporary Step 4 QA API stopped cleanly. | Commit: `fb8940b`
 - 2026-10-31 11:04:07 IST | Step 7: launcher written; tunnel validation next | Created background API/quick-tunnel launcher, local Postgres recovery, migrations/build, PUBLIC_URL update, --status/--stop/--retunnel | Tests: 99 Python tests and production web build passed before launcher work | Commit: `a940d47`
+- 2026-10-31 11:05:31 IST | Step 7: HTTPS preview running; full browser synchronization fixes | One-command launcher started HTTPS demo and background API/tunnel; full browser test reached simulated payment after photo, confirmation, ranking and Promise Card | Tests: 99 Python tests and Vite build passed. Browser script needed an explicit wait for order panel after async order creation; fixed test race. | Commit: `291537e`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
