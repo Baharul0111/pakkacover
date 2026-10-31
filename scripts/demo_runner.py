@@ -81,7 +81,6 @@ def main():
   wait_api(a.port);url=tunnel(a.port);print('PakkaCover HTTPS: '+url);return
  stop()
  ensure_database()
- if not shutil.which('ffprobe'):command(['brew','install','ffmpeg'])
  from apps.api.app.config import bootstrap
  bootstrap()
  command([PYTHON,'-m','alembic','upgrade','head'])
