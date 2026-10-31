@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:54:45 IST. Step 4: React UI written; build/browser checks next.
-- Next action: Check TypeScript/Vite build; add Playwright and verify mobile consent, full interview, line-by-line confirmation, ranking clause modal and Promise Card. Then Step 5 audit.
+- Time: 2026-10-31 10:56:25 IST. Step 4: mobile browser verification.
+- Next action: Run local browser journey through Promise Card, fix any observed UI failures; implement Step 5 sample PDFs and grounded audit.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432 only; build sessions 53702 and npm 7550 should finish; no HTTP server/tunnel.
-- Done and verified / half-done: Built bilingual mobile-first React UI, recording/photo controls, review cards, scenario sliders, clause modal, Promise Card and upcoming dates; verification: TypeScript/Vite build in progress; backend engine/ownership tests already passed. The next action above identifies unfinished work.
-- Open problems and decisions: Payment/audit UI awaits Steps 5/6 endpoints. Golden media still absent. No cuts.
+- Background processes: Postgres 55432. About to start temporary API on 8000 for QA; stop via PID in .run/qa-api.pid.
+- Done and verified / half-done: React build succeeded; added automated mobile Sunita browser journey and card/backend checks; verification: TypeScript/Vite build passed; card and backend regressions running; browser check next. The next action above identifies unfinished work.
+- Open problems and decisions: Payment and audit screens await their endpoints. No golden media yet.
 - Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
@@ -22,6 +22,7 @@
 - 2026-10-31 10:48:35 IST | Step 3: two-reader pipeline written; verification next | Implemented in-memory photo sanitation in spawned worker, 60-generic lookup, dual readers, agreement/disagreement and explicit buyer choice | Tests: Photo tests written; tests and live reader smoke next | Commit: `84de70a`
 - 2026-10-31 10:50:03 IST | Step 4 starting: phone UI, review, ranking and Promise Card | Step 3 photo pipeline and guard tests complete; 60 hand-seeded generics and explicit condition choice | Tests: 66 backend/numeric/medicine tests passed; live synthetic vision result in evals/results/vision-smoke.json when finished | Commit: `290b328`
 - 2026-10-31 10:54:45 IST | Step 4: React UI written; build/browser checks next | Built bilingual mobile-first React UI, recording/photo controls, review cards, scenario sliders, clause modal, Promise Card and upcoming dates | Tests: TypeScript/Vite build in progress; backend engine/ownership tests already passed | Commit: `1be7a58`
+- 2026-10-31 10:56:25 IST | Step 4: mobile browser verification | React build succeeded; added automated mobile Sunita browser journey and card/backend checks | Tests: TypeScript/Vite build passed; card and backend regressions running; browser check next | Commit: `98adf31`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
