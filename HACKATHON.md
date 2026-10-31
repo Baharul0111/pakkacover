@@ -18,3 +18,8 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 
 - HDFC official wording host returned HTTP 406. Its public mirror now serves the current UIN **HDFHLIP26058V082526** (69 pages), rather than the architecture UIN. Plan A explicitly uses this actual UIN and pinned file; its source quotes confirm 36-month PED, 24-month specific wait, 60-month moratorium and 30-day free look. The obsolete 34-page PDF is retained only as provenance, never used by rules. No PDF upload is needed from the owner.
 - Example consumables reflect actual wording: HDFC Protect (default retained) and Tata B12 cover specified items; Care without Claim Shield deducts the assumed 8%. Published method states these assumptions and that claims are independent.
+
+## Step 2 runtime decisions
+- Supplied DATABASE_URL hostname failed DNS resolution. Preserved its value only in local `.env` as DATABASE_URL_REMOTE and bootstrapped local Homebrew PostgreSQL 16 on loopback port 55432, data in ignored `.run/postgres`. DATABASE_URL now targets that local database. Single demo role/schema and Alembic retained.
+- No golden audio clips or strip photos present at Step 2 start; pin saaras:v4 until supplied sets appear.
+- Startup discovery confirmed requested OpenAI and Anthropic model IDs are available on the provided keys.
