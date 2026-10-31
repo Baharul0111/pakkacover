@@ -49,6 +49,11 @@
 - 2026-10-31 11:46:21 IST | Freeze: all feature and rehearsal gates passed | All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked | Tests: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists | Commit: `b5a271e`
 - 2026-10-31 11:51:16 IST | FROZEN — demo complete | All seven build steps complete; fresh stage instance ready; DEMO.md and WebM/MP4 fallback recordings saved; original documents unchanged | Tests: Final run: 121 passed; G2 44 source clauses verified; 3 consecutive full HTTPS runs 39/44/40s with accepted live speech, correct clause taps, 3/3 audit mismatches and 0 clean false flags; secret scan passed | Commit: `fa851a2`
 
+## Hosting add-on — GitHub now, Vercel by 14:15
+- GitHub: authenticated Baharul0111, https://github.com/Baharul0111/pakkacover, main. Secret/media audit then push now; push each subsequent completed checkpoint.
+- Vercel: authenticated CLI, project pakkacover. Same React/FastAPI app, relative /api routes, bounded inline media on serverless, Supabase transaction pooler6543 + NullPool. Deployment around13:45; stop trying at14:15 if unsuccessful.
+- 14:30 freeze unchanged. Current live fallback: https://slide-stage-seller-republican.trycloudflare.com. Production URL pending deployment.
+
 ## Revised schedule — user change of plan at 11:55 IST
 
 The earlier 11:51 freeze is superseded. Deadline is **14:30 IST**; owner testing/recording is 14:30–15:30. Preserve the verified engine, quotes, confirmation and numeric guard.

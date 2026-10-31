@@ -254,3 +254,42 @@ the always-visible Demo labelling, and the TRACKING.md updates.
 - If something only I can provide is truly missing, list every missing item once
   in one message, log it in TRACKING.md, and keep building everything else
   meanwhile.
+
+## Latest add-on — GitHub and Vercel (user-authorized)
+
+This section overrides the earlier local-only hosting decision. The 14:30 freeze remains.
+
+### GitHub — push now and after each completed piece
+- Use authenticated `gh` account Baharul0111; never ask for tokens. Remote is
+  `https://github.com/Baharul0111/pakkacover`, branch `main`. Push existing commits now.
+- Before first push, ignore `.env`, `.env.*`, `secrets/`, `node_modules`, `.venv`,
+  `__pycache__`, `dist`, `*.dump`, private golden m4a/mp3/wav/webm/jpg/jpeg/png,
+  and `data/plans/src/*.pdf`. Keep golden labels.csv files eligible for Git.
+- Scan staged/tracked content for actual credentials (sk-/sk-ant- keys, API key
+  assignments, credential-bearing postgres URLs, Fernet key material). Abort on
+  a real secret. Configuration variable names/docs/placeholders are not secrets.
+- Push each completed step together with TRACKING.md updates. README.md: three-line
+  product summary, live link, local run command, and “Paytm payment is a demo
+  screen; PG test keys could not be obtained”.
+
+### Vercel — deploy by 14:15 or retain local fallback
+- Use the authenticated Vercel CLI/account vercel.com/baharul1; project pakkacover.
+  Never ask for tokens. CLI production deployment is authorized.
+- Static React frontend plus FastAPI Python function `api/index.py`. All backend
+  routes use `/api/*`; frontend uses relative `/api` URLs both locally and hosted.
+  `vercel.json` rewrites API requests to the function and other routes to SPA index.
+- Hosted runtime: no background processes or media subprocesses; inline bounded
+  image/PDF parsing with strict input caps and timeouts. Avoid heavy unused packages.
+- Vercel DB uses Supabase transaction pooler, same host, port6543, asyncpg
+  statement_cache_size=0 and SQLAlchemy NullPool; derive from supplied DATABASE_URL.
+  Local Supabase session-pooler URLs stay5432; an existing local demo DB remains
+  local. Never send localhost credentials as the hosted DB configuration.
+- Set maxDuration to the highest verified Hobby allowance (at least60s) and keep
+  the Python bundle within the verified limit.
+- Add all required nonempty Production env values from local .env via stdin, never
+  printing secrets. Set PUBLIC_URL to production URL. Link GitHub if CLI can do it.
+- `npx vercel --prod --yes`; then verify `/api/ready` and the full voice/photo/
+  confirm/compare/card/demo-payment+notification/audit story on production.
+- Put the live URL at top of TRACKING.md, README.md and DEMO.md. Deploy around13:45,
+  allow at most30 minutes; at14:15 stop deploy debugging and keep local run_demo
+  plus tunnel. Repo must be pushed and frozen at14:30 either way.
