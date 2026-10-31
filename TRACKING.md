@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:22:57 IST. Step 7: final HTTPS rehearsals about to run.
-- Next action: Build latest speech-cancellation UI, then run three consecutive full mobile stories at the current tunnel; first records video and exercises real voice. Inspect all results before freezing.
+- Time: 2026-10-31 11:24:53 IST. Step 7: live speech route diagnosis.
+- Next action: Run synthetic voice-path probe to distinguish media, speech transcription, extraction and deadline failure; correct it, then repeat three consecutive HTTPS rehearsals.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; scheduled 14:30 preflight .run/preflight.pid; caffeinate .run/awake.pid; Postgres55432. Stop: scripts/run_demo --stop.
-- Done and verified / half-done: 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified; verification: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending.. The next action above identifies unfinished work.
-- Open problems and decisions: Physical phone mic/camera and owner real media remain unverified; automated phone-size browser and synthetic media cover the software path. No real staging keys.
+- Background processes: Current demo https://shortcuts-foreign-categories-medicines.trycloudflare.com with API/tunnel/preflight/caffeinate PIDs in .run/. Postgres55432.
+- Done and verified / half-done: Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed.; verification: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals.. The next action above identifies unfinished work.
+- Open problems and decisions: Live voice failure is the remaining software gate. Simulation mode confirmed, no owner golden media. 14:30 check is scheduled.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -38,6 +38,7 @@
 - 2026-10-31 11:17:26 IST | Step 7: final test fixes pass; operator tools added | Mac media compatibility fixed; operator voice/AI switches and read-only 14:30 payment preflight scripts added; calculation modal now explains actual arithmetic | Tests: Full suite/build just completed after media fix; check output. Prior HTTPS E2E passed with model-verified audit fields. | Commit: `82bde45`
 - 2026-10-31 11:20:14 IST | Step 7: ready for final production-build rehearsals | Added golden-media A/B/no-fabrication runner (no media supplied), startup pin reload, timed 14:30 read-only key check, and fallback-video/live-voice browser rehearsal support | Tests: 105 tests passed before these small operator/test additions; golden runner reports 0 clips/0 photos and pins v4. Final checks next. | Commit: `e04766e`
 - 2026-10-31 11:22:57 IST | Step 7: final HTTPS rehearsals about to run | 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified | Tests: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending. | Commit: `b15bc83`
+- 2026-10-31 11:24:53 IST | Step 7: live speech route diagnosis | Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed. | Tests: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals. | Commit: `56fa41e`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
