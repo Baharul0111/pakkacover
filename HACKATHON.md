@@ -33,3 +33,11 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 ## macOS media verification
 - System ffprobe aborts on this Mac, so bundled PyAV decodes microphone bytes in the isolated worker and measures actual duration without disk files.
 - This macOS environment rejects RLIMIT_DATA/RLIMIT_AS changes even below the reported limit. A parent RSS watchdog checks the worker every 50 ms against measured baseline + 150 MB (200 MB minimum), kills/respawns on breach, and retains wall-clock deadlines and input/pixel limits. Unsupported kernel caps no longer prevent startup.
+
+## UI and local demo implementation choices
+- React/TypeScript/Vite uses plain responsive CSS and Lucide icons, with explicit English/Hindi phrase maps rather than Tailwind/shadcn and react-i18next. It remains a built React app served by FastAPI at one origin.
+- Anthropic/OpenAI calls use native structured-output JSON schemas over bounded httpx REST calls instead of SDK parse helpers; returned model IDs and conservative spend reservations are stored without health content.
+- TTS calls Sarvam's streaming endpoint, then returns the completed in-memory WAV for straightforward browser playback; stale read-aloud responses are discarded when the question changes.
+- Passphrase Save authorizes a private per-browser journey instead of merging users into the architecture's fixed shared demo account. Tokens live for the hackathon session; no cross-device real identity is claimed.
+- Complex typed answers still use model extraction; a simple, explicit BP/diabetes answer can use a source-anchored code fallback after a model quote/schema failure. Negations and ambiguous/borderline answers do not use that fallback. Every voice-derived fact is marked for individual checking.
+- Full production-role provisioning, retention/erasure, log chains, load/security gates and operational systems remain deferred as authorized by AGENTS.md. The local demo keeps encryption, ownership, per-purpose consent, cap reservations, input bounds and the required correctness gates.
