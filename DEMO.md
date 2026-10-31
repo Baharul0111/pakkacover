@@ -76,6 +76,8 @@ Current verification and freeze status are in `TRACKING.md` and `evals/results/f
 
 Browser rehearsals use a **synthetic printed medicine label** and synthetic spoken answer through the real provider APIs. They check phone/laptop layouts and browser behavior, and do not certify a physical phone's microphone/camera or real medicine-strip photos. No owner golden media has been supplied so far; `saaras:v4` remains pinned until clips arrive and trigger the v4/v3-codemix A/B.
 
+The live Q1-through-measurements probe is `.venv/bin/python scripts/check_talk_voice.py`; it uses synthetic Hindi answers and records only pass/fail metadata.
+
 The refreshed fallback recording is `.run/sunita-fallback.webm`; `.run/sunita-fallback.mp4` is the normal-player copy. Both are ignored local artifacts, without passphrase keystroke disclosure. Narrate the script over the silent browser recording if needed.
 
 ## Hosting and scope
