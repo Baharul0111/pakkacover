@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "file": "PakkaCover-Sunita-Plan-B-Clean.pdf",
+      "uploaded": true,
+      "extraction_mode": "quote_verified_model",
+      "verified_fields": 11,
+      "flag_count": 0,
+      "flag_keys": []
+    },
+    {
+      "file": "PakkaCover-Sunita-Plan-B-Missing-Addon.pdf",
+      "uploaded": true,
+      "extraction_mode": "quote_verified_model",
+      "verified_fields": 11,
+      "flag_count": 1,
+      "flag_keys": [
+        "instant_cover"
+      ]
+    }
+  ]
+}
