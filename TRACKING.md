@@ -1,15 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:13:18 IST. New agent taking over; validating uncommitted UI rewrite and backend preparation.
-- Next action: Run `npm --prefix apps/web run build` and `.venv/bin/python -m pytest -q`; inspect App.tsx classes and implement missing responsive CSS. Keep and fix the rewrite if viable.
-- Run app: `scripts/run_demo`; status `scripts/run_demo --status`; stop `scripts/run_demo --stop`.
-- Run tests: `.venv/bin/python -m pytest -q`; `.venv/bin/python scripts/check_quotes.py`; `npm --prefix apps/web run build`.
-- Background processes: inherited API/tunnel/caffeinate may be running; local PostgreSQL on 55432. Inspect `.run/` PID files and `scripts/run_demo --status`; stop managed services with `scripts/run_demo --stop`.
-- Done and verified: demo-1 is immutable safe fallback (11:51, 121 tests, 44 clauses, 3 HTTPS runs). Payment/reset/calendar/notifications committed and pushed through 3b935a4. Do not repeat verified engine work.
-- Half-done: App.tsx rewritten and UNVERIFIED; new CSS probably missing. Uncommitted config.py/db.py/routes.py and tests/test_backend.py add serverless environment/DB changes and identity review. Validate before committing those files.
-- Open problems/decisions: preserve demo-1 forever, freeze revised build as demo-2 (latest user instruction supersedes AGENTS tag replacement). Supabase DNS/connection must be rechecked; skip hosted deployment if unavailable. No UI additions after 14:00; fallback by 14:10 if broken.
-- Paytm mode: `demo` only. No real gateway calls, pending credentials or S2S claims.
+- Time: 2026-10-31 12:28:04 IST. Takeover UI and identity baseline verified.
+- Next action: Update browser selectors and run the full Sunita story; fix missing compare timeline output and audit match labels; then verify hosted DB before Vercel preparation.
+- Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
+- Run tests: `.venv/bin/python -m pytest -q`
+- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432. scripts/run_demo --stop stops managed app services.
+- Done and verified / half-done: Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy.; verification: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run.. The next action above identifies unfinished work.
+- Open problems and decisions: demo-1 preserved; new freeze will be demo-2. First unprivileged test run failed due sandbox localhost restriction, rerun passed. Hosted DB and actual browser journey pending.
+- Paytm mode: demo only; no gateway calls or verification.
 
 ## Implementation log
 - 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
@@ -84,6 +83,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 12:01:13 IST | GitHub: secret audit passed; pushing main now | Verified all required .gitignore paths and label CSV exception; scanned tracked files plus entire history with no detected secrets or private media; authenticated GitHub repo exists and is empty | Tests: 121 baseline tests passed; full-history secret audit PASS; ignore/media checks PASS | Commit: `d80e3c7`
 - 2026-10-31 12:02:42 IST | GitHub initial push complete; demo payment implementation | Pushed existing commits to Baharul0111/pakkacover main after full-history secret/media audit; enabled audited automatic pushes after every checkpoint | Tests: 121 baseline tests passed; GitHub push verified by CLI; ignore and staged/history scans passed | Commit: `e5570f2`
 - 2026-10-31 12:07:12 IST | Demo payment backend complete; Vercel preparation | Replaced all payment networking with demo-only paid orders; added idempotent owner-scoped notifications, Reset demo retaining spend, privacy-safe calendar export and unified /api routes; stopped obsolete key watcher | Tests: 113 baseline/new tests passed; calendar health-bearing UID caught by test and fixed; 3 focused payment/reset/calendar tests and production web build now pass | Commit: `6b08921`
+- 2026-10-31 12:28:04 IST | Takeover UI and identity baseline verified | Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy. | Tests: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run. | Commit: `55bdaf0`
 
 ## Original orientation notes
 
