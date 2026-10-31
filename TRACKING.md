@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:29:54 IST. Step 7: live voice probe passed; final rehearsal restart.
-- Next action: Run full regression suite, restart only API at same HTTPS URL, run recorded live-voice full browser rehearsal, then two further consecutive full HTTPS runs.
+- Time: 2026-10-31 11:31:41 IST. Step 7: final rehearsal 1/3 passed.
+- Next action: Run full HTTPS mobile rehearsal 2, then 3 consecutively on the same build; validate logs/video, finalize DEMO.md and freeze tag demo-1.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Current API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; --restart-api preserves URL, preflight remains scheduled.
-- Done and verified / half-done: Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected).; verification: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next.. The next action above identifies unfinished work.
-- Open problems and decisions: Need final consecutive HTTPS rehearsals. No golden media or Paytm keys; documented simulation and physical-device limit.
+- Background processes: API/tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; preflight14:30 and caffeinate active; PIDs in .run/. Postgres55432.
+- Done and verified / half-done: First final live-voice/photo HTTPS rehearsal passed in 44s with 0 browser errors; fallback video saved at .run/sunita-fallback.webm; verification: 120 Python tests passed; real voice slot preserved; all 4 audit variants passed through live model extraction/comparison in the full browser flow. The next action above identifies unfinished work.
+- Open problems and decisions: No real owner golden media supplied; physical device hardware still requires owner use. Payment simulated; fully signed staging code has mocked coverage.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -41,6 +41,7 @@
 - 2026-10-31 11:24:53 IST | Step 7: live speech route diagnosis | Final build passed; real HTTPS voice rehearsal exposed a recognition/extraction-path failure before freezing. Original docs unchanged, secret leakage/log checks passed. | Tests: 105 automated tests pass; live voice rehearsal failed accepted-slot assertion. Need diagnosis and final rehearsals. | Commit: `56fa41e`
 - 2026-10-31 11:27:44 IST | Step 7: voice-path correctness fix | Isolated failure to slot extraction/quote handling rather than audio/STT; added BP language aliases and a source-anchored explicit-answer fallback, preserving strict quote and numeric guards | Tests: Decoder and STT probe passed; new tests cover Hindi/English BP, negations, bad-quote fallback and amber marking of all voice-derived facts | Commit: `c552a16`
 - 2026-10-31 11:29:54 IST | Step 7: live voice probe passed; final rehearsal restart | Live decoded/STT/extracted synthetic BP answer now passes with correct condition. Added explicit negation tests and fixed a unit-test DB event-loop leak (production API unaffected). | Tests: Live probe: measured audio 2.48s, STT and condition preserved; total 9.32s including generating speech. 69/70 focused tests passed before correcting test isolation; full suite next. | Commit: `6f1058a`
+- 2026-10-31 11:31:41 IST | Step 7: final rehearsal 1/3 passed | First final live-voice/photo HTTPS rehearsal passed in 44s with 0 browser errors; fallback video saved at .run/sunita-fallback.webm | Tests: 120 Python tests passed; real voice slot preserved; all 4 audit variants passed through live model extraction/comparison in the full browser flow | Commit: `23778c3`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
