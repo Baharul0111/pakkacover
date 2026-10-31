@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:51:16 IST. FROZEN — demo complete.
-- Next action: No unfinished demo work. Use scripts/run_demo --status and follow DEMO.md on the phone. Source is frozen under tag demo-1; do not redo completed steps.
-- Run app: `scripts/run_demo` (start/rebuild); `scripts/run_demo --status` (running instance); `scripts/run_demo --restart-api` (reload keys without rotating tunnel)
-- Run tests: `.venv/bin/python -m pytest -q` (includes G0/G1/G2/G6/G7 and payment/media/cap checks)
-- Background processes: Stage API/tunnel: https://slide-stage-seller-republican.trycloudflare.com, .run/api.pid and .run/tunnel.pid. Read-only14:30 key check .run/preflight.pid; caffeinate .run/awake.pid. Stop these: scripts/run_demo --stop. Local Postgres55432 retained; stop separately with pg_ctl -D .run/postgres stop. QA processes were stopped before this fresh stage instance.
-- Done and verified / half-done: All seven build steps complete; fresh stage instance ready; DEMO.md and WebM/MP4 fallback recordings saved; original documents unchanged; verification: Final run: 121 passed; G2 44 source clauses verified; 3 consecutive full HTTPS runs 39/44/40s with accepted live speech, correct clause taps, 3/3 audit mismatches and 0 clean false flags; secret scan passed. The next action above identifies unfinished work.
-- Open problems and decisions: No remaining hackathon implementation. Payment simulated because keys absent; real owner clips/photos not supplied, physical phone hardware not tested by automation. Real pilot work remains explicitly out of scope.
-- Paytm mode: simulated.
+- Time: 2026-10-31 11:57:00 IST. Revised build: plan recorded; demo payment/reset/notifications first.
+- Next action: Run the existing required tests to verify the baseline, cancel obsolete key-check process, then replace staging/simulated adapter with demo-only paid order + notification API and Reset demo.
+- Run app: `scripts/run_demo` / `scripts/run_demo --status`
+- Run tests: `.venv/bin/python -m pytest -q`
+- Background processes: Prior stage API/tunnel running at https://slide-stage-seller-republican.trycloudflare.com; obsolete preflight .run/preflight.pid must be cancelled. Caffeinate/PG55432 remain active.
+- Done and verified / half-done: Read the entire change of plan; updated AGENTS.md and TRACKING.md with the 14:30 deadline, revised schedule, demo-only payment and full new UI requirements; verification: Previous frozen baseline: 121 tests, 44 verified clauses, 3 HTTPS runs. Baseline verification next.. The next action above identifies unfinished work.
+- Open problems and decisions: Prior freeze is superseded; revised UI/payment/reset features not yet implemented. Keep engine/quotes/confirmation/numeric guard intact. No Paytm keys required.
+- Paytm mode: demo required; current running prior build still simulated until adapter replacement.
 
 ## Implementation log
 - 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
@@ -62,6 +62,7 @@ The earlier 11:51 freeze is superseded. Deadline is **14:30 IST**; owner testing
 | 14:15–14:30 | Final required gates, DEMO.md, FROZEN, demo-1 |
 
 Payment decision: `demo` only; remove real staging code and scheduled credential checks. UI: #00BAF2 / #002E6E, white/grey cards, big icons/buttons, minimal copy. Full current requirements are in AGENTS.md.
+- 2026-10-31 11:57:00 IST | Revised build: plan recorded; demo payment/reset/notifications first | Read the entire change of plan; updated AGENTS.md and TRACKING.md with the 14:30 deadline, revised schedule, demo-only payment and full new UI requirements | Tests: Previous frozen baseline: 121 tests, 44 verified clauses, 3 HTTPS runs. Baseline verification next. | Commit: `9ed31d6`
 
 ## Original orientation notes
 
