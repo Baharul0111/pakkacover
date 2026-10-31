@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:28:04 IST. Takeover UI and identity baseline verified.
-- Next action: Update browser selectors and run the full Sunita story; fix missing compare timeline output and audit match labels; then verify hosted DB before Vercel preparation.
+- Time: 2026-10-31 12:33:48 IST. Comparison and audit display verified; new Talk priority begins.
+- Next action: Implement voice-first relation/attestation/name/age/sex questions, deterministic height/weight parsing, fully empty reset and accurate 12-group counter; run Reset-to-Check browser test before returning to schedule.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432. scripts/run_demo --stop stops managed app services.
-- Done and verified / half-done: Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy.; verification: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run.. The next action above identifies unfinished work.
-- Open problems and decisions: demo-1 preserved; new freeze will be demo-2. First unprivileged test run failed due sandbox localhost restriction, rerun passed. Hosted DB and actual browser journey pending.
-- Paytm mode: demo only; no gateway calls or verification.
+- Background processes: API/tunnel/caffeinate active, local PostgreSQL55432; scripts/run_demo --stop.
+- Done and verified / half-done: Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight.; verification: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed.. The next action above identifies unfinished work.
+- Open problems and decisions: New user priority: replace member form with voice questions; preserve typed/chip fallbacks and per-line review. demo-1 remains immutable; tag demo-2 at final freeze.
+- Paytm mode: demo only.
 
 ## Implementation log
 - 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
@@ -88,6 +88,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 12:02:42 IST | GitHub initial push complete; demo payment implementation | Pushed existing commits to Baharul0111/pakkacover main after full-history secret/media audit; enabled audited automatic pushes after every checkpoint | Tests: 121 baseline tests passed; GitHub push verified by CLI; ignore and staged/history scans passed | Commit: `e5570f2`
 - 2026-10-31 12:07:12 IST | Demo payment backend complete; Vercel preparation | Replaced all payment networking with demo-only paid orders; added idempotent owner-scoped notifications, Reset demo retaining spend, privacy-safe calendar export and unified /api routes; stopped obsolete key watcher | Tests: 113 baseline/new tests passed; calendar health-bearing UID caught by test and fixed; 3 focused payment/reset/calendar tests and production web build now pass | Commit: `6b08921`
 - 2026-10-31 12:28:04 IST | Takeover UI and identity baseline verified | Retained App.tsx rewrite, implemented complete blue/navy responsive CSS with desktop form and mobile drawer, payment/audit animations; verified identity review and fresh attestation on identity edits; corrected Vite /api proxy. | Tests: TypeScript/Vite production build PASS; 115 Python tests PASS; local API restarted on existing HTTPS tunnel; quote check run. | Commit: `55bdaf0`
+- 2026-10-31 12:33:48 IST | Comparison and audit display verified; new Talk priority begins | Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight. | Tests: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed. | Commit: `87896aa`
 
 ## Original orientation notes
 
