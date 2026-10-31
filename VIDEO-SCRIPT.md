@@ -2,7 +2,7 @@
 
 Current demo: https://camping-leon-rider-performer.trycloudflare.com
 
-Read only the quoted words. Screen directions are not spoken. This script follows the working app; no PPT attachment or connected presentation was available. About 345 spoken words: rehearse once at a calm pace and trim pauses to finish within three minutes.
+Read only the quoted words. Screen directions are not spoken. This script follows the working app; no PPT attachment or connected presentation was available. About 330 spoken words: rehearse once at a calm pace and trim pauses to finish within three minutes.
 
 Before recording: choose English, use the Sunita fixture (52, female, BP since2019), select Plan B, and keep the Missing-Addon PDF ready. Enter the private save passphrase off camera. For the three-minute edit, show one voice answer, one medicine photo and one confirmation at normal speed; speed up the repeated answers/confirmations. Keep app audio low under the narration. No code or frozen tags are changed for this script.
 
