@@ -1,0 +1,41 @@
+{
+  "care_supreme": {
+    "url": "https://healthstatic.policybazaar.com/health-insurance/Insurer_Document/Care%20Health/Wording/care-supreme---policy-terms-&-conditions-(effective-from-19-march-2025).pdf",
+    "file": "care_supreme.pdf",
+    "sha256": "8bc823abe1813b2da7ea20d27c42477e78f536e0d384b55137d5e637353e78ea",
+    "status": "downloaded",
+    "bytes": 1853377
+  },
+  "optima_secure": {
+    "url": "https://healthstatic.policybazaar.com/health-insurance/Insurer_Document/HDFC/optima_secure_policywordings.pdf",
+    "file": "optima_secure.pdf",
+    "sha256": "6c80ff19a379821c4dc8a795342ea218a9b1b4001674bc58cb4022029f66fcdf",
+    "status": "downloaded",
+    "bytes": 221056
+  },
+  "tata_premier": {
+    "url": "https://www.tataaig.com/s3/tata_aig_medicare_premier_policy_wordings_781aa2fd94.pdf",
+    "file": "tata_premier.pdf",
+    "sha256": "392feaeeb26cb9ec7f6addc3ed764291d9c9f16bf6c70f466d9f92f85db78960",
+    "status": "downloaded",
+    "bytes": 554394
+  },
+  "optima_prospectus": {
+    "url": "https://customer-portal-assets.hdfcergo.com/documents/my-optima-secure-prospectus-641753208509-261342032445.pdf",
+    "file": "optima_prospectus.pdf",
+    "sha256": "26cced122ec1724055cbef33e1927b9abfa8dc2224f7771730ecaad515c47e3c",
+    "status": "downloaded",
+    "bytes": 605798
+  },
+  "tata_cis": {
+    "url": "https://www.tataaig.com/s3/TATA_AIG_Medicare_Premier_Customer_information_Sheet_2e2c10e8d0.pdf",
+    "file": "tata_cis.pdf",
+    "sha256": "673c37dbe7d93d2269019cb92b761b5deacd903c3fb7249251584876eb92768b",
+    "status": "downloaded",
+    "bytes": 384745
+  },
+  "optima_secure_current": {
+    "url": "https://www.hdfcergo.com/docs/default-source/downloads/policy-wordings/health/optima-secure-revision-pw.pdf",
+    "file": "optima_secure_current.pdf"
+  }
+}

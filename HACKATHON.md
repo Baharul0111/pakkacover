@@ -10,3 +10,8 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Sarvam demo cap ₹150/day and minimum remaining balance ₹20, overriding architecture profile caps. App caps do not assume provider budgets are hard stops.
 - Payment adapter automatically selects staging with both keys, otherwise explicitly simulated. Production payment hosts forbidden.
 - Provider IDs verified at startup; unavailable requested IDs must be recorded honestly and a supported ID or deterministic fallback used.
+
+## Source corrections found during Step 1
+- The architecture's HDFC wording URL serves an older UIN (HDFHLIP23123V022223) with 15-day free look and eight-year moratorium. It must not support the requested 2024/25 UIN. Added the official `optima-secure-revision-pw.pdf` source for HDFHLIP25041V062425.
+- Care Supreme's 20% outside-listed-hospital copay belongs to optional Smart Select (3.2.1); it is not automatically applied to every base policy. The demo does not select Smart Select.
+- Initial Python PDF requests hit a local certificate-chain issue; system curl successfully downloaded all five original URLs. No user-supplied PDFs are currently needed.
