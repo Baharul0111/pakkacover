@@ -1,5 +1,5 @@
 from __future__ import annotations
-import asyncio,hashlib,hmac,secrets
+import asyncio,hashlib,hmac,secrets,json
 from datetime import date,timedelta
 from fastapi import APIRouter,Depends,HTTPException,Header,UploadFile,File,Form,Response,Request
 from pydantic import BaseModel,Field,ConfigDict
@@ -44,7 +44,7 @@ async def require_consented(j,purpose='P1_disclosure'):
  if not consent:raise HTTPException(409,'Please give the relevant consent first')
 async def view(j,lines):
  payload=j.payload or {}
- return {'id':j.id,'lang':j.lang,'saved':j.saved,'member':payload.get('member'),'node':fsm.next_node(payload),'slots':payload.get('slots',{}),'lines':[{'id':l.id,'version':l.version,'confirmed':l.confirmed,**l.payload} for l in lines],'selection':payload.get('selection'),'medicine':payload.get('medicine_proposal')}
+ return {'id':j.id,'lang':j.lang,'saved':j.saved,'member':payload.get('member'),'node':fsm.next_node(payload),'slots':payload.get('slots',{}),'lines':[{'id':l.id,'version':l.version,'confirmed':l.confirmed,**l.payload} for l in lines],'selection':payload.get('selection'),'completion':payload.get('review_completion'),'medicine':payload.get('medicine_proposal')}
 @router.post('/session')
 async def create_session(body:SessionIn):
  if not (await gw.flags())['new_sessions']:raise HTTPException(503,'Demo intake is paused')
@@ -100,7 +100,7 @@ async def answer_core(jid,body,owner,idempotency,input_source='typed'):
   if vals:
    slots={**j.payload.get('slots',{}),**vals}
    member=fsm.member_from_slots(slots) or j.payload.get('member')
-   j.payload={**j.payload,'slots':slots,**({'member':member} if member else {})}
+   j.payload={**j.payload,'slots':slots,'review_completion':None,**({'member':member} if member else {})}
    if node['key'] in ('attestation','guardian'):
     s.add(Consent(journey_id=owner,purpose='P1_member_attest' if node['key']=='attestation' else 'P1_guardian_attest',granted=True))
    for k,v in vals.items():
@@ -174,7 +174,7 @@ async def reopen(lid:str,owner=Depends(principal)):
    await s.execute(delete(Line).where(Line.journey_id==owner))
    j.payload={'slots':{}};await s.commit();return {'status':'reopened','node':'relation'}
   slots=dict(j.payload.get('slots',{}));slots.pop(line.slot,None)
-  j.payload={**j.payload,'slots':slots,'selection':None}
+  j.payload={**j.payload,'slots':slots,'selection':None,'review_completion':None}
   # The next answer updates this same card and preserves the version check.
   await s.commit()
  return {'status':'reopened'}
@@ -204,7 +204,7 @@ async def select_plan(jid:str,body:SelectIn,owner=Depends(principal)):
  if body.plan_id not in plans():raise HTTPException(422,'Unknown sample plan')
  async with Session() as s:
   j,lines=await confirmed_context(owner,s,lock=True)
-  j.payload={**j.payload,'selection':body.model_dump(mode='json')};await s.commit()
+  j.payload={**j.payload,'selection':body.model_dump(mode='json'),'review_completion':None};await s.commit()
  return await card(jid,owner)
 @router.get('/journeys/{jid}/card')
 async def card(jid:str,owner=Depends(principal)):
@@ -267,7 +267,7 @@ async def medicine_choose(jid:str,body:MedicineChoice,owner=Depends(principal)):
   if body.candidate>=len(candidates):raise HTTPException(422,'Choose a printed reading or type it yourself')
   chosen=candidates[body.candidate];value=f'{chosen["generic"]} {chosen["strength"]}'.strip()
   slots={**j.payload.get('slots',{}),'medicine':value};slots.pop('indication',None)
-  j.payload={**j.payload,'slots':slots,'medicine_proposal':None,'selection':None}
+  j.payload={**j.payload,'slots':slots,'medicine_proposal':None,'selection':None,'review_completion':None}
   line=await s.scalar(select(Line).where(Line.journey_id==owner,Line.slot=='medicine'))
   payload=fsm.line_payload('medicine',value,j.payload['member'],'two_readers_buyer_choice')
   if line:line.payload=payload;line.confirmed=False;line.version+=1
@@ -308,9 +308,7 @@ async def audit_policy(jid:str,owner=Depends(principal),policy:UploadFile|None=F
   result={'flags':[{'key':'document','status':'check_manually','title':'Please check this PDF manually','title_hi':'कृपया यह पीडीएफ खुद जाँचें','expected_quote':'Your confirmed declaration and Promise Card','actual_quote':'The PDF could not be safely read.','impact':'Use a text PDF or ask the advisor to compare the fields.','impact_hi':'टेक्स्ट वाली पीडीएफ दें या सलाहकार से क्षेत्रों की तुलना करवाएं।'}],'matches':[],'verified_field_count':0,'extraction_mode':'manual_required','extracted':{}}
  finally:del data
  result['free_look_last_day']=(date.fromisoformat(selection['receipt'])+timedelta(days=plans()[selection['plan_id']].free_look.value-1)).isoformat()
- async with Session() as s:
-  record=AuditRun(journey_id=owner,pdf_sha=digest,payload=result);s.add(record);await s.commit()
- return result
+ return await store_audit(owner,result,digest,j,lines)
 
 def payment_view(row):
  return {'mode':row.mode,'order_id':row.order_id,'amount':'1.00','status':row.status,'verified':False,'paid_at':row.paid_at.isoformat() if row.paid_at else None,'label':'Demo'}
@@ -409,5 +407,64 @@ async def manual_audit(jid:str,body:ManualAuditIn,owner=Depends(principal)):
  result=compare(fields,context);result['extraction_mode']='buyer_checked_manual';result['extracted']={k:f.model_dump() for k,f in fields.items()}
  result['free_look_last_day']=(date.fromisoformat(context['selection']['receipt'])+timedelta(days=plans()[context['selection']['plan_id']].free_look.value-1)).isoformat()
  digest=hashlib.sha256(str(body.fields).encode()).hexdigest()
- async with Session() as s:s.add(AuditRun(journey_id=owner,pdf_sha=digest,payload=result));await s.commit()
- return result
+ return await store_audit(owner,result,digest,j,lines)
+
+
+def audit_context_fingerprint(j,lines):
+ context={'selection':j.payload.get('selection'),'member':j.payload.get('member'),'lines':sorted((line.id,line.version,line.confirmed) for line in lines)}
+ return hashlib.sha256(json.dumps(context,sort_keys=True,default=str).encode()).hexdigest()
+
+async def store_audit(owner,result,digest,j,lines):
+ from apps.api.app.db import AuditRun
+ payload={**result,'context_fingerprint':audit_context_fingerprint(j,lines)}
+ async with Session() as s:
+  current=await owned(s,Journey,owner,owner,True)
+  current.payload={**current.payload,'review_completion':None}
+  record=AuditRun(journey_id=owner,pdf_sha=digest,payload=payload);s.add(record);await s.commit()
+ return {**result,'audit_id':record.id}
+
+@router.get('/journeys/{jid}/audit/latest')
+async def latest_audit(jid:str,owner=Depends(principal)):
+ from apps.api.app.db import AuditRun
+ async with Session() as s:
+  await owned(s,Journey,jid,owner)
+  record=await s.scalar(select(AuditRun).where(AuditRun.journey_id==owner).order_by(AuditRun.id.desc()))
+  if not record:raise HTTPException(404,'No policy check yet')
+  return {**{key:value for key,value in record.payload.items() if key!='context_fingerprint'},'audit_id':record.id}
+
+class FinishReviewIn(Body):
+ audit_id:str=Field(min_length=1,max_length=26)
+ acknowledged:bool
+
+@router.post('/journeys/{jid}/finish')
+async def finish_review(jid:str,body:FinishReviewIn,owner=Depends(principal)):
+ from apps.api.app.db import AuditRun,Payment
+ if jid!=owner:raise HTTPException(404,'Not found')
+ await require_consented(owner,'P3_audit')
+ if not body.acknowledged:raise HTTPException(422,'Review the result before finishing')
+ async with Session() as s:
+  j,lines=await confirmed_context(owner,s,lock=True)
+  if not j.saved or not j.payload.get('selection'):raise HTTPException(409,'Save your Promise Card first')
+  record=await owned(s,AuditRun,body.audit_id,owner)
+  latest=await s.scalar(select(AuditRun.id).where(AuditRun.journey_id==owner).order_by(AuditRun.id.desc()))
+  if latest!=record.id:raise HTTPException(409,'Please finish your latest policy check')
+  result=record.payload;fingerprint=audit_context_fingerprint(j,lines)
+  if result.get('context_fingerprint') and result['context_fingerprint']!=fingerprint:
+   raise HTTPException(409,'Your details changed. Check the policy again before finishing.')
+  if not result.get('context_fingerprint'):
+   # Support the owner's audit completed before this finishing step was added.
+   # Recompare its already quote-verified fields against today's confirmed facts.
+   from apps.api.app.audit import compare,FieldValue
+   fields={key:FieldValue.model_validate(value) for key,value in result.get('extracted',{}).items()}
+   context={'member':j.payload['member'],'selection':j.payload['selection'],'conditions':fsm.confirmed_conditions(lines)}
+   current=compare(fields,context)
+   if current['flags']!=result.get('flags') or current['matches']!=result.get('matches'):
+    raise HTTPException(409,'Your details changed. Check the policy again before finishing.')
+  previous=j.payload.get('review_completion')
+  if previous and previous.get('audit_id')==record.id:return previous
+  flags=result.get('flags',[])
+  payment=await s.scalar(select(Payment).where(Payment.journey_id==owner,Payment.status=='PAID',Payment.mode=='demo').order_by(Payment.id.desc()))
+  selection=j.payload['selection'];plan=plans()[selection['plan_id']]
+  completion={'audit_id':record.id,'completed_at':now().isoformat(),'status':'completed_with_follow_up' if flags else 'completed','flag_count':len(flags),'flags':[{'key':flag['key'],'title':flag.get('title'),'title_hi':flag.get('title_hi'),'status':flag['status']} for flag in flags],'match_count':len(result.get('matches',[])),'free_look_last_day':(date.fromisoformat(selection['receipt'])+timedelta(days=plan.free_look.value-1)).isoformat(),'plan_id':plan.plan_id,'product_name':plan.product_name,'payment_status':'PAID' if payment else 'NOT_PAID','order_id':payment.order_id if payment else None,'payment_mode':'demo','policy_accepted':False,'issues_resolved':False if flags else None}
+  j.payload={**j.payload,'review_completion':completion};await s.commit()
+ return completion

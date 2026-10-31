@@ -1,0 +1,37 @@
+import {chromium} from '@playwright/test';
+import fs from 'node:fs';
+const base=process.argv[2]||'http://127.0.0.1:8000';
+const call=async(path,data,token)=>{const r=await fetch(base+path,{method:data?'POST':'GET',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},...(data?{body:JSON.stringify(data)}:{})});if(!r.ok)throw new Error(path+' '+r.status);return r.json()};
+const {token,journey_id:jid}=await call('/api/session',{lang:'en'}),root='/api/journeys/'+jid;
+await call(root+'/consent',{disclosure:true,alerts:true,audit:true},token);
+for(const text of ['Mother','I agree','Sunita','52','Female','158','64','BP / hypertension','2019','Yes','No','Yes','Telma 40 mg','1 tablet','Once daily','BP / hypertension','None','None','No','No','No'])await call(root+'/answer',{text},token);
+for(const line of (await call(root,null,token)).lines)await call('/api/lines/'+line.id+'/confirm',{version:line.version},token);
+await call(root+'/select',{plan_id:'care_supreme_ic',d0:'2026-10-31',receipt:'2026-10-31'},token);await call(root+'/save',{passphrase:process.env.DEMO_LOGIN_PASSPHRASE},token);
+const order=await call(root+'/pay/initiate',{},token);await call(root+'/pay/'+order.order_id+'/complete',{method:'UPI'},token);
+const fields={uin:'CHIHLIP25047V022425',inception:'2026-10-31',sum_insured:'500000',age:'52',sex:'F',declared:'hypertension',instant_cover:'No',ped_months:'36',initial_days:'30',specific_months:'24'};
+await call(root+'/audit/manual',{fields,checked:true},token);
+const browser=await chromium.launch(),page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.addInitScript(({token,jid})=>{localStorage.setItem('pc_lang','en');localStorage.setItem('pc_token',token);localStorage.setItem('pc_jid',jid)},{token,jid});
+try{
+ await page.goto(base,{waitUntil:'networkidle'});await page.locator('.finish-review-box').waitFor();
+ const finish=page.getByRole('button',{name:'Finish review',exact:true});
+ if(!await finish.isDisabled())throw new Error('Flagged finish did not require acknowledgment');
+ await page.locator('.finish-review-box input[type=checkbox]').check();await finish.click();await page.getByRole('heading',{name:'Your review is complete',exact:true}).waitFor();
+ if(!(await page.locator('.completion-follow-up').textContent()).includes('Instant Cover'))throw new Error('Unresolved difference hidden');
+ if(!(await page.locator('.completion-checks').textContent()).includes('₹1 demo payment recorded'))throw new Error('Payment summary incorrect');
+ await page.screenshot({path:'.run/screenshots/completion-flagged-mobile.png',fullPage:true});
+ await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:'Your review is complete',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Review differences & next steps',exact:true}).click();await page.locator('.audit-flag').waitFor();
+ await call(root+'/audit/manual',{fields:{...fields,instant_cover:'Yes'},checked:true},token);
+ await page.reload({waitUntil:'networkidle'});await page.locator('.finish-review-box').waitFor();await finish.click();await page.getByRole('heading',{name:'Your review is complete',exact:true}).waitFor();
+ if(await page.locator('.completion-follow-up').count())throw new Error('Clean completion shows unresolved differences');
+ await page.screenshot({path:'.run/screenshots/completion-clean-mobile.png',fullPage:true});
+ await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:'.run/screenshots/completion-clean-desktop.png',fullPage:true});
+ await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:'Your review is complete',exact:true}).waitFor();
+ await page.getByRole('button',{name:'View my Promise Card',exact:true}).click();await page.locator('.promise-card').waitFor();
+ await page.getByRole('button',{name:'Menu',exact:true}).click();await page.getByRole('button',{name:'Reset demo',exact:true}).click();await page.getByRole('heading',{name:'Who is this cover for?',exact:true}).waitFor();
+ if((await page.locator('.form-row strong').allTextContents()).some(v=>v&&v!=='—'))throw new Error('Reset retained values');
+ if(errors.length)throw new Error('Browser errors: '+errors.join(';'));
+ const report={passed:true,base,flagged_acknowledgment:true,flags_preserved:true,clean_completion:true,persistence_on_reload:true,payment_from_paid_record:true,promise_return:true,reset_clears_completion:true,browser_errors:errors};
+ fs.writeFileSync('evals/results/finish-browser.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+}finally{await browser.close()}

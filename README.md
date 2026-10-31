@@ -1,6 +1,6 @@
 # PakkaCover
 
-Live fallback: https://slide-stage-seller-republican.trycloudflare.com
+Live fallback: https://camping-leon-rider-performer.trycloudflare.com
 
 PakkaCover helps a family build and confirm a health disclosure.
 It compares public sample plan terms using deterministic payout/date rules.

@@ -1,6 +1,6 @@
 # PakkaCover — stage demo
 
-Live URL: **https://slide-stage-seller-republican.trycloudflare.com**
+Live URL: **https://camping-leon-rider-performer.trycloudflare.com**
 
 Hackathon demo · Sample public policy terms · Education only. No insurance is sold.
 
@@ -69,10 +69,10 @@ The stable laptop URL is `http://127.0.0.1:8000`; the phone needs HTTPS for mic/
 .venv/bin/python scripts/check_quotes.py
 npm --prefix apps/web run build
 .venv/bin/python scripts/eval_golden.py --if-new
-.venv/bin/python scripts/browser_test.py https://slide-stage-seller-republican.trycloudflare.com --full --live-voice --runs=3 --record
+.venv/bin/python scripts/browser_test.py https://camping-leon-rider-performer.trycloudflare.com --full --live-voice --runs=3 --record
 ```
 
-Current verification and freeze status are in `TRACKING.md` and `evals/results/freeze-verification.json`. The original `demo-1` tag is immutable; the revised freeze uses `demo-2`. The old 11:51 results remain historical evidence, not revised-build verification.
+Current verification and freeze status are in `TRACKING.md` and `evals/results/freeze-verification.json`. The original `demo-1` and verified `demo-2` tags are immutable; the finishing-step revision uses `demo-3`. The old 11:51 results remain historical evidence, not revised-build verification.
 
 Browser rehearsals use a **synthetic printed medicine label** and synthetic spoken answer through the real provider APIs. They check phone/laptop layouts and browser behavior, and do not certify a physical phone's microphone/camera or real medicine-strip photos. No owner golden media has been supplied so far; `saaras:v4` remains pinned until clips arrive and trigger the v4/v3-codemix A/B.
 
@@ -88,7 +88,7 @@ The authorized Vercel attempt was skipped under the owner's explicit rule becaus
 
 This hackathon build defers real identity, retention/export/delete screens, production operations, backups, staff TOTP and licensed-partner integration. The required rules engine, quote checks, numeric guard, individual confirmation, ownership, consent, encryption, app-side caps and visible Demo labels remain in place.
 
-## Revised frozen build
+## Historical verified demo-2 build
 
 **FROZEN: 2026-10-31T13:11:47.318947+05:30 — demo-2.** Original demo-1 is unchanged.
 
@@ -98,3 +98,11 @@ This hackathon build defers real identity, retention/export/delete screens, prod
 - All three plans and exact corrected-line recovery pass; seven real Hindi identity/measurement voice probes pass.
 - Both WebM and MP4 local fallback recordings refreshed. Stage API restarted cleanly while preserving the URL.
 - No owner media or physical-phone hardware validation was supplied; synthetic/provider and responsive-browser evidence is identified above.
+
+## Finish the process
+
+After a policy check, scroll to **Finish review**. With a flagged policy, tick **I have reviewed these differences. Follow-up is still needed**, then finish. The completion screen saves the review and keeps the flagged difference and deadline visible. With the clean PDF, finish directly to show the completed review without a follow-up warning.
+
+The summary includes the saved Promise Card and actual demo-payment status. It persists after reload. Use **View my Promise Card**, **Review differences & next steps**, or the menu's **Reset demo**. Finishing a review does not accept an insurance contract or mark unresolved differences fixed.
+
+The earlier Cloudflare hostname retired around13:55 IST. The live link at the top is its replacement; a new hostname needs a fresh browser demo session. On the Mac, `http://127.0.0.1:8000` also serves the updated app.

@@ -2,13 +2,13 @@
 
 ## Resume here
 - Live URL: https://slide-stage-seller-republican.trycloudflare.com
-- Time: 2026-10-31 13:28:56 IST. FROZEN application unchanged; requested upload PDFs verified.
-- Next action: Upload demo-files/PakkaCover-Sunita-Plan-B-Missing-Addon.pdf in Policy check to show the missing add-on and fix/cancel/advisor actions. Optionally upload the Clean PDF to show zero flags. Both match Plan B,52F,BP,start2026-10-31.
+- Time: 2026-10-31 13:56:39 IST. Owner-requested Finish review implemented; final browser check and tunnel recovery.
+- Next action: Verify tests/test_finish.py and rebuild TypeScript; browser-check flagged acknowledgment, clean finish, persistence on reload, owner isolation and Reset; then commit/push and freeze demo-3. Prior demo-2 remains safe fallback.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --restart-api; scripts/run_demo --stop
 - Run tests: .venv/bin/python -m pytest -q; .venv/bin/python scripts/check_quotes.py; npm --prefix apps/web run build
 - Background processes: Stage API/tunnel/caffeinate and local PostgreSQL55432 remain running. Stop scripts/run_demo --stop.
 - Done and verified / half-done: Exported owner-requested clearly fictional uploadable missing-add-on and clean policy PDFs plus instructions in demo-files/. No application code or frozen tags changed.; verification: Both PDFs uploaded through the actual audit endpoint with live model extraction:11 quote-verified fields each; missing-add-on1 flag (instant_cover), clean0 flags. PDF labels/text parsed and verified. Prior frozen146 tests/44 clauses/3 HTTPS runs remain unchanged.. The next action above identifies unfinished work.
-- Open problems and decisions: None for the requested PDFs. They match the Sunita Plan B fixture; other member/plan/start-date choices can produce additional differences. Vercel remains skipped under prior DNS fallback decision.
+- Open problems and decisions: Old Cloudflare quick tunnel retired (Tunnel not found; hostname fails DNS). Retunnelling now; app/local DB remain healthy. New finishing-step backend4 tests and all150 tests PASS; TypeScript/Vite PASS. demo-1/demo-2 preserved; demo-3 final check pending.
 - Paytm mode: demo only.
 
 ## Implementation log

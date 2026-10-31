@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "base": "https://camping-leon-rider-performer.trycloudflare.com",
+  "flagged_acknowledgment": true,
+  "flags_preserved": true,
+  "clean_completion": true,
+  "persistence_on_reload": true,
+  "payment_from_paid_record": true,
+  "promise_return": true,
+  "reset_clears_completion": true,
+  "browser_errors": []
+}

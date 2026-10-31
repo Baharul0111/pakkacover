@@ -76,3 +76,10 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 
 ## Owner-requested PDF exports — 13:28 IST
 - Exported two explicitly fictional, one-page Plan B/Sunita52F/hypertension/2026-10-31 PDFs into demo-files/ for manual upload: missing Instant Cover and clean. This is an explicit synthetic fixture export requested by the owner; uploaded buyer PDFs remain transient and are never stored. Application code and both frozen tags remain unchanged.
+
+## Owner-requested final review step — 13:30 IST
+- The owner requested an explicit way to finish after the policy audit. Add an owner-scoped, persisted Finish review acknowledgment and a bilingual completion summary. Flagged differences stay open and visible; completing the review never accepts an insurance policy or resolves an issue. Clean results show completion without a follow-up warning.
+- Completion is tied to the latest audit and confirmed context; changed answers/plan invalidate it. Existing owner audits from before this feature can be re-compared in code without uploading or paying again. Reset clears completion.
+- Prior demo-1/demo-2 tags remain unchanged. The new finishing-step revision will use demo-3 after its tests and browser checks; no frozen engine/payment/date behavior is changed.
+
+- 13:56 IST tunnel recovery: the old anonymous tunnel returned Tunnel not found and stopped resolving; local API remained healthy. Replaced only the tunnel. New stage URL: https://camping-leon-rider-performer.trycloudflare.com. New hostname means a new browser origin/session; no cross-owner session merging was introduced.
