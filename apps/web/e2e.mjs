@@ -1,8 +1,8 @@
 import {chromium} from '@playwright/test';
 import fs from 'node:fs';
-const began=Date.now();const base=process.argv[2]||'http://127.0.0.1:8000';const full=process.argv.includes('--full');
-const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
-const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+const began=Date.now();const base=process.argv[2]||'http://127.0.0.1:8000';const full=process.argv.includes('--full');const record=process.argv.includes('--record');let finished=false;
+const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,...(record?{recordVideo:{dir:'.run/rehearsal-video',size:{width:390,height:844}}}:{})});
+const page=await context.newPage();const video=page.video();const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try{
  await page.goto(base,{waitUntil:'networkidle'});await page.getByRole('button',{name:'English',exact:true}).click();
  await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:/I agree/}).click();
@@ -11,7 +11,11 @@ try{
  await page.route('**/speak',route=>route.fulfill({status:204}));
  const answers=['158','64','BP / hypertension','2019','Yes','No','Telma 40 mg','BP / hypertension','Once daily','None','None','No','No','No'];
  for(let i=0;i<answers.length;i++){
-  if(full&&i===6){
+  if(full&&i===2&&process.env.PCC_E2E_AUDIO_B64){
+   const out=await page.evaluate(async(encoded)=>{const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));const f=new FormData();f.append('audio',new Blob([bytes],{type:'audio/wav'}),'answer.wav');f.append('duration','6');const r=await fetch('/v1/journeys/'+localStorage.getItem('pc_jid')+'/voice',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('pc_token'),'Idempotency-Key':crypto.randomUUID()},body:f});return r.json();},process.env.PCC_E2E_AUDIO_B64);
+   if(!out.accepted)throw new Error('Live speech slot was not preserved');
+   await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:/Since when/}).waitFor();
+  }else if(full&&i===6){
    const encoded=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=1000;c.height=500;const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,1000,500);ctx.fillStyle='black';ctx.font='48px Arial';['TELMA 40','Telmisartan Tablets IP','Each tablet contains:','Telmisartan 40 mg'].forEach((line,n)=>ctx.fillText(line,40,80+n*85));return c.toDataURL('image/png').split(',')[1];});
    const response=page.waitForResponse(r=>r.url().endsWith('/photo')&&r.request().method()==='POST');
    await page.locator('input[type=file][accept="image/*"]').setInputFiles({name:'synthetic-printed-strip.png',mimeType:'image/png',buffer:Buffer.from(encoded,'base64')});
@@ -50,5 +54,5 @@ try{
  }
  if(errors.length)throw new Error('Browser runtime errors: '+errors.join(';'));
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+1);if(overflow)throw new Error('Mobile horizontal overflow');
- const report={passed:true,base,full,ranking:labels,browserErrors:errors.length,durationSeconds:Math.round((Date.now()-began)/1000)};fs.mkdirSync('evals/results',{recursive:true});fs.writeFileSync('evals/results/browser-'+Date.now()+'.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
-}finally{await browser.close();}
+ const report={passed:true,base,full,ranking:labels,browserErrors:errors.length,durationSeconds:Math.round((Date.now()-began)/1000)};fs.mkdirSync('evals/results',{recursive:true});fs.writeFileSync('evals/results/browser-'+Date.now()+'.json',JSON.stringify(report,null,2));finished=true;console.log(JSON.stringify(report));
+}finally{await context.close();if(finished&&record&&video){fs.copyFileSync(await video.path(),'.run/sunita-fallback.webm');}await browser.close();}

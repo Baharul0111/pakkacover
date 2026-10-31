@@ -13,7 +13,7 @@ def stop_one(kind):
  if not path.exists():return
  try:
   pid=int(path.read_text());command=subprocess.check_output(['ps','-p',str(pid),'-o','command='],text=True)
-  expected='uvicorn apps.api.app.main:app' if kind=='api' else 'cloudflared tunnel'
+  expected={'api':'uvicorn apps.api.app.main:app','tunnel':'cloudflared tunnel','preflight':'scripts/payment_preflight.py','awake':'caffeinate -i -w'}[kind]
   if expected in command:
    os.kill(pid,signal.SIGTERM)
    for _ in range(20):
@@ -24,7 +24,7 @@ def stop_one(kind):
  path.unlink(missing_ok=True)
 
 def stop():
- stop_one('tunnel');stop_one('api');print('Demo API and tunnel stopped. Local PostgreSQL is retained for restart.')
+ stop_one('preflight');stop_one('awake');stop_one('tunnel');stop_one('api');print('Demo API and tunnel stopped. Local PostgreSQL is retained for restart.')
 
 def command(args):
  result=subprocess.run(args,cwd=ROOT,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
@@ -84,12 +84,15 @@ def main():
  from apps.api.app.config import bootstrap
  bootstrap()
  command([PYTHON,'-m','alembic','upgrade','head'])
+ command([PYTHON,'scripts/eval_golden.py','--if-new'])
  if not (ROOT/'apps/web/node_modules').exists():command(['npm','ci','--prefix','apps/web','--no-audit','--no-fund'])
  if not a.no_build or not (ROOT/'apps/web/dist/index.html').exists():command(['npm','run','build','--prefix','apps/web'])
  proc=launch('api',[PYTHON,'-m','uvicorn','apps.api.app.main:app','--host','0.0.0.0','--port',str(a.port),'--no-access-log'])
  try:
   status=wait_api(a.port)
   url=f'http://127.0.0.1:{a.port}' if a.no_tunnel else tunnel(a.port)
+  launch('preflight',[PYTHON,str(ROOT/'scripts/payment_preflight.py'),'--at-1430'])
+  if shutil.which('caffeinate'):launch('awake',['caffeinate','-i','-w',str(proc.pid)])
   print('\nPakkaCover is ready · DEMO ONLY')
   print('Open on your phone: '+url)
   print('Payment mode: '+status['payment_mode'])

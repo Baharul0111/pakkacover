@@ -1,0 +1,13 @@
+{
+  "stt": "saaras:v4",
+  "stt_reason": "No owner golden clips present; rerun A/B when provided.",
+  "tts": "bulbul:v4-flash",
+  "requested": {
+    "slots": "claude-haiku-5-5",
+    "slots_fallback": "gpt-6-luna",
+    "vision": ["gpt-6.1-terra", "claude-haiku-5-5"],
+    "audit": "claude-haiku-5-5",
+    "audit_retry": "claude-sonnet-5-5",
+    "moderation": "omni-moderation-latest"
+  }
+}

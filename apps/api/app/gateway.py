@@ -13,7 +13,7 @@ from apps.api.app.db import Session,ConfigFlag,Usage
 DEFAULTS={'voice_in':True,'voice_out':True,'vision_read':True,'llm_phrasing':True,'audit_llm':True,'payments':True,'vendor:openai':True,'vendor:anthropic':True,'vendor:sarvam':True,'new_sessions':True}
 KEYTERMS=['BP','sugar','thyroid','Telma','Telmisartan','Amlodipine','Metformin','Thyronorm','Atorvastatin','hypertension','diabetes','kidney','heart']
 MODEL_STATUS={}
-STT_MODEL='saaras:v4'
+STT_MODEL=json.loads((ROOT/'models.yaml').read_text()).get('stt','saaras:v4') if (ROOT/'models.yaml').exists() else 'saaras:v4'
 class Unavailable(Exception):pass
 
 def client(timeout=8):
