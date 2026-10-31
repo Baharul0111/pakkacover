@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:56:25 IST. Step 4: mobile browser verification.
-- Next action: Run local browser journey through Promise Card, fix any observed UI failures; implement Step 5 sample PDFs and grounded audit.
+- Time: 2026-10-31 10:57:48 IST. Step 5 starting: generated policies and Day-12 audit.
+- Next action: Implement in-memory sample_policy.py, quote-verified extraction and deterministic diff; run G6 clean plus 3 planted mismatches.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432. About to start temporary API on 8000 for QA; stop via PID in .run/qa-api.pid.
-- Done and verified / half-done: React build succeeded; added automated mobile Sunita browser journey and card/backend checks; verification: TypeScript/Vite build passed; card and backend regressions running; browser check next. The next action above identifies unfinished work.
-- Open problems and decisions: Payment and audit screens await their endpoints. No golden media yet.
+- Background processes: Postgres 55432; temporary QA API PID in .run/qa-api.pid on 8000; stop with kill $(cat .run/qa-api.pid). Browser session 56775.
+- Done and verified / half-done: Step 4 UI builds; bilingual review/ranking/card APIs and 68 regressions pass; mobile browser check running; verification: TypeScript/Vite passed; 68 backend/card/numeric/medicine checks passed; initial browser launch raced server startup, readiness wait added. The next action above identifies unfinished work.
+- Open problems and decisions: No golden media. Browser check 56775 pending. Payment endpoints still Step 6.
 - Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
@@ -23,6 +23,7 @@
 - 2026-10-31 10:50:03 IST | Step 4 starting: phone UI, review, ranking and Promise Card | Step 3 photo pipeline and guard tests complete; 60 hand-seeded generics and explicit condition choice | Tests: 66 backend/numeric/medicine tests passed; live synthetic vision result in evals/results/vision-smoke.json when finished | Commit: `290b328`
 - 2026-10-31 10:54:45 IST | Step 4: React UI written; build/browser checks next | Built bilingual mobile-first React UI, recording/photo controls, review cards, scenario sliders, clause modal, Promise Card and upcoming dates | Tests: TypeScript/Vite build in progress; backend engine/ownership tests already passed | Commit: `1be7a58`
 - 2026-10-31 10:56:25 IST | Step 4: mobile browser verification | React build succeeded; added automated mobile Sunita browser journey and card/backend checks | Tests: TypeScript/Vite build passed; card and backend regressions running; browser check next | Commit: `98adf31`
+- 2026-10-31 10:57:48 IST | Step 5 starting: generated policies and Day-12 audit | Step 4 UI builds; bilingual review/ranking/card APIs and 68 regressions pass; mobile browser check running | Tests: TypeScript/Vite passed; 68 backend/card/numeric/medicine checks passed; initial browser launch raced server startup, readiness wait added | Commit: `2a39ed7`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
