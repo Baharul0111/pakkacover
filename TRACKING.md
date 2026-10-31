@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:46:21 IST. Freeze: all feature and rehearsal gates passed.
-- Next action: Run the final required tests/quote check and golden-file presence check, stop QA API/tunnel, launch fresh stage instance, update final URL/evidence and create demo-1 tag.
-- Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
-- Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: QA API/tunnel at https://shortcuts-foreign-categories-medicines.trycloudflare.com; stop via scripts/run_demo --stop, then launch stage instance. Postgres55432; preflight/awake will be restarted.
-- Done and verified / half-done: All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked; verification: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists. The next action above identifies unfinished work.
-- Open problems and decisions: No unfinished demo feature. Only freeze bookkeeping remains. Simulated payment and absence of owner media/physical-device testing are documented.
+- Time: 2026-10-31 11:51:16 IST. FROZEN — demo complete.
+- Next action: No unfinished demo work. Use scripts/run_demo --status and follow DEMO.md on the phone. Source is frozen under tag demo-1; do not redo completed steps.
+- Run app: `scripts/run_demo` (start/rebuild); `scripts/run_demo --status` (running instance); `scripts/run_demo --restart-api` (reload keys without rotating tunnel)
+- Run tests: `.venv/bin/python -m pytest -q` (includes G0/G1/G2/G6/G7 and payment/media/cap checks)
+- Background processes: Stage API/tunnel: https://slide-stage-seller-republican.trycloudflare.com, .run/api.pid and .run/tunnel.pid. Read-only14:30 key check .run/preflight.pid; caffeinate .run/awake.pid. Stop these: scripts/run_demo --stop. Local Postgres55432 retained; stop separately with pg_ctl -D .run/postgres stop. QA processes were stopped before this fresh stage instance.
+- Done and verified / half-done: All seven build steps complete; fresh stage instance ready; DEMO.md and WebM/MP4 fallback recordings saved; original documents unchanged; verification: Final run: 121 passed; G2 44 source clauses verified; 3 consecutive full HTTPS runs 39/44/40s with accepted live speech, correct clause taps, 3/3 audit mismatches and 0 clean false flags; secret scan passed. The next action above identifies unfinished work.
+- Open problems and decisions: No remaining hackathon implementation. Payment simulated because keys absent; real owner clips/photos not supplied, physical phone hardware not tested by automation. Real pilot work remains explicitly out of scope.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -47,6 +47,7 @@
 - 2026-10-31 11:40:19 IST | Step 7: final revised-build rehearsal 1/3 passed | Revised build passed full HTTPS story in 39s: voice accepted, live dual readers, correct Instant Cover citation, all 3 model-verified mismatches and clean PDF; fallback video refreshed | Tests: 121 Python tests passed; G2 validates 44 clauses; all 4 live audits verified 11 fields each, with flags 1/1/1/0; browser errors 0 | Commit: `47bbda8`
 - 2026-10-31 11:42:54 IST | Step 7: final revised-build rehearsal 2/3 passed | Second revised-build full HTTPS story passed in 44s with accepted live voice, dual-reader photo, correct clause tap and audit flags 1/1/1/0 | Tests: 121 Python tests passed; 44 clause references verified; both final rehearsals have 0 browser errors and all audit fields model/quote verified | Commit: `d2e868f`
 - 2026-10-31 11:46:21 IST | Freeze: all feature and rehearsal gates passed | All 3 final HTTPS rehearsals passed (39/44/40s); DEMO.md complete; freeze evidence saved; historical tracker text clearly marked | Tests: 121 tests passed; 44 source clauses verified; live audit fields all 11 verified per PDF with flags1/1/1/0; recorded video exists | Commit: `b5a271e`
+- 2026-10-31 11:51:16 IST | FROZEN — demo complete | All seven build steps complete; fresh stage instance ready; DEMO.md and WebM/MP4 fallback recordings saved; original documents unchanged | Tests: Final run: 121 passed; G2 44 source clauses verified; 3 consecutive full HTTPS runs 39/44/40s with accepted live speech, correct clause taps, 3/3 audit mismatches and 0 clean false flags; secret scan passed | Commit: `fa851a2`
 
 ## Original orientation notes
 
