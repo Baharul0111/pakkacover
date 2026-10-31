@@ -1,8 +1,8 @@
 {
   "printed": {
-    "passed": true,
-    "status": "agree",
-    "candidate_count": 2,
+    "passed": false,
+    "status": "choose",
+    "candidate_count": 1,
     "requires_buyer_indication": true
   },
   "blank": {

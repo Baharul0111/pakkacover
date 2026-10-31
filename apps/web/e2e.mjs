@@ -71,10 +71,27 @@ try{
   await page.getByRole('heading',{name:'What would each plan pay?',exact:true}).waitFor();
   const labels=await page.locator('.plan-label').allTextContents();if(labels.join(',')!=='Plan B,Plan C,Plan A')throw new Error('Ranking incorrect');
   if(await page.locator('.mini-timeline').count()!==3)throw new Error('Comparison timelines missing');
+  const percents=await page.locator('.timeline-wait').evaluateAll(nodes=>nodes.map(n=>parseFloat(n.style.width)));
+  if(!(percents[0]>0&&percents[0]<5&&percents[1]>60&&percents[1]<70&&percents[2]===100))throw new Error('Shared timeline positions incorrect');
+  if((await page.locator('.for-you-row').count())!==10)throw new Error('For you summaries missing');
   await page.locator('.plan-card .text-button').first().click();if(!(await page.locator('.modal blockquote').textContent()).includes('31st day'))throw new Error('Comparison BP clause wrong');await page.getByRole('button',{name:'Close',exact:true}).click();
   await page.locator('.big-payout').first().click();await page.locator('.modal .calculation-row button').first().click();await page.locator('.modal blockquote').waitFor();await page.getByRole('button',{name:'Close',exact:true}).click();
   if(run===1){await shot('ranking');await desktopShot('ranking');}
-  await page.getByRole('button',{name:'Make my Promise Card',exact:true}).first().click();await page.locator('.promise-card').waitFor();
+  if(run===1){
+   // While Compare is visible, emulate a corrected line arriving from another
+   // request. Selection must return to that exact Check card, without an error.
+   const changed=await page.evaluate(async()=>{const root='/api/journeys/'+localStorage.getItem('pc_jid'),h={Authorization:'Bearer '+localStorage.getItem('pc_token'),'Content-Type':'application/json'};const j=await(await fetch(root,{headers:h})).json();const line=j.lines.find(l=>l.key==='weight');await fetch('/api/lines/'+line.id+'/reopen',{method:'POST',headers:h});await fetch(root+'/answer',{method:'POST',headers:h,body:JSON.stringify({text:'68 kilo'})});return line.id;});
+   await page.getByRole('button',{name:'Make my Promise Card',exact:true}).first().click();await page.getByRole('heading',{name:'Does this look right?',exact:true}).waitFor();
+   if(!(await page.locator('.review-card').textContent()).includes('68'))throw new Error('Did not focus corrected line');
+   if(await page.locator('.message.error').count())throw new Error('Confirmation redirect showed an error');
+   await page.getByRole('button',{name:'Sahi hai',exact:true}).click();await page.getByRole('button',{name:'Compare sample plans',exact:true}).waitFor();await page.getByRole('button',{name:'Compare sample plans',exact:true}).click();await page.locator('.plans-grid').waitFor();
+   for(const [label,id] of [['Plan C','tata_premier'],['Plan A','optima_secure'],['Plan B','care_supreme_ic']]){
+    const article=page.locator('.plan-card').filter({has:page.locator('.plan-label',{hasText:label})});
+    const selected=await postResponse('/select',()=>article.getByRole('button',{name:'Make my Promise Card',exact:true}).click());
+    if(selected.plan_id!==id)throw new Error('Wrong Promise Card plan');await page.locator('.promise-card').waitFor();
+    if(label!=='Plan B'){await page.getByRole('button',{name:'Back to plans',exact:true}).click();await page.locator('.plans-grid').waitFor();}
+   }
+  }else{await page.getByRole('button',{name:'Make my Promise Card',exact:true}).first().click();await page.locator('.promise-card').waitFor();}
   await page.getByRole('heading',{name:'Your upcoming dates',exact:true}).waitFor();
   await page.locator('.promise-row').filter({hasText:'Declared hypertension'}).click();if(!(await page.locator('.modal blockquote').textContent()).includes('31st day'))throw new Error('Promise BP clause wrong');await page.getByRole('button',{name:'Close',exact:true}).click();
   if(!(await page.locator('.promise-row').allTextContents()).some(x=>x.includes('30 November 2026')))throw new Error('Promise date missing');

@@ -162,7 +162,7 @@ async def speak(jid:str,body:TTSIn,owner=Depends(principal)):
 async def confirm(lid:str,body:ConfirmIn,owner=Depends(principal)):
  async with Session() as s:
   line=await owned(s,Line,lid,owner,True)
-  if line.version!=body.version:raise HTTPException(409,'This line changed; review it again')
+  if line.version!=body.version:raise HTTPException(409,{'code':'review_required','phase':'review','line_id':line.id,'question_key':line.slot})
   line.confirmed=True;await s.commit()
  return {'confirmed':True}
 @router.post('/lines/{lid}/reopen')
@@ -178,31 +178,33 @@ async def reopen(lid:str,owner=Depends(principal)):
   # The next answer updates this same card and preserves the version check.
   await s.commit()
  return {'status':'reopened'}
-async def confirmed_context(owner):
- async with Session() as s:
-  j=await owned(s,Journey,owner,owner)
-  lines=(await s.scalars(select(Line).where(Line.journey_id==owner))).all()
- if fsm.next_node(j.payload)['key']!='review' or not lines or any(not l.confirmed for l in lines):raise HTTPException(409,'Confirm every declaration line individually first')
- return j,lines
+async def confirmed_context(owner,db=None,lock=False):
+ async def read(s):
+  j=await owned(s,Journey,owner,owner,lock)
+  lines=(await s.scalars(select(Line).where(Line.journey_id==owner).order_by(Line.id))).all()
+  node=fsm.next_node(j.payload)
+  pending=next((line for line in lines if not line.confirmed),None)
+  if node['key']!='review' or not lines or pending:
+   raise HTTPException(409,{'code':'review_required','phase':'interview' if node['key']!='review' else 'review','line_id':pending.id if pending else None,'question_key':node['key']})
+  return j,lines
+ if db is not None:return await read(db)
+ async with Session() as s:return await read(s)
 @router.post('/journeys/{jid}/simulate')
 async def simulation(jid:str,body:ScenarioIn,owner=Depends(principal)):
  if jid!=owner:raise HTTPException(404,'Not found')
  j,lines=await confirmed_context(owner)
  conditions=fsm.confirmed_conditions(lines)
  rows=simulate(body.d0,conditions,j.payload['member']['age'],body.model_dump(exclude={'d0'}))
- from apps.api.app.engine.rules import cover_start
- for row in rows:
-  condition='hypertension' if 'hypertension' in conditions else (conditions[0] if conditions else None)
-  row['condition_key']=condition
-  row['condition_start']=cover_start(plans()[row['plan_id']],body.d0,condition,set(conditions)) if condition else None
+ from apps.api.app.engine.comparison import comparison_details
+ for row in rows:row.update(comparison_details(plans()[row['plan_id']],body.d0,conditions))
  return rows
 @router.post('/journeys/{jid}/select')
 async def select_plan(jid:str,body:SelectIn,owner=Depends(principal)):
  if jid!=owner:raise HTTPException(404,'Not found')
- j,lines=await confirmed_context(owner)
  if body.plan_id not in plans():raise HTTPException(422,'Unknown sample plan')
  async with Session() as s:
-  j=await owned(s,Journey,jid,owner,True);j.payload={**j.payload,'selection':body.model_dump(mode='json')};await s.commit()
+  j,lines=await confirmed_context(owner,s,lock=True)
+  j.payload={**j.payload,'selection':body.model_dump(mode='json')};await s.commit()
  return await card(jid,owner)
 @router.get('/journeys/{jid}/card')
 async def card(jid:str,owner=Depends(principal)):
