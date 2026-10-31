@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:48:02 IST. Step 3 starting: medicine photo pipeline.
-- Next action: Implement bounded spawned media worker, curated salt/brand lookup, parallel readers and explicit medicine choice; run no-fabrication/disagreement tests.
+- Time: 2026-10-31 10:48:35 IST. Step 3: two-reader pipeline written; verification next.
+- Next action: Run medicine and backend regressions; run synthetic printed/blurred image through live readers; then begin React UI Step 4.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Local Postgres 55432; no HTTP server/tunnel. Stop DB: pg_ctl -D .run/postgres stop.
-- Done and verified / half-done: Step 2 complete: backend, consent, Sunita FSM, voice, encryption, owner scoping, numeric guard and explicit confirmation; verification: 59 automated tests passed; live Haiku extraction and Sarvam STT/TTS passed (evals/results/provider-smoke.json). The next action above identifies unfinished work.
-- Open problems and decisions: No golden media present; v4 pinned. No cuts. Supplied remote DB DNS unavailable; local DB used.
+- Background processes: Postgres 55432 only. Worker exists only while API/tests run; application lifespan closes it.
+- Done and verified / half-done: Implemented in-memory photo sanitation in spawned worker, 60-generic lookup, dual readers, agreement/disagreement and explicit buyer choice; verification: Photo tests written; tests and live reader smoke next. The next action above identifies unfinished work.
+- Open problems and decisions: No real golden photos/clips yet. Manual drug/condition seed used only for explicit disambiguation; no inferred diagnosis.
 - Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
@@ -19,6 +19,7 @@
 - 2026-10-31 10:45:36 IST | Step 2: backend and interview written | Migrated local encrypted Postgres; implemented per-purpose consent, member attestation, explicit FSM, Sarvam and bounded model gateway, confirmation, saved sessions and kill switches | Tests: Database migration succeeded; all requested model IDs verified; 0 golden media files currently | Commit: `04c3d72`
 - 2026-10-31 10:47:12 IST | Step 2: G0/G7 passed; live provider smoke in progress | G0 ownership/consent/encryption/idempotency, 50 adversarial numeric cases and interview confirmation gates pass; correction keeps versioned lines | Tests: 59 backend/numeric tests passed; provider smoke running independently | Commit: `332f1b2`
 - 2026-10-31 10:48:02 IST | Step 3 starting: medicine photo pipeline | Step 2 complete: backend, consent, Sunita FSM, voice, encryption, owner scoping, numeric guard and explicit confirmation | Tests: 59 automated tests passed; live Haiku extraction and Sarvam STT/TTS passed (evals/results/provider-smoke.json) | Commit: `c8e14d6`
+- 2026-10-31 10:48:35 IST | Step 3: two-reader pipeline written; verification next | Implemented in-memory photo sanitation in spawned worker, 60-generic lookup, dual readers, agreement/disagreement and explicit buyer choice | Tests: Photo tests written; tests and live reader smoke next | Commit: `84de70a`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
