@@ -1,10 +1,10 @@
 {
-  "tts_bytes": 122924,
-  "measured_seconds": 2.56,
+  "tts_bytes": 119084,
+  "measured_seconds": 2.48,
   "transcript_present": true,
   "recognized_bp_alias": true,
-  "extracted": false,
-  "source": "typed_chips_fallback",
-  "correct_condition": false,
-  "seconds": 10.07
+  "extracted": true,
+  "source": "gpt-6-luna",
+  "correct_condition": true,
+  "seconds": 9.32
 }

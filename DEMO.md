@@ -76,7 +76,7 @@ Check current state without exposing keys:
 scripts/run_demo --status
 ```
 
-The launcher runs a read-only check at **14:30 IST, 31 Oct 2026**. Its result is `.run/payment-preflight-1430.json`, PID `.run/preflight.pid`. It never rotates the tunnel or restarts a live stage session. If it reports `restart_needed: true`, a restart is sufficient to activate newly supplied staging keys. No code change is needed.
+The launcher runs a read-only check at **14:30 IST, 31 Oct 2026**. Its result is `.run/payment-preflight-1430.json`, PID `.run/preflight.pid`. It never rotates the tunnel or restarts a live stage session. If it reports `restart_needed: true`, `scripts/run_demo --restart-api` activates newly supplied staging keys while preserving the current tunnel URL. Reload the phone page to refresh its payment-mode banner. No code change is needed.
 
 ## Verification and fallback recording
 

@@ -47,6 +47,7 @@ def next_node(payload):
 
 def canonical_condition(value):
  v=gw.normal(value)
+ if re.search(r'\b(no|not|without|denies)\s+(?:known\s+)?(?:hypertension|high blood pressure|bp|diabetes)',v) or re.search(r'\b(?:bp|hypertension|diabetes)\s+(?:absent|denied)\b',v) or any(w in v for w in ['बीपी नहीं','बी पी नहीं','रक्तचाप नहीं','मधुमेह नहीं']):return None
  if any(x in v for x in ['hypertension','bp','blood pressure','बीपी','बी पी','बी.पी','ब्लड प्रेशर','रक्तचाप']):return 'hypertension'
  if any(x in v for x in ['diabetes','sugar','मधुमेह','शुगर']):return 'diabetes'
  if v in ('none','no','नहीं'):return None

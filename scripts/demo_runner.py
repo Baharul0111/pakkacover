@@ -73,10 +73,18 @@ def tunnel(port):
  raise RuntimeError('Quick tunnel did not produce a URL; retry scripts/run_demo --retunnel.')
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--stop',action='store_true');p.add_argument('--retunnel',action='store_true');p.add_argument('--no-tunnel',action='store_true');p.add_argument('--no-build',action='store_true');p.add_argument('--status',action='store_true');p.add_argument('--port',type=int,default=8000);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--stop',action='store_true');p.add_argument('--retunnel',action='store_true');p.add_argument('--restart-api',action='store_true');p.add_argument('--no-tunnel',action='store_true');p.add_argument('--no-build',action='store_true');p.add_argument('--status',action='store_true');p.add_argument('--port',type=int,default=8000);a=p.parse_args()
  if a.stop:return stop()
  if a.status:
   status=wait_api(a.port);print(json.dumps({'status':status['status'],'profile':status['profile'],'payment_mode':status['payment_mode'],'url':(STATE/'public_url').read_text() if (STATE/'public_url').exists() else f'http://127.0.0.1:{a.port}'}));return
+ if a.restart_api:
+  stop_one('awake');stop_one('api')
+  proc=launch('api',[PYTHON,'-m','uvicorn','apps.api.app.main:app','--host','0.0.0.0','--port',str(a.port),'--no-access-log'])
+  status=wait_api(a.port)
+  if shutil.which('caffeinate'):launch('awake',['caffeinate','-i','-w',str(proc.pid)])
+  print('API restarted; payment mode: '+status['payment_mode'])
+  print('Phone URL unchanged: '+((STATE/'public_url').read_text() if (STATE/'public_url').exists() else f'http://127.0.0.1:{a.port}'))
+  return
  if a.retunnel:
   wait_api(a.port);url=tunnel(a.port);print('PakkaCover HTTPS: '+url);return
  stop()
