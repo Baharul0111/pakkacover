@@ -1,16 +1,18 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:07:12 IST. Demo payment backend complete; Vercel preparation.
-- Next action: Adapt environment loading, hosted DB pool and inline media for Vercel; add identity confirmation; rebuild the blue Talk/live-form/Check interface.
-- Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
-- Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432 retained; obsolete preflight stopped
-- Done and verified / half-done: Replaced all payment networking with demo-only paid orders; added idempotent owner-scoped notifications, Reset demo retaining spend, privacy-safe calendar export and unified /api routes; stopped obsolete key watcher; verification: 113 baseline/new tests passed; calendar health-bearing UID caught by test and fixed; 3 focused payment/reset/calendar tests and production web build now pass. The next action above identifies unfinished work.
-- Open problems and decisions: Supabase remote DNS now resolves; connection/migration still to verify. New blue UI and hosted deployment pending.
-- Paytm mode: demo only; no provider calls or S2S verification.
+- Time: 2026-10-31 12:13:18 IST. New agent taking over; validating uncommitted UI rewrite and backend preparation.
+- Next action: Run `npm --prefix apps/web run build` and `.venv/bin/python -m pytest -q`; inspect App.tsx classes and implement missing responsive CSS. Keep and fix the rewrite if viable.
+- Run app: `scripts/run_demo`; status `scripts/run_demo --status`; stop `scripts/run_demo --stop`.
+- Run tests: `.venv/bin/python -m pytest -q`; `.venv/bin/python scripts/check_quotes.py`; `npm --prefix apps/web run build`.
+- Background processes: inherited API/tunnel/caffeinate may be running; local PostgreSQL on 55432. Inspect `.run/` PID files and `scripts/run_demo --status`; stop managed services with `scripts/run_demo --stop`.
+- Done and verified: demo-1 is immutable safe fallback (11:51, 121 tests, 44 clauses, 3 HTTPS runs). Payment/reset/calendar/notifications committed and pushed through 3b935a4. Do not repeat verified engine work.
+- Half-done: App.tsx rewritten and UNVERIFIED; new CSS probably missing. Uncommitted config.py/db.py/routes.py and tests/test_backend.py add serverless environment/DB changes and identity review. Validate before committing those files.
+- Open problems/decisions: preserve demo-1 forever, freeze revised build as demo-2 (latest user instruction supersedes AGENTS tag replacement). Supabase DNS/connection must be rechecked; skip hosted deployment if unavailable. No UI additions after 14:00; fallback by 14:10 if broken.
+- Paytm mode: `demo` only. No real gateway calls, pending credentials or S2S claims.
 
 ## Implementation log
+- 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
 - 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
 - 2026-10-31 10:35:29 IST | Step 1: policy provenance | Installed locked Python 3.12 dependencies and downloaded all original policy source PDFs | Tests: Five PDFs parsed successfully; source SHA256 hashes recorded | Commit: `7599ad8`
 - 2026-10-31 10:39:16 IST | Step 1: engine and rules written; verification next | Authored Plans A/B/C with page-linked quotes, Decimal/date engine, scenario ranking, Promise Card facts, method, and G1/G2 tests | Tests: Hand calculation: B ₹644000, C ₹300000, A ₹100000; automated tests pending | Commit: `935cc08`
@@ -53,6 +55,16 @@
 - GitHub: authenticated Baharul0111, https://github.com/Baharul0111/pakkacover, main. Secret/media audit then push now; push each subsequent completed checkpoint.
 - Vercel: authenticated CLI, project pakkacover. Same React/FastAPI app, relative /api routes, bounded inline media on serverless, Supabase transaction pooler6543 + NullPool. Deployment around13:45; stop trying at14:15 if unsuccessful.
 - 14:30 freeze unchanged. Current live fallback: https://slide-stage-seller-republican.trycloudflare.com. Production URL pending deployment.
+
+## Takeover schedule — latest user instruction
+
+| Time (IST) | Work |
+| --- | --- |
+| 12:13–12:30 | Verify inherited rewrite/backend; implement missing CSS; build and regressions |
+| 12:30–13:30 | Complete and browser-check responsive Sunita UI, medicine, per-line Check, compare, Promise, payment, audit |
+| 13:30–14:00 | Vercel attempt, at most 30 minutes; skip if remote DB fails; retain tunnel |
+| 14:00–14:20 | Three full HTTPS runs with Reset demo; docs and recovery |
+| 14:20–14:30 | Final gates, secret audit, push, immutable demo-1 plus new demo-2; FROZEN |
 
 ## Revised schedule — user change of plan at 11:55 IST
 
