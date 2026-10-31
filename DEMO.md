@@ -1,116 +1,87 @@
 # PakkaCover — stage demo
 
-Demo only. No insurance is sold. Use fictional stage details.
+Live URL: **https://slide-stage-seller-republican.trycloudflare.com**
 
-## Start
+Hackathon demo · Sample public policy terms · Education only. No insurance is sold.
 
-From this folder:
+## Start and private login
 
 ```sh
 scripts/run_demo
-```
-
-The command starts local PostgreSQL if needed, applies Alembic, checks any newly supplied golden media, builds React, starts FastAPI, opens a Cloudflare quick tunnel, prints the phone HTTPS URL, and saves it in `PUBLIC_URL` in local `.env`. It also schedules the requested read-only 14:30 IST payment-key check and keeps the Mac awake while the API runs. Leave the Mac powered and online.
-
-```sh
 scripts/run_demo --status
 scripts/run_demo --stop
 ```
 
-The demo passphrase is the `DEMO_LOGIN_PASSPHRASE` value in local `.env`. Open that file privately on the Mac; do not project it or paste it into chat. Enter the passphrase on the phone only when saving the Promise Card.
+The start command recovers local PostgreSQL, applies migrations, checks new golden media, builds React, starts FastAPI and a same-origin Cloudflare HTTPS tunnel, and prints the phone URL. It writes the URL to `PUBLIC_URL` in local `.env`. Keep the Mac powered and online. A full restart makes a new tunnel URL; `--restart-api` preserves the existing tunnel.
 
-## Under-five-minute stage script
+The private save passphrase is `DEMO_LOGIN_PASSPHRASE` in local `.env`. Open that file privately on the Mac and enter the value on the phone when saving the Promise Card. Never project the file or paste its contents into chat. Local `.env` credentials take precedence over unrelated keys inherited from the agent shell.
 
-1. Open the printed HTTPS URL in Chrome or Safari. Choose English or Hindi. “PakkaCover helps a family understand disclosure and sample cover before a claim.”
-2. Accept disclosure consent; leave dates and audit as separate choices. Add **Sunita, self, female, age 52** and confirm agreement. No insurer receives anything.
-3. Answer height **158 cm**, weight **64 kg**. Hold the microphone and say **“Mujhe BP hai, doctor ne bataya hai.”** Release to send. If the network is poor, tap **BP / hypertension** instead. Select **2019**, **Yes**, and **No** for heart/kidney involvement.
-4. At the medicine question, photograph the printed back of a **Telma 40** strip. Both readers propose a printed name/strength. Check and choose it; choose **BP / hypertension** as the reason, then **Once daily**. If glare or the network prevents reading, type the printed name/strength, or tap the explicit **Telma 40 mg** fallback. The app never guesses the condition.
-5. For the fictional stage case, select **None** for hospitalisation and tests, **No** for tobacco/alcohol/family history. Real users would disclose actual details; this is only a fixture.
-6. Confirm **each line separately** using **Sahi hai**. “Galat / Badlo takes us back, and any changed fact must be confirmed again.” There is no confirm-all.
-7. Open sample plans. With start **31 Oct 2026**, the independent example totals are **B ₹6,44,000 > C ₹3,00,000 > A ₹1,00,000**. Tap a total, a claim amount and its clause; show the published method and optional scenario sliders. These are examples, not forecasts, premiums or a recommendation.
-8. Choose **Plan B — Care Supreme + Instant Cover**. The Promise Card shows BP cover from **30 Nov 2026**, and all other computed dates. Tap a date to show its clause. Dates assume continuous coverage, insurer acceptance and the selected paid add-on. The initial receipt date is 31 Oct; change it to demonstrate that only receipt-based deadlines move.
-9. Save using the private demo passphrase. Create the **₹1 TEST** order. In **simulated** mode, show **“SIMULATED — Paytm test keys pending”** and complete the simulation; no payment happened. If staging keys have been added and the server restarted, use only the staging checkout and official test instruments. A callback alone never marks an order paid: the server verifies Paytm’s status, signature, order identity and ₹1 amount.
-10. Open Day-12 audit. Choose **Instant Cover add-on missing** and run the check. Show both source statements and the free-look deadline. The other planted examples are missing declared condition and wrong member age/birth details. The **clean** example has no flags. “AI reads with source quotes; code compares. A flag means check, not ‘your policy is wrong’.”
-11. Tap **Talk to a person / Pilot callback within 24 h**. A real, owner-scoped callback request is stored for the demo operator; the app honestly states no licensed partner is connected in this hackathon build.
+## Under-five-minute Sunita script
 
-All sample-policy bytes are generated/processed in memory. Uploaded photos, voice and PDFs are not stored. Field extraction, declaration data and audit results are encrypted in Postgres. Each browser has its own session, including after passphrase save; the passphrase does not create a shared family account.
+1. Open the HTTPS link. Choose Hindi or English. Accept disclosure consent; dates and policy audit remain separate purpose choices.
+2. Talk starts at **1 / 12: Who is this cover for?** Say or tap **Mother**, then tap **I agree** for member attestation. There is no separate member form.
+3. Say **Sunita**, **52 years**, **Female**, **5 foot 2**, **68 kilo**, one answer per question. Height is converted in code to **157 cm**; weight is **68 kg**. The live form fills as each answer arrives. On a phone, open **Your form** at the bottom.
+4. Say **BP / hypertension**, **2019**, **Yes** for doctor diagnosis, **No** for heart/kidney involvement, **Yes** for current treatment. Use chips or the keyboard if needed. For a natural voice example, say **“Mujhe BP hai, doctor ne bataya hai.”**
+5. At Medicine, photograph the printed back of a **Telma 40** strip. Check the two readings and choose the printed **Telmisartan 40 mg** candidate. Blur means ask, never guess. Then answer **1 tablet**, **Once daily**, **BP / hypertension** as the purpose. The medicine alone never decides a condition.
+6. For this fictional fixture, choose **None** for hospital stays and tests, then **No** for tobacco, alcohol and family history. Under-18 interviews request guardian attestation and skip tobacco/alcohol.
+7. “That's all. Let's check your answers.” Confirm **each of the 20 cards individually** with **Sahi hai**. Galat/Badlo returns to the question; changed values need a new confirmation. No confirm-all exists.
+8. Compare sample payouts: **B ₹6,44,000 > C ₹3,00,000 > A ₹1,00,000**. These are totals across independent examples, not premiums, forecasts or recommendations. Show **For you**, tap a clause, and point out the common **0–36 month** BP timeline. Care's optional Smart Select is not selected, so the app does not claim a 20% co-pay.
+9. **Make my Promise Card** works on all three plans. Choose **Plan B — Care Supreme + Instant Cover** for the stage. BP starts **30 Nov 2026**. The example policy/receipt date is **31 Oct 2026**; free-look action is by **29 Nov 2026**, and Day 12 is **11 Nov 2026**. Dates come from code and verified clauses. The paid Instant Cover add-on and insurer acceptance are assumptions. Tap **Add calendar** for an `.ics` file with generic, private reminder titles.
+10. Tap **Pay ₹1 with Paytm**, save with the private passphrase, choose **UPI / Wallet / Card**, then continue and pay. Show Processing, the green tick, **Payment successful via Paytm**, ₹1, order ID and time. The grey **Demo** label stays visible. Show the slide-in banner and open the notification bell. The owner-scoped database order is marked paid in **demo** mode, with **verified=false**.
+11. Continue to **Policy check**. Run **Instant Cover add-on missing**. Show the two statements, **Ask insurer to fix**, the free-look action date, and **Talk to advisor**. The other fixtures plant a missing declared condition and wrong age/birth details. The **clean** fixture has no flags. AI extracts source-quoted fields; code compares them. A flag asks for a check, not a verdict.
+12. Tap **Advisor — Pilot callback within 24 h**. This stores a callback request for the demo operator; no licensed advisor partner is connected. The app states that clearly.
+13. Open the small menu → **Reset demo**. It removes the old journey, token, orders and notifications and returns an already-consented browser to **empty Q1**. It retains purpose-consent choices and app-wide spend counters; member/guardian attestation must be given again.
 
-## Bad network: switch off voice
+## Payment wording and mode
 
-From a second terminal on the Mac:
+**Paytm keys were not available; this is a clearly labelled demo payment. No real money is moved.**
+
+Owner-requested stage line describing the intended future gateway integration:
+
+> We couldn't get Paytm PG test keys today, so this is a demo of the payment screen; with keys this button opens the real Paytm payment sheet
+
+The current build has **only the demo adapter**. Adding keys does not activate a gateway. Real checkout would require a later integration. There are no Paytm-host calls, S2S/provider-verification claims, or scheduled key checks. `/api/ready` always reports payment mode `demo`.
+
+## Voice switches and recovery
 
 ```sh
 .venv/bin/python scripts/switches.py voice_in=off voice_out=off
-```
-
-Continue with chips and typing. To restore:
-
-```sh
 .venv/bin/python scripts/switches.py voice_in=on voice_out=on
 ```
 
-Other available switches: `vision_read`, `llm_phrasing`, `audit_llm`, `payments`, `vendor:openai`, `vendor:anthropic`, `vendor:sarvam`, `new_sessions`. The command loads the passphrase privately. `vision_read=off` leads to manual medicine entry. If an uploaded policy cannot be read, expand the manual field form and copy the actual policy values; the deterministic comparison still runs.
+Continue with chips and typing when voice is off. Every question has a replay speaker. A short tap starts recording; tap again to send, or hold and release. The recorder stops after 25 seconds. Reset cancels an active recording instead of submitting it to the old session.
 
-## Tunnel recovery
+Other operator switches: `vision_read`, `llm_phrasing`, `audit_llm`, `payments`, `vendor:openai`, `vendor:anthropic`, `vendor:sarvam`, `new_sessions`. The switch helper privately loads the passphrase.
 
-```sh
-scripts/run_demo --retunnel
-```
+- **Poor medicine photo:** retake it or type the printed name/strength. If only one reader is available, the UI says so and requires the buyer to check and choose. No two-reader agreement is claimed.
+- **Policy reader unavailable:** generated samples have a quote-verified deterministic fallback. Uploaded policies offer buyer-checked manual field entry. Raw PDF bytes are discarded.
+- **A changed/unanswered fact at Compare:** the app returns to the exact Check card or missing Talk question. It preserves the confirmation gate and clears stale notices.
+- **Tunnel failure:** `scripts/run_demo --retunnel` preserves the API/database and prints a new phone URL.
+- **API failure:** `scripts/run_demo --restart-api` preserves the tunnel. Reload the browser after readiness returns.
+- **Fresh start:** Menu → Reset demo. A new tunnel hostname is a new browser origin, so start fresh there.
 
-This preserves the API/database and prints a **new** HTTPS URL; update the phone link. If the API died:
+The stable laptop URL is `http://127.0.0.1:8000`; the phone needs HTTPS for mic/camera access. Voice/photos/PDFs stay in memory and are not stored. Health fields are encrypted in owner-scoped PostgreSQL rows. The passphrase does not merge different browsers into one family.
 
-```sh
-scripts/run_demo
-```
-
-A new quick-tunnel hostname is a new browser origin, so start a fresh demo there. Avoid restarting during a stage journey. The stable local preview is `http://127.0.0.1:8000`, but a phone requires the HTTPS tunnel for mic/camera permissions.
-
-## Payment mode and 14:30 check
-
-**Frozen payment mode: simulated.** Staging keys were absent at freeze; no real Paytm transaction is claimed. The staging adapter is implemented and covered by dummy-key/signed-response tests. The adapter is selected on server startup: both staging keys present → staging; either absent → simulated. The production Paytm host is rejected before networking.
-
-Check current state without exposing keys:
-
-```sh
-.venv/bin/python scripts/payment_preflight.py
-scripts/run_demo --status
-```
-
-The launcher runs a read-only check at **14:30 IST, 31 Oct 2026**. Its result is `.run/payment-preflight-1430.json`, PID `.run/preflight.pid`. It never rotates the tunnel or restarts a live stage session. If it reports `restart_needed: true`, `scripts/run_demo --restart-api` activates newly supplied staging keys while preserving the current tunnel URL. Reload the phone page to refresh its payment-mode banner. No code change is needed.
-
-## Verification and fallback recording
+## Verification and recordings
 
 ```sh
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/check_quotes.py
-npm run build --prefix apps/web
+npm --prefix apps/web run build
 .venv/bin/python scripts/eval_golden.py --if-new
-.venv/bin/python scripts/browser_test.py <printed-https-url> --full
+.venv/bin/python scripts/browser_test.py https://slide-stage-seller-republican.trycloudflare.com --full --live-voice --runs=3 --record
 ```
 
-The owner’s 20 clips and 15 labelled photos are optional until supplied under `evals/golden/`. A fresh media fingerprint triggers Sarvam v4/v3-codemix A/B; the winner is pinned in `models.yaml`. Photo tests check the supplied label CSV; blurred/handwritten inputs must not produce a candidate. No transcripts or media outputs are written into evaluation reports.
+Current verification and freeze status are in `TRACKING.md` and `evals/results/freeze-verification.json`. The original `demo-1` tag is immutable; the revised freeze uses `demo-2`. The old 11:51 results remain historical evidence, not revised-build verification.
 
-Final browser rehearsals use fictional details and a **synthetic printed test label**, not a real medicine-strip photo. The live-speech rehearsal uses a synthetic spoken answer and the actual voice endpoint. These checks do not replace testing the physical phone’s microphone/camera or the owner’s real golden media. Runtime results are in `evals/results/`; screenshots and the silent browser fallback video are in ignored `.run/`.
+Browser rehearsals use a **synthetic printed medicine label** and synthetic spoken answer through the real provider APIs. They check phone/laptop layouts and browser behavior, and do not certify a physical phone's microphone/camera or real medicine-strip photos. No owner golden media has been supplied so far; `saaras:v4` remains pinned until clips arrive and trigger the v4/v3-codemix A/B.
 
-The fallback recordings are `.run/sunita-fallback.mp4` (normal video player) and `.run/sunita-fallback.webm` (Chrome/VLC). It shows the browser demo with synthetic test inputs; narrate the stage script over it if needed.
+The refreshed fallback recording is `.run/sunita-fallback.webm`; `.run/sunita-fallback.mp4` is the normal-player copy. Both are ignored local artifacts, without passphrase keystroke disclosure. Narrate the script over the silent browser recording if needed.
 
-## Scope
+## Hosting and scope
 
-This is the local hackathon demo, **not a pilot**. Retention jobs, export/delete screens, production infrastructure, real identity, staff TOTP, backups, licensed-partner integration and a real insurance sale are intentionally out of scope. The remote database URL that failed DNS is preserved privately as `DATABASE_URL_REMOTE`; the active database is local PostgreSQL on loopback port 55432. All deviations are in `HACKATHON.md`.
+GitHub: https://github.com/Baharul0111/pakkacover
 
-## Verified freeze results
+The authorized Vercel attempt was skipped under the owner's explicit rule because the supplied remote Supabase hostname failed DNS outside the sandbox. No localhost database credentials were uploaded. Local PostgreSQL on port **55432** and the HTTPS tunnel remain the stage demo. The remote configuration stays private as `DATABASE_URL_REMOTE`.
 
-- Python suite: **121 passed** (including G0, G1, G2, G6, G7, payment signatures, media limits and cost caps).
-- Source fidelity: **44 clause references verified** against pinned downloaded PDFs.
-- Three consecutive full HTTPS mobile-browser rehearsals: **39 s, 44 s, 40 s**, no browser runtime errors; each included accepted live speech, live dual-reader synthetic photo, per-line confirmation, correct Instant Cover clause tap, Promise Card and simulated payment.
-- Each rehearsal ran all four audits through real model extraction: all **11 fields** quote verified, planted flags **1 / 1 / 1**, clean flags **0**.
-- Owner golden files at freeze: **0 clips, 0 photos**; synthetic checks are clearly separate from real-media/hardware testing.
-- Machine-readable evidence: `evals/results/freeze-verification.json`. Frozen source tag: `demo-1`.
-
-## Live stage instance
-
-https://slide-stage-seller-republican.trycloudflare.com
-
-The QA API/tunnel were stopped after tests; this is a fresh running stage instance of the same verified build. Quick-tunnel URLs change on a full restart. The read-only 14:30 key check is active.
-
-**FROZEN:** 2026-10-31T11:51:16.358210+05:30 — all requested demo gates passed before 14:45 IST.
+This hackathon build defers real identity, retention/export/delete screens, production operations, backups, staff TOTP and licensed-partner integration. The required rules engine, quote checks, numeric guard, individual confirmation, ownership, consent, encryption, app-side caps and visible Demo labels remain in place.

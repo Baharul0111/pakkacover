@@ -11,7 +11,8 @@ if git('diff','--cached','--name-only'):
  subprocess.run(['git','commit','-m',a.done[:100]],check=True)
 sha=git('rev-parse','--short','HEAD'); now=datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S IST')
 pth=Path('TRACKING.md'); txt=pth.read_text()
-resume=f"## Resume here\n- Time: {now}. {a.step}.\n- Next action: {getattr(a,'next')}\n- Run app: {a.run}\n- Run tests: {a.test_command}\n- Background processes: {a.processes}\n- Done and verified / half-done: {a.done}; verification: {a.tests}. The next action above identifies unfinished work.\n- Open problems and decisions: {a.problems}\n- Paytm mode: {a.paytm}.\n\n"
+public_url=(Path('.run/public_url').read_text().strip() if Path('.run/public_url').exists() else 'Run scripts/run_demo to get the HTTPS URL')
+resume=f"## Resume here\n- Live URL: {public_url}\n- Time: {now}. {a.step}.\n- Next action: {getattr(a,'next')}\n- Run app: {a.run}\n- Run tests: {a.test_command}\n- Background processes: {a.processes}\n- Done and verified / half-done: {a.done}; verification: {a.tests}. The next action above identifies unfinished work.\n- Open problems and decisions: {a.problems}\n- Paytm mode: {a.paytm}.\n\n"
 txt=re.sub(r'## Resume here\n.*?(?=## Implementation log)',lambda _:resume,txt,flags=re.S)
 entry=f'- {now} | {a.step} | {a.done} | Tests: {a.tests} | Commit: `{sha}`\n'
 pos=txt.index('## Implementation log')+len('## Implementation log')

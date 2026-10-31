@@ -1,0 +1,63 @@
+{
+  "synthetic": true,
+  "steps": [
+    {
+      "key": "relation",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "attestation",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "name",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "age",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "sex",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "height",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    },
+    {
+      "key": "weight",
+      "question_audio": true,
+      "attempts": 1,
+      "accepted": true,
+      "preserved": true,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "seconds": 10.49
+}

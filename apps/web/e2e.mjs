@@ -12,7 +12,7 @@ let finished=false;
 async function noOverflow(where){if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw new Error('Horizontal overflow: '+where);}
 async function shot(where){await noOverflow(where);await page.screenshot({path:'.run/screenshots/'+where+'-mobile.png',fullPage:true});}
 async function desktopShot(where){await page.setViewportSize({width:1440,height:1000});await noOverflow(where+' desktop');await page.screenshot({path:'.run/screenshots/'+where+'-desktop.png',fullPage:true});await page.setViewportSize({width:390,height:844});}
-async function postResponse(suffix,click){const pending=page.waitForResponse(r=>r.url().endsWith(suffix)&&r.request().method()==='POST');await click();const r=await pending;if(!r.ok())throw new Error('API failed: '+suffix+' '+r.status());const body=await r.json();await page.locator('.workspace[aria-busy="false"]').waitFor();return body;}
+async function postResponse(suffix,click){const pending=page.waitForResponse(r=>r.url().endsWith(suffix)&&r.request().method()==='POST');const [,r]=await Promise.all([click(),pending]);if(!r.ok())throw new Error('API failed: '+suffix+' '+r.status());const body=await r.json();await page.locator('.workspace[aria-busy="false"]').waitFor();return body;}
 try{
  // Avoid repeated TTS spend in the UI rehearsal; --live-voice separately uses real STT/extraction.
  await page.route('**/speak',route=>route.fulfill({status:204}));
@@ -21,6 +21,7 @@ try{
  for(let run=1;run<=runs;run++){
   const started=Date.now(),audits=[];let voice={attempted:false,accepted:false,fallbackUsed:false};let photoEvidence=null;
   if(run>1){
+   await page.locator('.workspace[aria-busy="false"]').waitFor();
    const oldJourney=await page.evaluate(()=>localStorage.getItem('pc_jid'));
    await page.getByRole('button',{name:'Menu',exact:true}).click();
    await postResponse('/reset',()=>page.getByRole('button',{name:'Reset demo',exact:true}).click());
@@ -135,4 +136,4 @@ try{
   reports.push(report);console.log(JSON.stringify(report));
  }
  const report={passed:true,runs:reports,totalSeconds:Math.round((Date.now()-began)/1000)};fs.mkdirSync('evals/results',{recursive:true});fs.writeFileSync('evals/results/browser-'+Date.now()+'.json',JSON.stringify(report,null,2));finished=true;
-}finally{await context.close();if(finished&&record&&video)fs.copyFileSync(await video.path(),'.run/sunita-fallback.webm');await browser.close();}
+}catch(error){await page.screenshot({path:'.run/screenshots/failure.png',fullPage:true}).catch(()=>{});console.log(JSON.stringify({failed:true,error:String(error),browserErrors:errors,visibleError:await page.locator('.message.error').allTextContents(),headings:await page.locator('h2').allTextContents()}));throw error;}finally{await context.close();if(finished&&record&&video)fs.copyFileSync(await video.path(),'.run/sunita-fallback.webm');await browser.close();}

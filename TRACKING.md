@@ -1,6 +1,7 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
+- Live URL: https://slide-stage-seller-republican.trycloudflare.com
 - Time: 2026-10-31 12:59:35 IST. Correct key source restored; live dual-reader gate passes.
 - Next action: Collect full HTTPS run, then three consecutive Reset rehearsals; write current DEMO.md and final freeze evidence. Rebuild includes recording cancellation on Reset; verify that control in browser.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
