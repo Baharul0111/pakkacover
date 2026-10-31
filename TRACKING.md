@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:15:32 IST. Step 7: Mac media compatibility fix.
-- Next action: Install psutil, verify worker RSS supervision and audio/PDF tests, run full suite/build, then restart for final HTTPS rehearsals.
+- Time: 2026-10-31 11:17:26 IST. Step 7: final test fixes pass; operator tools added.
+- Next action: Confirm complete suite/build output, implement optional golden-set evaluation and timed 14:30 key check, then restart for final tunnel rehearsals and record fallback video.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Existing API/tunnel at https://east-guru-howard-larry.trycloudflare.com; Postgres55432.
-- Done and verified / half-done: PyAV audio-duration test passes; corrected manual form compiles. Mac rejects resource-limit setters, so worker now uses parent RSS watchdog with timeout/respawn fallback; verification: 19/20 focused checks passed; remaining initializer failure addressed by watchdog. Need updated tests after psutil install.. The next action above identifies unfinished work.
-- Open problems and decisions: Unsupported macOS setrlimit documented in HACKATHON.md. No feature cuts. Previous tested API remains available until restart.
+- Background processes: Old API/tunnel currently running; operator tools target local API8000. 14:30 preflight script written but not yet scheduled.
+- Done and verified / half-done: Mac media compatibility fixed; operator voice/AI switches and read-only 14:30 payment preflight scripts added; calculation modal now explains actual arithmetic; verification: Full suite/build just completed after media fix; check output. Prior HTTPS E2E passed with model-verified audit fields.. The next action above identifies unfinished work.
+- Open problems and decisions: Latest code not yet restarted for final rehearsals. Golden media absent. Payment remains simulated.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -35,6 +35,7 @@
 - 2026-10-31 11:12:15 IST | Step 7: final fallback and media checks | Added measured audio duration in worker, worker allocation cap, handwriting/unit guards and manual audit entry fallback | Tests: New tests cover actual audio bounds, concurrent cost-cap reservations and manual audit comparison; execution next | Commit: `62c32df`
 - 2026-10-31 11:13:15 IST | Step 7: correcting final hardening failures | HTTPS full story passed in 38s with real Haiku audit; final tests exposed Mac resource-limit hard ceiling, broken ffprobe binary and one manual-form JSX parenthesis | Tests: Last run: 103 passed, 2 failed (audio tool and worker initialization); web build failed on new manual form. All three causes addressed in source; verification next. | Commit: `4c3f593`
 - 2026-10-31 11:15:32 IST | Step 7: Mac media compatibility fix | PyAV audio-duration test passes; corrected manual form compiles. Mac rejects resource-limit setters, so worker now uses parent RSS watchdog with timeout/respawn fallback | Tests: 19/20 focused checks passed; remaining initializer failure addressed by watchdog. Need updated tests after psutil install. | Commit: `bd4a20e`
+- 2026-10-31 11:17:26 IST | Step 7: final test fixes pass; operator tools added | Mac media compatibility fixed; operator voice/AI switches and read-only 14:30 payment preflight scripts added; calculation modal now explains actual arithmetic | Tests: Full suite/build just completed after media fix; check output. Prior HTTPS E2E passed with model-verified audit fields. | Commit: `82bde45`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
