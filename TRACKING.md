@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:01:13 IST. GitHub: secret audit passed; pushing main now.
-- Next action: Rename current branch main, add origin, push existing commits, then enable audited automatic checkpoint pushes and resume demo payment/UI work.
+- Time: 2026-10-31 12:02:42 IST. GitHub initial push complete; demo payment implementation.
+- Next action: Cancel key watcher; implement demo-only payment, paid timestamps, notification bell API and owner-scoped Reset demo; then switch backend/frontend paths to /api for Vercel compatibility.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Existing local fallback and PG55432 continue; obsolete key watcher will be stopped after first push.
-- Done and verified / half-done: Verified all required .gitignore paths and label CSV exception; scanned tracked files plus entire history with no detected secrets or private media; authenticated GitHub repo exists and is empty; verification: 121 baseline tests passed; full-history secret audit PASS; ignore/media checks PASS. The next action above identifies unfinished work.
-- Open problems and decisions: Existing target repo is public; user explicitly authorized this remote. Private env, keys, media, PDFs and dumps are excluded. Vercel remains planned after main features.
-- Paytm mode: demo requested; adapter changes next.
+- Background processes: Local stage/tunnel running. Obsolete preflight stopping next; local PG55432/caffeinate retained.
+- Done and verified / half-done: Pushed existing commits to Baharul0111/pakkacover main after full-history secret/media audit; enabled audited automatic pushes after every checkpoint; verification: 121 baseline tests passed; GitHub push verified by CLI; ignore and staged/history scans passed. The next action above identifies unfinished work.
+- Open problems and decisions: No Paytm credentials needed. UI/payment revision pending. Need a resolvable Supabase pooler for Vercel; local demo remains usable.
+- Paytm mode: demo to be implemented; no real Paytm calls permitted.
 
 ## Implementation log
 - 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
@@ -70,6 +70,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 11:57:00 IST | Revised build: plan recorded; demo payment/reset/notifications first | Read the entire change of plan; updated AGENTS.md and TRACKING.md with the 14:30 deadline, revised schedule, demo-only payment and full new UI requirements | Tests: Previous frozen baseline: 121 tests, 44 verified clauses, 3 HTTPS runs. Baseline verification next. | Commit: `9ed31d6`
 - 2026-10-31 11:59:36 IST | Hosting add-on: GitHub audit and first push now | Recorded GitHub/Vercel add-on in AGENTS.md and TRACKING.md; strengthened private-media/dump/env exclusions while allowing labels.csv; added README | Tests: Prior baseline test run pending result; secret/media push audit next | Commit: `60c06b3`
 - 2026-10-31 12:01:13 IST | GitHub: secret audit passed; pushing main now | Verified all required .gitignore paths and label CSV exception; scanned tracked files plus entire history with no detected secrets or private media; authenticated GitHub repo exists and is empty | Tests: 121 baseline tests passed; full-history secret audit PASS; ignore/media checks PASS | Commit: `d80e3c7`
+- 2026-10-31 12:02:42 IST | GitHub initial push complete; demo payment implementation | Pushed existing commits to Baharul0111/pakkacover main after full-history secret/media audit; enabled audited automatic pushes after every checkpoint | Tests: 121 baseline tests passed; GitHub push verified by CLI; ignore and staged/history scans passed | Commit: `e5570f2`
 
 ## Original orientation notes
 
