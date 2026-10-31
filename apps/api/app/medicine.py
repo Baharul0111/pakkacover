@@ -39,7 +39,7 @@ def agreement(readings):
  candidates=[normalize_reading(x) for x in readings]
  valid=[x for x in candidates if x]
  same=len(valid)==2 and all(x['basis']=='printed_salt' for x in valid) and valid[0]['generic']==valid[1]['generic'] and re.sub(r'\s','',valid[0]['strength']).casefold()==re.sub(r'\s','',valid[1]['strength']).casefold() and bool(valid[0]['strength'])
- return {'status':'agree' if same else ('choose' if valid else 'unreadable'),'candidates':valid,'readings':[r.model_dump() if r else None for r in readings],'must_ask_indication':True,'message':'Choose what is printed; the condition is always your choice. Handwritten or unclear labels: please type.'}
+ return {'status':'agree' if same else ('choose' if valid else 'unreadable'),'available_readers':sum(reading is not None for reading in readings),'candidates':valid,'readings':[r.model_dump() if r else None for r in readings],'must_ask_indication':True,'message':'Choose what is printed; the condition is always your choice. Handwritten or unclear labels: please type.'}
 
 async def read_strip(data):
  if not (await gw.flags())['vision_read']:return {'status':'manual','candidates':[],'readings':[],'must_ask_indication':True,'message':'Photo reading is off. Type the printed medicine and strength.'}

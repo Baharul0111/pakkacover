@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "run": 1,
+      "passed": true,
+      "base": "https://slide-stage-seller-republican.trycloudflare.com",
+      "full": true,
+      "ranking": [
+        "Plan B",
+        "Plan C",
+        "Plan A"
+      ],
+      "browserErrors": 0,
+      "audits": [
+        {
+          "variant": "m1_ped_addon_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m2_declared_condition_missing",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "m3_dob_wrong",
+          "mode": "quote_verified_model",
+          "flags": 1,
+          "verifiedFields": 11
+        },
+        {
+          "variant": "clean",
+          "mode": "quote_verified_model",
+          "flags": 0,
+          "verifiedFields": 11
+        }
+      ],
+      "voice": {
+        "attempted": true,
+        "accepted": true,
+        "fallbackUsed": false,
+        "source": "voice:source_anchored_condition_fallback"
+      },
+      "photo": {
+        "status": "agree",
+        "availableReaders": 2,
+        "candidateCount": 2,
+        "buyerConfirmed": true
+      },
+      "paymentMethod": "UPI",
+      "durationSeconds": 43
+    }
+  ],
+  "totalSeconds": 46
+}

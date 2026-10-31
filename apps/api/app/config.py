@@ -14,7 +14,11 @@ def bootstrap():
   if not values.get(name):set_key(str(ENV),name,factory(),quote_mode='always')
  ENV.chmod(0o600)
 bootstrap()
-def values():return {**({} if SERVERLESS else dotenv_values(ENV)),**os.environ}
+def values():
+ # Local demo credentials belong to this checkout, not the parent agent shell.
+ # Hosted runtimes have no .env and receive their explicit production settings.
+ if SERVERLESS:return dict(os.environ)
+ return {**os.environ,**dotenv_values(ENV),**{k:v for k,v in os.environ.items() if k.startswith('PCC_')}}
 def get(key,default=''):return values().get(key) or default
 def fernet():return MultiFernet([Fernet(k.strip().encode()) for k in get('FERNET_KEYS').split(',')])
 def payment_mode():return 'demo'

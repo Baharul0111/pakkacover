@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:48:32 IST. Compare fix verified on all three plans.
-- Next action: Diagnose live two-reader timeout (printed smoke gave one candidate); run full HTTPS story with payment and audit, then three consecutive Reset runs, update DEMO.md, final gates and demo-2 freeze.
+- Time: 2026-10-31 12:58 IST. Correct local key restored; complete HTTPS rehearsal running.
+- Next action: Collect the current full HTTPS rehearsal; run three consecutive full stories with Reset between, verify all 3 plans and actual dual readers/live audits, update DEMO.md and final gate evidence, then freeze demo-2.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
 - Run tests: `.venv/bin/python -m pytest -q`
 - Background processes: API/tunnel/caffeinate active, local PostgreSQL55432. Stop with scripts/run_demo --stop.
 - Done and verified / half-done: Fixed confirmation mismatch with structured exact-line or unanswered-question recovery and a locked selection recheck; cleared stale notices; added clause-linked bilingual For you summaries and actual-date timeline positions on one 0–36 month scale.; verification: 143 Python tests PASS; TypeScript/Vite build PASS; two fresh browser runs PASS with Reset, 20 individual confirmations, correction-to-exact-card recovery, and successful Promise Cards for C/A/B. No runtime errors. Vision smoke: blank asks; printed currently one valid reader, diagnosing.. The next action above identifies unfinished work.
-- Open problems and decisions: No confirmation bypass; old sessions may need newly added Talk questions. Hosted Supabase DNS failed; Vercel skipped per owner. Live photo agreement must be restored before full rehearsals.
+- Open problems and decisions: Wrong inherited shell Anthropic key overrode the funded owner key. Fixed local dotenv precedence; both live readers now agree and blank asks. No owner item is missing. Supabase DNS failed; Vercel skipped per user. demo-1 preserved; freeze demo-2.
 - Paytm mode: demo only; no real payment hosts or verification.
 
 ## Implementation log
@@ -132,3 +132,5 @@ Updated: 2026-10-31 (Asia/Kolkata)
 
 ## Current status
 Requested file review is complete. Implementation has not started. Next action: receive the user's task prompt.
+
+- 2026-10-31 12:55:58 IST | Provider diagnosis before full rehearsal | Anthropic returned HTTP400 invalid_request_error with insufficient credit balance; no secret response content logged. Single-reader state is explicit and buyer-confirmed; quote-verified sample audit fallback retained. New cap rejection/cooldown test running; full HTTPS rehearsal next. Commit: pending next verified checkpoint.

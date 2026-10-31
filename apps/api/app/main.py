@@ -78,7 +78,7 @@ def health():return {'status':'ok'}
 async def ready():
  try:
   async with Session() as s:await s.execute(text('SELECT 1'))
-  return {'status':'ok','profile':'demo','payment_mode':ADAPTER.mode,'models':gw.MODEL_STATUS,'stt_model':gw.STT_MODEL}
+  return {'status':'ok','profile':'demo','payment_mode':ADAPTER.mode,'models':gw.MODEL_STATUS,'stt_model':gw.STT_MODEL,'provider_credit_unavailable':[p for p,until in gw.CREDIT_BLOCKED_UNTIL.items() if until>__import__('time').monotonic()]}
  except Exception:return JSONResponse({'status':'database_unavailable','profile':'demo','payment_mode':ADAPTER.mode},status_code=503)
 @app.get('/api/plans')
 def all_plans():return list(plans().values())

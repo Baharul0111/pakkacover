@@ -1,6 +1,6 @@
 """Bounded, schema-only model gateway; no tools, raw input logging, or counting."""
 from __future__ import annotations
-import asyncio,base64,hashlib,json,re,ssl,unicodedata
+import asyncio,base64,hashlib,json,re,ssl,unicodedata,time
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -13,6 +13,7 @@ from apps.api.app.db import Session,ConfigFlag,Usage
 DEFAULTS={'voice_in':True,'voice_out':True,'vision_read':True,'llm_phrasing':True,'audit_llm':True,'payments':True,'vendor:openai':True,'vendor:anthropic':True,'vendor:sarvam':True,'new_sessions':True}
 KEYTERMS=['BP','sugar','thyroid','Telma','Telmisartan','Amlodipine','Metformin','Thyronorm','Atorvastatin','hypertension','diabetes','kidney','heart']
 MODEL_STATUS={}
+CREDIT_BLOCKED_UNTIL={}
 STT_MODEL=json.loads((ROOT/'models.yaml').read_text()).get('stt','saaras:v4') if (ROOT/'models.yaml').exists() else 'saaras:v4'
 class Unavailable(Exception):pass
 
@@ -52,10 +53,12 @@ async def reserve(provider,amount,model,step):
    if sarvam_today+amount>150:raise Unavailable('sarvam_daily_cap')
    if float(get('SARVAM_BALANCE_INR','0'))-sarvam-amount<20:raise Unavailable('speech_credit_floor')
   item=Usage(day=day,provider=provider,amount=amount,model=model,step=step,outcome='reserved');s.add(item);await s.commit();return item.id
-async def finish(reservation,returned_model,outcome='ok'):
+async def finish(reservation,returned_model,outcome='ok',unexecuted=False):
  async with Session() as s:
   row=await s.get(Usage,reservation)
-  if row:row.model=returned_model;row.outcome=outcome
+  if row:
+   row.model=returned_model;row.outcome=outcome
+   if unexecuted:row.amount=0
   await s.commit()
 async def usage_status():
  day=datetime.now(ZoneInfo('Asia/Kolkata')).date().isoformat()
@@ -85,6 +88,7 @@ def pinned(provider,requested):
 async def structured(provider,requested,schema,system,user,*,image=None,timeout=3.5,step='slots'):
  f=await flags()
  if not f.get('vendor:'+provider):raise Unavailable('vendor_disabled')
+ if CREDIT_BLOCKED_UNTIL.get(provider,0)>time.monotonic():raise Unavailable('provider_credit_unavailable')
  model=pinned(provider,requested);reservation=await reserve(provider,(3.0 if 'sonnet' in requested else .40) if step=='audit' else (1 if image else .40),model,step)
  try:
   async with client(timeout) as c:
@@ -99,8 +103,21 @@ async def structured(provider,requested,schema,system,user,*,image=None,timeout=
     r=await c.post('https://api.openai.com/v1/responses',headers={'Authorization':'Bearer '+get('OPENAI_API_KEY')},json={'model':model,'store':False,'instructions':system,'input':[{'role':'user','content':content}],'max_output_tokens':1800,'reasoning':{'effort':'low'},'text':{'format':{'type':'json_schema','name':schema.__name__,'schema':schema.model_json_schema(),'strict':True}}})
     r.raise_for_status();body=r.json();raw=''.join(c.get('text','') for o in body.get('output',[]) for c in o.get('content',[]) if c.get('type')=='output_text')
    parsed=schema.model_validate_json(raw)
+   CREDIT_BLOCKED_UNTIL.pop(provider,None)
    await finish(reservation,body.get('model',model));return parsed,body.get('model',model)
  except Exception as e:
+  # A rejected request with insufficient provider credit never executed. Release
+  # its reservation, and avoid repeated futile retries against the app's budget.
+  credit=False
+  if isinstance(e,httpx.HTTPStatusError) and e.response.status_code in (400,402):
+   try:
+    message=str(e.response.json().get('error',{}).get('message','')).casefold()
+    credit='credit balance' in message or 'insufficient credit' in message
+   except (ValueError,AttributeError):pass
+  if credit:
+   CREDIT_BLOCKED_UNTIL[provider]=time.monotonic()+60
+   await finish(reservation,model,'provider_credit_unavailable',unexecuted=True)
+   raise Unavailable('provider_credit_unavailable') from None
   await finish(reservation,model,type(e).__name__)
   raise Unavailable(type(e).__name__) from None
 async def moderate(text_input=None,image=None):

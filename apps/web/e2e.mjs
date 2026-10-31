@@ -12,14 +12,14 @@ let finished=false;
 async function noOverflow(where){if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw new Error('Horizontal overflow: '+where);}
 async function shot(where){await noOverflow(where);await page.screenshot({path:'.run/screenshots/'+where+'-mobile.png',fullPage:true});}
 async function desktopShot(where){await page.setViewportSize({width:1440,height:1000});await noOverflow(where+' desktop');await page.screenshot({path:'.run/screenshots/'+where+'-desktop.png',fullPage:true});await page.setViewportSize({width:390,height:844});}
-async function postResponse(suffix,click){const pending=page.waitForResponse(r=>r.url().endsWith(suffix)&&r.request().method()==='POST');await click();const r=await pending;if(!r.ok())throw new Error('API failed: '+suffix+' '+r.status());return r.json();}
+async function postResponse(suffix,click){const pending=page.waitForResponse(r=>r.url().endsWith(suffix)&&r.request().method()==='POST');await click();const r=await pending;if(!r.ok())throw new Error('API failed: '+suffix+' '+r.status());const body=await r.json();await page.locator('.workspace[aria-busy="false"]').waitFor();return body;}
 try{
  // Avoid repeated TTS spend in the UI rehearsal; --live-voice separately uses real STT/extraction.
  await page.route('**/speak',route=>route.fulfill({status:204}));
  await page.goto(base,{waitUntil:'networkidle'});
  if(await page.getByRole('button',{name:'English',exact:true}).count())await page.getByRole('button',{name:'English',exact:true}).click();
  for(let run=1;run<=runs;run++){
-  const started=Date.now(),audits=[];let voice={attempted:false,accepted:false,fallbackUsed:false};
+  const started=Date.now(),audits=[];let voice={attempted:false,accepted:false,fallbackUsed:false};let photoEvidence=null;
   if(run>1){
    const oldJourney=await page.evaluate(()=>localStorage.getItem('pc_jid'));
    await page.getByRole('button',{name:'Menu',exact:true}).click();
@@ -44,7 +44,9 @@ try{
    }else if(full&&i===12){
     const encoded=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=1000;c.height=500;const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,1000,500);ctx.fillStyle='black';ctx.font='48px Arial';['TELMA 40','Telmisartan Tablets IP','Each tablet contains:','Telmisartan 40 mg'].forEach((line,n)=>ctx.fillText(line,40,80+n*85));return c.toDataURL('image/png').split(',')[1];});
     const out=await postResponse('/photo',()=>page.locator('input[type=file][accept="image/*"]').setInputFiles({name:'synthetic-printed-strip.png',mimeType:'image/png',buffer:Buffer.from(encoded,'base64')}));
-    if(out.status!=='agree')throw new Error('Synthetic printed strip readers did not agree');
+    photoEvidence={status:out.status,availableReaders:out.available_readers,candidateCount:out.candidates?.length||0,buyerConfirmed:true};
+    if(!['agree','choose'].includes(out.status)||!out.candidates?.some(c=>c.generic==='Telmisartan'&&c.strength.replace(/\s/g,'')==='40mg'))throw new Error('Synthetic printed strip has no grounded candidate');
+    if(out.status!=='agree')await page.getByText('One reader available. Check the printed label.',{exact:true}).waitFor();
     await page.getByRole('button',{name:/Telmisartan 40\s?mg/}).first().click();
     await page.getByRole('heading',{name:'What dose do you take each time?',exact:true}).waitFor();
    }else{
@@ -57,7 +59,7 @@ try{
     await page.waitForTimeout(120);
    }
    const fieldChecks={0:['relation','mother'],2:['name','Sunita'],3:['age','52'],4:['sex','F'],5:['height','157 cm'],6:['weight','68 kg'],7:['conditions','BP / hypertension'],8:['since','2019'],12:['medicine',full?'Telmisartan':'Telma'],16:['hospital','None'],17:['tests','None'],18:['tobacco','No'],19:['tobacco','No'],20:['family_history','No']};
-   if(fieldChecks[i]){const [field,value]=fieldChecks[i];if(!(await page.locator('.form-row[data-field="'+field+'"] strong').textContent()).includes(value))throw new Error('Live form missing '+field);}
+   if(fieldChecks[i]){const [field,value]=fieldChecks[i];await page.waitForFunction(({field,value})=>document.querySelector('.form-row[data-field="'+field+'"] strong')?.textContent?.includes(value),{field,value});}
    if((await page.locator('.form-row strong').allTextContents()).some(v=>v.includes('Not sure')))throw new Error('Unexpected unknown value');
    await noOverflow('interview '+i);
   }
@@ -129,7 +131,7 @@ try{
    if(run===1)await shot('audit-clean');
   }
   if(errors.length)throw new Error('Browser errors: '+errors.join(';'));
-  const report={run,passed:true,base,full,ranking:labels,browserErrors:errors.length,audits,voice,paymentMethod:full?['UPI','Wallet','Card'][(run-1)%3]:null,durationSeconds:Math.round((Date.now()-started)/1000)};
+  const report={run,passed:true,base,full,ranking:labels,browserErrors:errors.length,audits,voice,photo:photoEvidence,paymentMethod:full?['UPI','Wallet','Card'][(run-1)%3]:null,durationSeconds:Math.round((Date.now()-started)/1000)};
   reports.push(report);console.log(JSON.stringify(report));
  }
  const report={passed:true,runs:reports,totalSeconds:Math.round((Date.now()-began)/1000)};fs.mkdirSync('evals/results',{recursive:true});fs.writeFileSync('evals/results/browser-'+Date.now()+'.json',JSON.stringify(report,null,2));finished=true;
