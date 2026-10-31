@@ -4,9 +4,7 @@ PakkaCover helps families explain their health details in simple language.
 It turns confirmed answers and sample policy terms into a clear cover timeline.
 It checks a policy document for differences and saves the next steps.
 
-**[Open the working demo](https://camping-leon-rider-performer.trycloudflare.com)** · [Three-minute video script](VIDEO-SCRIPT.md) · [Demo guide](DEMO.md)
-
-The demo runs on the owner's Mac through a temporary HTTPS tunnel. The Mac and tunnel must stay online. A tunnel restart can change the link.
+**[Watch the demo video](https://drive.google.com/file/d/1ZoAU_-2Osku50dGoQI5OswGVoVwuCnb1/view?usp=sharing)**
 
 ## The problem
 
