@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:01:20 IST. Step 6: staging and simulation adapters written.
-- Next action: Run payment checksum/S2S/callback/host tests and full suite, rebuild UI, restart QA API and rerun full mobile journey including payment/audit.
+- Time: 2026-10-31 11:02:59 IST. Step 7 starting: one-command launcher and tunnel.
+- Next action: Create scripts/run_demo with Postgres startup, migrations, web build, background API/tunnel, PUBLIC_URL and clean stop; run full E2E against HTTPS tunnel.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432; QA API old code on 8000, PID in .run/qa-api.pid. Restart before browser checks.
-- Done and verified / half-done: Implemented signed staging init, signature-verified callback and S2S status, exact ₹1 amount checks, simulated adapter and mode on /ready; verification: Dummy-key roundtrip, tamper, host allowlist, mocked staging and simulated-route tests written; execution next. The next action above identifies unfinished work.
-- Open problems and decisions: Paytm remains simulated (keys absent). Real staging cannot be live-verified without keys; code path covered by mocked signed responses.
+- Background processes: Only local Postgres 55432 remains. Temporary QA API stopped; no tunnel yet.
+- Done and verified / half-done: Payment adapters complete, staging cryptography covered with dummy key, simulation stays explicit; entering launcher/E2E stage; verification: Full pytest suite and Vite build just run; check previous output. Temporary Step 4 QA API stopped cleanly.. The next action above identifies unfinished work.
+- Open problems and decisions: Keys absent so simulated mode. Real golden media not present. Browser full-journey verification remains.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -27,6 +27,7 @@
 - 2026-10-31 10:58:24 IST | Step 5: audit implementation written | Generated clean plus 3 planted sample PDFs in memory; added quote-verified extraction, deterministic comparison and encrypted audit persistence | Tests: G6 tests written; sample labels use deterministic verified parsing; arbitrary uploads use Haiku sections and one Sonnet retry | Commit: `4335043`
 - 2026-10-31 10:59:17 IST | Step 6 starting: payment adapter | Step 5 audit written; sample G6 and quote-grounding tests executed; mobile test synchronization fixed | Tests: See G6 test output; Step 4 build and 68 regressions passed; mobile browser test initially clicked old checkbox before member screen, test now waits for heading | Commit: `e2dd64d`
 - 2026-10-31 11:01:20 IST | Step 6: staging and simulation adapters written | Implemented signed staging init, signature-verified callback and S2S status, exact ₹1 amount checks, simulated adapter and mode on /ready | Tests: Dummy-key roundtrip, tamper, host allowlist, mocked staging and simulated-route tests written; execution next | Commit: `a997934`
+- 2026-10-31 11:02:59 IST | Step 7 starting: one-command launcher and tunnel | Payment adapters complete, staging cryptography covered with dummy key, simulation stays explicit; entering launcher/E2E stage | Tests: Full pytest suite and Vite build just run; check previous output. Temporary Step 4 QA API stopped cleanly. | Commit: `fb8940b`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
