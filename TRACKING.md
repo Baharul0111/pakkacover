@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 12:58 IST. Correct local key restored; complete HTTPS rehearsal running.
-- Next action: Collect the current full HTTPS rehearsal; run three consecutive full stories with Reset between, verify all 3 plans and actual dual readers/live audits, update DEMO.md and final gate evidence, then freeze demo-2.
+- Time: 2026-10-31 12:59:35 IST. Correct key source restored; live dual-reader gate passes.
+- Next action: Collect full HTTPS run, then three consecutive Reset rehearsals; write current DEMO.md and final freeze evidence. Rebuild includes recording cancellation on Reset; verify that control in browser.
 - Run app: scripts/run_demo; scripts/run_demo --status; scripts/run_demo --stop
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: API/tunnel/caffeinate active, local PostgreSQL55432. Stop with scripts/run_demo --stop.
-- Done and verified / half-done: Fixed confirmation mismatch with structured exact-line or unanswered-question recovery and a locked selection recheck; cleared stale notices; added clause-linked bilingual For you summaries and actual-date timeline positions on one 0–36 month scale.; verification: 143 Python tests PASS; TypeScript/Vite build PASS; two fresh browser runs PASS with Reset, 20 individual confirmations, correction-to-exact-card recovery, and successful Promise Cards for C/A/B. No runtime errors. Vision smoke: blank asks; printed currently one valid reader, diagnosing.. The next action above identifies unfinished work.
-- Open problems and decisions: Wrong inherited shell Anthropic key overrode the funded owner key. Fixed local dotenv precedence; both live readers now agree and blank asks. No owner item is missing. Supabase DNS failed; Vercel skipped per user. demo-1 preserved; freeze demo-2.
-- Paytm mode: demo only; no real payment hosts or verification.
+- Background processes: API/tunnel/caffeinate running; local PostgreSQL55432. Stop scripts/run_demo --stop.
+- Done and verified / half-done: Fixed dotenv precedence so the funded owner Anthropic key overrides an unrelated inherited shell key. Added local/hosted key-source regression tests, rejected-credit reservation release and bounded retry cooldown; restored both live medicine readers, kept explicit outage fallbacks and accessible busy-state browser synchronization.; verification: 146 Python tests PASS; production web build PASS before small Reset cancellation polish, rebuild running; live printed image has two agreeing readers, blank has zero candidates. Full HTTPS live voice/photo/audit run in progress.. The next action above identifies unfinished work.
+- Open problems and decisions: No provider funding/key item missing: previous credit error came from the wrong inherited key and is resolved. Supabase DNS remains failed; Vercel skipped per user. demo-1 intact.
+- Paytm mode: demo only.
 
 ## Implementation log
 - 2026-10-31 12:13:18 IST | Takeover checkpoint | Recorded true unverified UI/backend state; preserved demo-1; next action is build/tests/CSS. Tests: takeover inspection only; baseline verification next. Commit: `3b935a4` (inherited checkpoint).
@@ -91,6 +91,7 @@ Payment decision: `demo` only; remove real staging code and scheduled credential
 - 2026-10-31 12:33:48 IST | Comparison and audit display verified; new Talk priority begins | Added engine-derived BP timeline facts to comparison API without changing engine calculations; fixed audit match labels, updated browser selectors and added remote DB preflight. | Tests: 116 Python tests PASS; TypeScript/Vite build PASS; 44 clauses verified. Hosted transaction pooler preflight: remote_dns_failed outside sandbox; Vercel skipped as instructed. | Commit: `87896aa`
 - 2026-10-31 12:44:06 IST | Talk flow fixed and verified; Compare priority begins | Removed separate member screen; sequential relation/attestation/name/age/sex voice questions, treatment/dose, 12-group counter, immediate 13-field live form, deterministic feet/kg parsing and empty Q1 reset. Legacy member API retained for compatibility only. | Tests: 139 Python tests PASS including all-voice Reset-to-Check contract, guardian/minor and unit conversion cases; production web build PASS; two browser Q1-to-Check-to-Compare/Promise runs PASS with Reset between, zero runtime errors and correct live form/counters. | Commit: `09e2ba4`
 - 2026-10-31 12:48:32 IST | Compare fix verified on all three plans | Fixed confirmation mismatch with structured exact-line or unanswered-question recovery and a locked selection recheck; cleared stale notices; added clause-linked bilingual For you summaries and actual-date timeline positions on one 0–36 month scale. | Tests: 143 Python tests PASS; TypeScript/Vite build PASS; two fresh browser runs PASS with Reset, 20 individual confirmations, correction-to-exact-card recovery, and successful Promise Cards for C/A/B. No runtime errors. Vision smoke: blank asks; printed currently one valid reader, diagnosing. | Commit: `69c3f14`
+- 2026-10-31 12:59:35 IST | Correct key source restored; live dual-reader gate passes | Fixed dotenv precedence so the funded owner Anthropic key overrides an unrelated inherited shell key. Added local/hosted key-source regression tests, rejected-credit reservation release and bounded retry cooldown; restored both live medicine readers, kept explicit outage fallbacks and accessible busy-state browser synchronization. | Tests: 146 Python tests PASS; production web build PASS before small Reset cancellation polish, rebuild running; live printed image has two agreeing readers, blank has zero candidates. Full HTTPS live voice/photo/audit run in progress. | Commit: `2a6db4c`
 
 ## Original orientation notes
 
