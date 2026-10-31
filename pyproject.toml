@@ -24,6 +24,7 @@ dependencies = [
  "pycryptodome==3.23.0",
  "python-ulid>=3",
  "av>=14",
+ "psutil>=7",
 ]
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.25", "hypothesis>=6", "ruff>=0.11"]
