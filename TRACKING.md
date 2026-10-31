@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:59:17 IST. Step 6 starting: payment adapter.
-- Next action: Implement fully signed Paytm staging adapter and explicit simulated adapter; unit-test checksum/callback/status and no production host access; rerun mobile UI.
+- Time: 2026-10-31 11:01:20 IST. Step 6: staging and simulation adapters written.
+- Next action: Run payment checksum/S2S/callback/host tests and full suite, rebuild UI, restart QA API and rerun full mobile journey including payment/audit.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Postgres 55432; QA API on 8000 PID in .run/qa-api.pid. It needs restart after payment code.
-- Done and verified / half-done: Step 5 audit written; sample G6 and quote-grounding tests executed; mobile test synchronization fixed; verification: See G6 test output; Step 4 build and 68 regressions passed; mobile browser test initially clicked old checkbox before member screen, test now waits for heading. The next action above identifies unfinished work.
-- Open problems and decisions: Paytm keys still pending; rechecking key-presence without exposing values. No other owner inputs needed.
-- Paytm mode: simulated — keys not yet verified.
+- Background processes: Postgres 55432; QA API old code on 8000, PID in .run/qa-api.pid. Restart before browser checks.
+- Done and verified / half-done: Implemented signed staging init, signature-verified callback and S2S status, exact ₹1 amount checks, simulated adapter and mode on /ready; verification: Dummy-key roundtrip, tamper, host allowlist, mocked staging and simulated-route tests written; execution next. The next action above identifies unfinished work.
+- Open problems and decisions: Paytm remains simulated (keys absent). Real staging cannot be live-verified without keys; code path covered by mocked signed responses.
+- Paytm mode: simulated.
 
 ## Implementation log
 - 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
@@ -26,6 +26,7 @@
 - 2026-10-31 10:57:48 IST | Step 5 starting: generated policies and Day-12 audit | Step 4 UI builds; bilingual review/ranking/card APIs and 68 regressions pass; mobile browser check running | Tests: TypeScript/Vite passed; 68 backend/card/numeric/medicine checks passed; initial browser launch raced server startup, readiness wait added | Commit: `2a39ed7`
 - 2026-10-31 10:58:24 IST | Step 5: audit implementation written | Generated clean plus 3 planted sample PDFs in memory; added quote-verified extraction, deterministic comparison and encrypted audit persistence | Tests: G6 tests written; sample labels use deterministic verified parsing; arbitrary uploads use Haiku sections and one Sonnet retry | Commit: `4335043`
 - 2026-10-31 10:59:17 IST | Step 6 starting: payment adapter | Step 5 audit written; sample G6 and quote-grounding tests executed; mobile test synchronization fixed | Tests: See G6 test output; Step 4 build and 68 regressions passed; mobile browser test initially clicked old checkbox before member screen, test now waits for heading | Commit: `e2dd64d`
+- 2026-10-31 11:01:20 IST | Step 6: staging and simulation adapters written | Implemented signed staging init, signature-verified callback and S2S status, exact ₹1 amount checks, simulated adapter and mode on /ready | Tests: Dummy-key roundtrip, tamper, host allowlist, mocked staging and simulated-route tests written; execution next | Commit: `a997934`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
