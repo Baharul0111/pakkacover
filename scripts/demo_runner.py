@@ -99,7 +99,6 @@ def main():
  try:
   status=wait_api(a.port)
   url=f'http://127.0.0.1:{a.port}' if a.no_tunnel else tunnel(a.port)
-  launch('preflight',[PYTHON,str(ROOT/'scripts/payment_preflight.py'),'--at-1430'])
   if shutil.which('caffeinate'):launch('awake',['caffeinate','-i','-w',str(proc.pid)])
   print('\nPakkaCover is ready · DEMO ONLY')
   print('Open on your phone: '+url)

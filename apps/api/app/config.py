@@ -15,4 +15,4 @@ bootstrap()
 def values():return {**dotenv_values(ENV),**{k:v for k,v in os.environ.items() if k.startswith('PCC_')}}
 def get(key,default=''):return values().get(key) or default
 def fernet():return MultiFernet([Fernet(k.strip().encode()) for k in get('FERNET_KEYS').split(',')])
-def payment_mode():return 'staging' if get('PAYTM_MID') and get('PAYTM_MERCHANT_KEY') else 'simulated'
+def payment_mode():return 'demo'

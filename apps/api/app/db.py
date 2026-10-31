@@ -58,6 +58,14 @@ class Payment(Base):
  mode:Mapped[str]=mapped_column(String(16))
  status:Mapped[str]=mapped_column(String(32),default='PENDING')
  verified:Mapped[bool]=mapped_column(Boolean,default=False)
+ paid_at:Mapped[datetime|None]=mapped_column(DateTime(timezone=True),nullable=True)
+class Notification(Base):
+ __tablename__='notifications';__table_args__={'schema':'app'}
+ id:Mapped[str]=mapped_column(String(26),primary_key=True,default=uid)
+ journey_id:Mapped[str]=mapped_column(ForeignKey('app.journeys.id',ondelete='CASCADE'),index=True)
+ order_id:Mapped[str]=mapped_column(String(50),unique=True)
+ created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=now)
+ read:Mapped[bool]=mapped_column(Boolean,default=False)
 class AdvisorRequest(Base):
  __tablename__='advisor_requests';__table_args__={'schema':'app'}
  id:Mapped[str]=mapped_column(String(26),primary_key=True,default=uid)

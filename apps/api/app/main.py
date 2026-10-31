@@ -65,29 +65,31 @@ async def security(request:Request,call_next):
  response.headers['X-Content-Type-Options']='nosniff'
  response.headers['Referrer-Policy']='no-referrer'
  response.headers['Permissions-Policy']='camera=(self), microphone=(self), geolocation=()'
- if request.url.path.startswith('/v1'):response.headers['Cache-Control']='no-store'
+ if request.url.path.startswith('/api'):response.headers['Cache-Control']='no-store'
  return response
 @app.exception_handler(RequestValidationError)
 async def invalid(request,exc):
  return JSONResponse({'detail':'Check the highlighted input fields.','fields':['.'.join(str(p) for p in e['loc']) for e in exc.errors()]},status_code=422)
-@app.get('/health')
+@app.get('/api/health')
+@app.get('/health',include_in_schema=False)
 def health():return {'status':'ok'}
-@app.get('/ready')
+@app.get('/api/ready')
+@app.get('/ready',include_in_schema=False)
 async def ready():
  try:
   async with Session() as s:await s.execute(text('SELECT 1'))
   return {'status':'ok','profile':'demo','payment_mode':ADAPTER.mode,'models':gw.MODEL_STATUS,'stt_model':gw.STT_MODEL}
  except Exception:return JSONResponse({'status':'database_unavailable','profile':'demo','payment_mode':ADAPTER.mode},status_code=503)
-@app.get('/v1/plans')
+@app.get('/api/plans')
 def all_plans():return list(plans().values())
-@app.get('/v1/example')
+@app.get('/api/example')
 def example():return simulate(date(2026,10,31),['hypertension'])
-@app.get('/v1/method')
+@app.get('/api/method')
 def method():return {'text':(ROOT/'docs/method.md').read_text()}
 DIST=ROOT/'apps/web/dist'
 if (DIST/'assets').exists():app.mount('/assets',StaticFiles(directory=DIST/'assets'),name='assets')
 @app.get('/{path:path}',response_class=HTMLResponse)
 def home(path:str=''):
- if path.startswith(('v1/','internal/')):return JSONResponse({'detail':'Not found'},status_code=404)
+ if path.startswith(('api/','internal/')):return JSONResponse({'detail':'Not found'},status_code=404)
  if (DIST/'index.html').exists():return FileResponse(DIST/'index.html')
- return '''<meta name="viewport" content="width=device-width,initial-scale=1"><title>PakkaCover demo</title><style>body{font:18px system-ui;max-width:600px;margin:4em auto;padding:20px;background:#f5f4ee;color:#163e38}a{display:block;padding:20px;background:white;margin:16px 0;border-radius:16px}</style><h1>PakkaCover</h1><p>Understand your cover, one confirmed fact at a time.</p><p>Hackathon demo · Sample terms · Education only</p><a href="/v1/example">Sunita’s calculated example</a><a href="/docs">Try consent and interview in the API explorer</a>'''
+ return '''<meta name="viewport" content="width=device-width,initial-scale=1"><title>PakkaCover demo</title><style>body{font:18px system-ui;max-width:600px;margin:4em auto;padding:20px;background:#f5f4ee;color:#163e38}a{display:block;padding:20px;background:white;margin:16px 0;border-radius:16px}</style><h1>PakkaCover</h1><p>Understand your cover, one confirmed fact at a time.</p><p>Hackathon demo · Sample terms · Education only</p><a href="/api/example">Sunita’s calculated example</a><a href="/docs">Try consent and interview in the API explorer</a>'''

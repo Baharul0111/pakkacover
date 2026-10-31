@@ -12,7 +12,7 @@ for arg in a.changes:
  if not sep or value not in ('on','off'):p.error('Use switch_name=on or switch_name=off')
  changes[key]=value=='on'
 with httpx.Client(timeout=8) as c:
- if changes:r=c.post('http://127.0.0.1:8000/v1/switches',json={'changes':changes},headers={'X-Demo-Passphrase':values.get('DEMO_LOGIN_PASSPHRASE','')})
- else:r=c.get('http://127.0.0.1:8000/v1/switches')
+ if changes:r=c.post('http://127.0.0.1:8000/api/switches',json={'changes':changes},headers={'X-Demo-Passphrase':values.get('DEMO_LOGIN_PASSPHRASE','')})
+ else:r=c.get('http://127.0.0.1:8000/api/switches')
  if not r.is_success:print('Could not update switches; check the local demo is running.',file=sys.stderr);sys.exit(1)
  for k,v in r.json().items():print(f'{k}: {"on" if v else "off"}')

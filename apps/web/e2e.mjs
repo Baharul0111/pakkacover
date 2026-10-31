@@ -12,7 +12,7 @@ try{
  const answers=['158','64','BP / hypertension','2019','Yes','No','Telma 40 mg','BP / hypertension','Once daily','None','None','No','No','No'];
  for(let i=0;i<answers.length;i++){
   if(full&&i===2&&process.env.PCC_E2E_AUDIO_B64){
-   const out=await page.evaluate(async(encoded)=>{const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));const f=new FormData();f.append('audio',new Blob([bytes],{type:'audio/wav'}),'answer.wav');f.append('duration','6');const r=await fetch('/v1/journeys/'+localStorage.getItem('pc_jid')+'/voice',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('pc_token'),'Idempotency-Key':crypto.randomUUID()},body:f});return r.json();},process.env.PCC_E2E_AUDIO_B64);
+   const out=await page.evaluate(async(encoded)=>{const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));const f=new FormData();f.append('audio',new Blob([bytes],{type:'audio/wav'}),'answer.wav');f.append('duration','6');const r=await fetch('/api/journeys/'+localStorage.getItem('pc_jid')+'/voice',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('pc_token'),'Idempotency-Key':crypto.randomUUID()},body:f});return r.json();},process.env.PCC_E2E_AUDIO_B64);
    voiceEvidence={attempted:true,accepted:!!out.accepted,fallbackUsed:!out.accepted,source:out.source||'speech_or_media_fallback'};
    if(!out.accepted){if(!out.fallback)throw new Error('Speech failed without a usable fallback');const retry=page.waitForResponse(r=>r.url().endsWith('/answer')&&r.request().method()==='POST');await page.getByRole('button',{name:'BP / hypertension',exact:true}).click();await retry;}
    await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:/Since when/}).waitFor();

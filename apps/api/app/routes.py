@@ -9,7 +9,7 @@ from apps.api.app.db import Session,Journey,AuthToken,Consent,Line,AdvisorReques
 from apps.api.app.repo import principal,owned
 from apps.api.app import gateway as gw,interview as fsm
 from apps.api.app.engine.rules import plans,simulate,promise
-router=APIRouter(prefix='/v1')
+router=APIRouter(prefix='/api')
 class Body(BaseModel):model_config=ConfigDict(extra='forbid')
 class SessionIn(Body):lang:str='hi'
 class ConsentIn(Body):
@@ -292,65 +292,80 @@ async def audit_policy(jid:str,owner=Depends(principal),policy:UploadFile|None=F
   record=AuditRun(journey_id=owner,pdf_sha=digest,payload=result);s.add(record);await s.commit()
  return result
 
+def payment_view(row):
+ return {'mode':row.mode,'order_id':row.order_id,'amount':'1.00','status':row.status,'verified':False,'paid_at':row.paid_at.isoformat() if row.paid_at else None,'label':'Demo'}
+def notification_view(row):
+ return {'id':row.id,'order_id':row.order_id,'title':'Paytm','body':f'₹1 paid for your health cover · Order {row.order_id}','created_at':row.created_at.isoformat(),'read':row.read,'mode':'demo'}
 @router.post('/journeys/{jid}/pay/initiate')
 async def pay_initiate(jid:str,owner=Depends(principal)):
  from apps.api.app.payments import ADAPTER
  from apps.api.app.db import Payment,uid
  if jid!=owner:raise HTTPException(404,'Not found')
- if not (await gw.flags())['payments']:raise HTTPException(503,'Test payments are switched off')
+ if not (await gw.flags())['payments']:raise HTTPException(503,'Demo payments are switched off')
  j,lines=await confirmed_context(owner)
- if not j.saved or not j.payload.get('selection'):raise HTTPException(409,'Save your Promise Card before the TEST payment')
- order_id='PC'+uid()
+ if not j.saved or not j.payload.get('selection'):raise HTTPException(409,'Save your Promise Card first')
  async with Session() as s:
-  order=Payment(journey_id=owner,order_id=order_id,mode=ADAPTER.mode);s.add(order);await s.commit()
- try:return await ADAPTER.initiate(order_id,owner)
- except HTTPException:
-  async with Session() as s:
-   order=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.journey_id==owner));order.status='INIT_FAILED';await s.commit()
-  raise
+  row=Payment(journey_id=owner,order_id='PC'+uid(),mode='demo');s.add(row);await s.commit()
+ return await ADAPTER.initiate(row.order_id,owner)
 async def payment_row(s,order_id,owner):
  from apps.api.app.db import Payment
  row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.journey_id==owner).with_for_update())
  if not row:raise HTTPException(404,'Not found')
  return row
-@router.post('/journeys/{jid}/pay/{order_id}/simulate')
-async def simulate_payment(jid:str,order_id:str,owner=Depends(principal)):
- from apps.api.app.payments import ADAPTER,SIMULATED_BANNER
+class CompletePaymentIn(Body):
+ method:str=Field(pattern='^(UPI|Wallet|Card)$')
+@router.post('/journeys/{jid}/pay/{order_id}/complete')
+async def complete_payment(jid:str,order_id:str,body:CompletePaymentIn,owner=Depends(principal)):
+ from apps.api.app.db import Notification
  if jid!=owner:raise HTTPException(404,'Not found')
- if ADAPTER.mode!='simulated':raise HTTPException(404,'Not found')
+ if not (await gw.flags())['payments']:raise HTTPException(503,'Demo payments are switched off')
  async with Session() as s:
   row=await payment_row(s,order_id,owner)
-  if row.mode!='simulated':raise HTTPException(409,'This order is not simulated')
-  row.status='SIMULATED_SUCCESS';row.verified=False;await s.commit()
- return {'mode':'simulated','order_id':order_id,'status':'SIMULATED_SUCCESS','verified':False,'banner':SIMULATED_BANNER}
+  if row.mode!='demo':raise HTTPException(409,'Start a new demo order')
+  if row.status!='PAID':
+   row.status='PAID';row.verified=False;row.paid_at=now()
+   notice=Notification(journey_id=owner,order_id=order_id);s.add(notice);await s.flush()
+  else:notice=await s.scalar(select(Notification).where(Notification.order_id==order_id,Notification.journey_id==owner))
+  await s.commit();result=payment_view(row);result['notification']=notification_view(notice)
+ return result
 @router.post('/journeys/{jid}/pay/{order_id}/status')
 async def payment_status(jid:str,order_id:str,owner=Depends(principal)):
- from apps.api.app.payments import ADAPTER
  if jid!=owner:raise HTTPException(404,'Not found')
+ async with Session() as s:return payment_view(await payment_row(s,order_id,owner))
+@router.get('/journeys/{jid}/notifications')
+async def notifications(jid:str,owner=Depends(principal)):
+ from apps.api.app.db import Notification
  async with Session() as s:
-  row=await payment_row(s,order_id,owner);mode=row.mode;status=row.status;verified=row.verified
- if mode=='staging':
-  if ADAPTER.mode!='staging':raise HTTPException(409,'Restart with staging keys to verify this TEST order')
-  result=await ADAPTER.status(order_id);status=result['status'];verified=result['verified']
-  async with Session() as s:
-   row=await payment_row(s,order_id,owner);row.status=status;row.verified=verified;await s.commit()
- return {'mode':mode,'order_id':order_id,'status':status,'verified':verified}
-
-@router.api_route('/pay/callback',methods=['GET','POST'])
-async def pay_callback(request:Request):
- from apps.api.app.payments import ADAPTER
- from apps.api.app.db import Payment
- from fastapi.responses import RedirectResponse
- params=dict(await request.form()) if request.method=='POST' else dict(request.query_params)
- if ADAPTER.mode!='staging' or not ADAPTER.verify_callback(params):raise HTTPException(400,'Invalid TEST payment callback')
- order_id=params.get('ORDERID','')
+  await owned(s,Journey,jid,owner)
+  rows=(await s.scalars(select(Notification).where(Notification.journey_id==owner).order_by(Notification.created_at.desc()))).all()
+ return [notification_view(row) for row in rows]
+@router.post('/journeys/{jid}/notifications/read')
+async def read_notifications(jid:str,owner=Depends(principal)):
+ from apps.api.app.db import Notification
+ from sqlalchemy import update
  async with Session() as s:
-  row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.mode=='staging'))
-  if not row:raise HTTPException(404,'Not found')
- result=await ADAPTER.status(order_id) # callback status is never trusted
+  await owned(s,Journey,jid,owner)
+  await s.execute(update(Notification).where(Notification.journey_id==owner).values(read=True));await s.commit()
+ return {'read':True}
+@router.post('/journeys/{jid}/reset')
+async def reset_demo(jid:str,owner=Depends(principal)):
+ # Remove only this browser's journey. Provider spend is deliberately retained.
  async with Session() as s:
-  row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.mode=='staging').with_for_update());row.status=result['status'];row.verified=result['verified'];await s.commit()
- return RedirectResponse(url='/?test_payment=returned',status_code=303)
+  old=await owned(s,Journey,jid,owner,True);lang=old.lang
+  await s.execute(delete(AuthToken).where(AuthToken.journey_id==owner));await s.delete(old)
+  token=secrets.token_urlsafe(32);j=Journey(lang=lang,payload={'slots':{}});s.add(j);await s.flush()
+  s.add(AuthToken(token_hash=hashlib.sha256(token.encode()).hexdigest(),journey_id=j.id,expires_at=now()+timedelta(hours=24)));await s.commit()
+ return {'token':token,'journey_id':j.id}
+@router.get('/journeys/{jid}/calendar')
+async def calendar(jid:str,owner=Depends(principal)):
+ await require_consented(owner,'P2_alerts');result=await card(jid,owner)
+ # Dates come only from the rules engine; no health details enter calendar text.
+ lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//PakkaCover//Demo//EN','CALSCALE:GREGORIAN']
+ for index,row in enumerate(result['rows']):
+  d=date.fromisoformat(row['fact'].value)
+  lines+=['BEGIN:VEVENT',f'UID:{jid}-{index}@pakkacover',f'DTSTAMP:{now().strftime("%Y%m%dT%H%M%SZ")}',f'DTSTART;VALUE=DATE:{d.strftime("%Y%m%d")}',f'DTEND;VALUE=DATE:{(d+timedelta(days=1)).strftime("%Y%m%d")}', 'SUMMARY:PakkaCover - review your cover date','END:VEVENT']
+ lines+=['END:VCALENDAR']
+ return Response('\r\n'.join(lines)+'\r\n',media_type='text/calendar',headers={'Content-Disposition':'attachment; filename="pakkacover-dates.ics"'})
 
 class ManualAuditIn(Body):
  fields:dict[str,str]
