@@ -1,0 +1,14 @@
+{
+  "printed": {
+    "passed": true,
+    "status": "agree",
+    "candidate_count": 2,
+    "requires_buyer_indication": true
+  },
+  "blank": {
+    "passed": true,
+    "status": "unreadable",
+    "candidate_count": 0,
+    "requires_buyer_indication": true
+  }
+}
