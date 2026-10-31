@@ -1,7 +1,7 @@
 from __future__ import annotations
 import asyncio,hashlib,hmac,secrets
 from datetime import date,timedelta
-from fastapi import APIRouter,Depends,HTTPException,Header,UploadFile,File,Form,Response
+from fastapi import APIRouter,Depends,HTTPException,Header,UploadFile,File,Form,Response,Request
 from pydantic import BaseModel,Field,ConfigDict
 from sqlalchemy import select,delete
 from apps.api.app.config import get,fernet
@@ -288,3 +288,63 @@ async def audit_policy(jid:str,owner=Depends(principal),policy:UploadFile|None=F
  async with Session() as s:
   record=AuditRun(journey_id=owner,pdf_sha=digest,payload=result);s.add(record);await s.commit()
  return result
+
+@router.post('/journeys/{jid}/pay/initiate')
+async def pay_initiate(jid:str,owner=Depends(principal)):
+ from apps.api.app.payments import ADAPTER
+ from apps.api.app.db import Payment,uid
+ if jid!=owner:raise HTTPException(404,'Not found')
+ if not (await gw.flags())['payments']:raise HTTPException(503,'Test payments are switched off')
+ j,lines=await confirmed_context(owner)
+ if not j.saved or not j.payload.get('selection'):raise HTTPException(409,'Save your Promise Card before the TEST payment')
+ order_id='PC'+uid()
+ async with Session() as s:
+  order=Payment(journey_id=owner,order_id=order_id,mode=ADAPTER.mode);s.add(order);await s.commit()
+ try:return await ADAPTER.initiate(order_id,owner)
+ except HTTPException:
+  async with Session() as s:
+   order=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.journey_id==owner));order.status='INIT_FAILED';await s.commit()
+  raise
+async def payment_row(s,order_id,owner):
+ from apps.api.app.db import Payment
+ row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.journey_id==owner).with_for_update())
+ if not row:raise HTTPException(404,'Not found')
+ return row
+@router.post('/journeys/{jid}/pay/{order_id}/simulate')
+async def simulate_payment(jid:str,order_id:str,owner=Depends(principal)):
+ from apps.api.app.payments import ADAPTER,SIMULATED_BANNER
+ if jid!=owner:raise HTTPException(404,'Not found')
+ if ADAPTER.mode!='simulated':raise HTTPException(404,'Not found')
+ async with Session() as s:
+  row=await payment_row(s,order_id,owner)
+  if row.mode!='simulated':raise HTTPException(409,'This order is not simulated')
+  row.status='SIMULATED_SUCCESS';row.verified=False;await s.commit()
+ return {'mode':'simulated','order_id':order_id,'status':'SIMULATED_SUCCESS','verified':False,'banner':SIMULATED_BANNER}
+@router.post('/journeys/{jid}/pay/{order_id}/status')
+async def payment_status(jid:str,order_id:str,owner=Depends(principal)):
+ from apps.api.app.payments import ADAPTER
+ if jid!=owner:raise HTTPException(404,'Not found')
+ async with Session() as s:
+  row=await payment_row(s,order_id,owner);mode=row.mode;status=row.status;verified=row.verified
+ if mode=='staging':
+  if ADAPTER.mode!='staging':raise HTTPException(409,'Restart with staging keys to verify this TEST order')
+  result=await ADAPTER.status(order_id);status=result['status'];verified=result['verified']
+  async with Session() as s:
+   row=await payment_row(s,order_id,owner);row.status=status;row.verified=verified;await s.commit()
+ return {'mode':mode,'order_id':order_id,'status':status,'verified':verified}
+
+@router.api_route('/pay/callback',methods=['GET','POST'])
+async def pay_callback(request:Request):
+ from apps.api.app.payments import ADAPTER
+ from apps.api.app.db import Payment
+ from fastapi.responses import RedirectResponse
+ params=dict(await request.form()) if request.method=='POST' else dict(request.query_params)
+ if ADAPTER.mode!='staging' or not ADAPTER.verify_callback(params):raise HTTPException(400,'Invalid TEST payment callback')
+ order_id=params.get('ORDERID','')
+ async with Session() as s:
+  row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.mode=='staging'))
+  if not row:raise HTTPException(404,'Not found')
+ result=await ADAPTER.status(order_id) # callback status is never trusted
+ async with Session() as s:
+  row=await s.scalar(select(Payment).where(Payment.order_id==order_id,Payment.mode=='staging').with_for_update());row.status=result['status'];row.verified=result['verified'];await s.commit()
+ return RedirectResponse(url='/?test_payment=returned',status_code=303)

@@ -8,8 +8,9 @@ from fastapi.responses import HTMLResponse,JSONResponse,FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.formparsers import MultiPartParser
 from sqlalchemy import text
-from apps.api.app.config import ROOT,payment_mode,fernet
+from apps.api.app.config import ROOT,fernet
 from apps.api.app.db import Session,engine
+from apps.api.app.payments import ADAPTER
 from apps.api.app.engine.rules import plans,simulate
 from apps.api.app.routes import router
 from apps.api.app import gateway as gw
@@ -75,8 +76,8 @@ def health():return {'status':'ok'}
 async def ready():
  try:
   async with Session() as s:await s.execute(text('SELECT 1'))
-  return {'status':'ok','profile':'demo','payment_mode':payment_mode(),'models':gw.MODEL_STATUS,'stt_model':gw.STT_MODEL}
- except Exception:return JSONResponse({'status':'database_unavailable','profile':'demo','payment_mode':payment_mode()},status_code=503)
+  return {'status':'ok','profile':'demo','payment_mode':ADAPTER.mode,'models':gw.MODEL_STATUS,'stt_model':gw.STT_MODEL}
+ except Exception:return JSONResponse({'status':'database_unavailable','profile':'demo','payment_mode':ADAPTER.mode},status_code=503)
 @app.get('/v1/plans')
 def all_plans():return list(plans().values())
 @app.get('/v1/example')
