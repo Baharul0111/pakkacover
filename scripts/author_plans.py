@@ -54,5 +54,14 @@ c=dict(common,plan_id='tata_premier',display_label='Plan C',product_name='Tata A
  consumables_covered=True,consumables_clause=quote('tata_premier',16,'B12 Consumables Benefit','We will pay for expenses incurred, for specified consumables'),
  assumptions=['Example consumables assumed to be on the specified covered list; excluded items remain excluded.','No voluntary deductible or copay assumed; actual issued schedule takes precedence.'])
 for plan in [a,b,c]:
+ doc=plan['source_doc']
+ pages={'optima_secure_current':(34,33,33,33,33),'care_supreme':(38,37,37,37,37),'tata_premier':(37,37,38,38,37)}[doc]
+ entries=[
+  ('unproven_treatment','Unproven treatments','अप्रमाणित उपचार','Unproven treatments','Excl16'),
+  ('cosmetic_without_exception','Cosmetic procedures, except specified reconstruction/medical-necessity exceptions','सौंदर्य उपचार; बताए गए पुनर्निर्माण/चिकित्सकीय अपवाद लागू','Cosmetic or','Excl08'),
+  ('professional_hazardous_sport','Treatment arising from professional hazardous/adventure sports','पेशेवर खतरनाक/साहसिक खेलों से संबंधित इलाज','Hazardous or Adventure','Excl09'),
+  ('criminal_intent_breach','Treatment arising from breach of law with criminal intent','आपराधिक इरादे से कानून तोड़ने से संबंधित इलाज','Breach of law','Excl10'),
+  ('substance_abuse_treatment','Treatment for alcohol/drug/substance abuse and stated consequences','शराब/नशीले पदार्थों की लत का इलाज और बताए गए परिणाम','Alcoholism','Excl12')]
+ plan['exclusions']=[{'key':key,'text_en':en,'text_hi':hi,'clause_ref':quote(doc,page,section,anchor)} for page,(key,en,hi,anchor,section) in zip(pages,entries)]
  (ROOT/f'data/plans/plan_{plan["display_label"][-1].lower()}.json').write_text(json.dumps(plan,indent=2,ensure_ascii=False)+'\n')
  print(plan['display_label'],plan['uin'],'authored')

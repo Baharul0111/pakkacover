@@ -28,7 +28,7 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Household UI covers one explicitly attested member for the Sunita stage path; remaining family branches are outside today's demo.
 - The 60 generic names and demo brand/condition hints are hand-seeded. Conditions are always buyer-selected, not clinically inferred. Broader licensed datasets are deferred.
 - All audits attempt Haiku section extraction and one Sonnet retry on failed quote/value verification. Generated fixtures additionally have a quote-verified deterministic label parser as the network/model fallback, explicitly recorded in extraction_mode. The comparison is always code. G6 unit fixtures exercise deterministic parsing; live and browser gates exercise the actual model path.
-- Promise Card shows the demo-relevant exclusion example (unproven treatments) and explicitly states other exclusions/conditions apply; full exclusion authoring is deferred.
+- Promise Card includes five clause-linked exclusion examples with conditional/medical exceptions labelled; the full source wording remains authoritative for all other exclusions and exceptions.
 
 ## macOS media verification
 - System ffprobe aborts on this Mac, so bundled PyAV decodes microphone bytes in the isolated worker and measures actual duration without disk files.

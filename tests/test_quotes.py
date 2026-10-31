@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from scripts.check_quotes import check_all,check_plan,ROOT
 
-def test_g2_all_public_wording_quotes():assert check_all()==29
+def test_g2_all_public_wording_quotes():assert check_all()==44
 
 def test_g2_rejects_modified_clause():
  plan=json.loads((ROOT/'data/plans/plan_b.json').read_text())

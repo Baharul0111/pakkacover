@@ -12,8 +12,63 @@
   "exclusions": [
     {
       "key": "unproven_treatment",
-      "text_en": "Unproven treatments: see exact exclusion and its scope.",
-      "text_hi": "अप्रमाणित उपचार: पूरा अपवाद देखें।"
+      "text_en": "Unproven treatments",
+      "text_hi": "अप्रमाणित उपचार",
+      "clause_ref": {
+        "doc_id": "tata_premier",
+        "page": 37,
+        "section": "Excl16",
+        "quote": "Unproven treatments (Code-Excl16): Expenses related to any unproven treatment, services and supplies for or in connection with any treatment. Unproven treatments are treatments, procedures or supplies that lack significant medical documentation to support their",
+        "quote_sha": "68795618c6776c63b85766fcd938307ab709867abfb115b49716621afee3f2a8"
+      }
+    },
+    {
+      "key": "cosmetic_without_exception",
+      "text_en": "Cosmetic procedures, except specified reconstruction/medical-necessity exceptions",
+      "text_hi": "सौंदर्य उपचार; बताए गए पुनर्निर्माण/चिकित्सकीय अपवाद लागू",
+      "clause_ref": {
+        "doc_id": "tata_premier",
+        "page": 37,
+        "section": "Excl08",
+        "quote": "Cosmetic or Plastic Surgery (Code – Excl08): Expenses for cosmetic or pl astic surgery or any treatment to change appearance unless for reconstruction following an Accident, Burn(s) or Cancer or as part of medically necessary treatment to remove a direct and immediate",
+        "quote_sha": "9f0ad6de43bdc5bf33200a5b4a09daa235cf42e6347931a07f80e4e7a6515b6c"
+      }
+    },
+    {
+      "key": "professional_hazardous_sport",
+      "text_en": "Treatment arising from professional hazardous/adventure sports",
+      "text_hi": "पेशेवर खतरनाक/साहसिक खेलों से संबंधित इलाज",
+      "clause_ref": {
+        "doc_id": "tata_premier",
+        "page": 38,
+        "section": "Excl09",
+        "quote": "Hazardous or Adventure Sports (Code Excl09) : Expenses related to any treatment necessitated due to participation as a professional in hazardous or adventure sports, including but not l imited to, para-jumping, rock climbing, mountaineering, rafting, motor racing,",
+        "quote_sha": "7a7336fef4ca43188eba5aed26c1625756b0c1d7847a84d02c734f52a40bd0ad"
+      }
+    },
+    {
+      "key": "criminal_intent_breach",
+      "text_en": "Treatment arising from breach of law with criminal intent",
+      "text_hi": "आपराधिक इरादे से कानून तोड़ने से संबंधित इलाज",
+      "clause_ref": {
+        "doc_id": "tata_premier",
+        "page": 38,
+        "section": "Excl10",
+        "quote": "Breach of law (Code Excl10): Expenses for treatment directly arising from or consequent upon any Insured Person committing or attempting to commit a breach of law with criminal intent. iii. Excluded Providers (Code-Excl11): Expenses incurred towards treatment in any",
+        "quote_sha": "d8028c6de7c4f6beaa9dc33aa5cb06fba2e933f8482b062eaffda6caaf519baf"
+      }
+    },
+    {
+      "key": "substance_abuse_treatment",
+      "text_en": "Treatment for alcohol/drug/substance abuse and stated consequences",
+      "text_hi": "शराब/नशीले पदार्थों की लत का इलाज और बताए गए परिणाम",
+      "clause_ref": {
+        "doc_id": "tata_premier",
+        "page": 37,
+        "section": "Excl12",
+        "quote": "Alcoholism, drug or substance abuse or any addictive condition and consequences thereof .(Code - Excl12) vii. Treatments received in heath hydros, nature cure clinics, spas or similar establishments or private beds registered as a nursing home attached to such",
+        "quote_sha": "30a6f93b7cc2c76fb1ee15800b7331574069a17bc6350b5baa1b6aa8b7d8221b"
+      }
     }
   ],
   "plan_id": "tata_premier",

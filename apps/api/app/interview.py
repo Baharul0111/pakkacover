@@ -96,6 +96,8 @@ async def extract(node,text):
     turn,returned=await gw.structured(provider,model,Turn,system,user,timeout=3.5 if provider=='anthropic' else 3,step='slots')
     vals=validate_turn(turn,text,node)
     if vals:return vals,returned
+    literal=explicit_condition_answer(node,text)
+    if literal is not None:return {node['key']:literal},'source_anchored_condition_fallback'
    except (gw.Unavailable,ValueError):
     # For a literal, explicit condition statement only, code can bind the answer
     # without repairing/inventing a model quote. It is still individually confirmed.

@@ -20,6 +20,12 @@ class Clause(Strict):
     quote: str = Field(min_length=1)
     quote_sha: str
 
+class Exclusion(Strict):
+    key:str
+    text_en:str
+    text_hi:str
+    clause_ref:Clause
+
 class Term(Strict):
     value: int = Field(ge=0)
     clause_ref: Clause
@@ -40,7 +46,7 @@ class Plan(Strict):
     room_rent: Clause
     specific_list: list[str]
     specific_list_clause: Clause
-    exclusions: list[dict[str, str]]
+    exclusions: list[Exclusion]
     exclusion_clause: Clause
     instant_cover: Term | None = None
     instant_conditions: list[str] = []
@@ -95,7 +101,7 @@ def payout(plan:Plan,d0:date,declared:set[str],claim:Claim)->dict:
     steps=[start]
     if claim.date < date.fromisoformat(str(start.value)):
         return {'amount':0,'fact':fact(0,start.rule_id,start.clause_ref,'Claim is before its applicable cover date.','दावा कवर शुरू होने से पहले है।'),'steps':steps}
-    if claim.condition_key in {x['key'] for x in plan.exclusions}:
+    if claim.condition_key in {x.key for x in plan.exclusions}:
         return {'amount':0,'fact':fact(0,'permanent_exclusion',plan.exclusion_clause,'This example matches a permanent exclusion.'),'steps':steps}
     eligible=claim.billed_inr
     calculation=[f'Example bill ₹{claim.billed_inr}']
