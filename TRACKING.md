@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:20:14 IST. Step 7: ready for final production-build rehearsals.
-- Next action: Run final full Python suite/build, launch current app/tunnel, then three consecutive HTTPS mobile runs (first with live speech and video). Write DEMO.md and freeze demo-1 only after gates pass.
+- Time: 2026-10-31 11:22:57 IST. Step 7: final HTTPS rehearsals about to run.
+- Next action: Build latest speech-cancellation UI, then run three consecutive full mobile stories at the current tunnel; first records video and exercises real voice. Inspect all results before freezing.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Old API/tunnel at https://east-guru-howard-larry.trycloudflare.com; final restart will rotate URL and start read-only key check plus caffeinate.
-- Done and verified / half-done: Added golden-media A/B/no-fabrication runner (no media supplied), startup pin reload, timed 14:30 read-only key check, and fallback-video/live-voice browser rehearsal support; verification: 105 tests passed before these small operator/test additions; golden runner reports 0 clips/0 photos and pins v4. Final checks next.. The next action above identifies unfinished work.
-- Open problems and decisions: No unfilled owner dependency for runnable simulation. Real staging transaction unverified because keys absent. No real phone hardware test possible from automated browser.
+- Background processes: API/tunnel https://shortcuts-foreign-categories-medicines.trycloudflare.com; scheduled 14:30 preflight .run/preflight.pid; caffeinate .run/awake.pid; Postgres55432. Stop: scripts/run_demo --stop.
+- Done and verified / half-done: 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified; verification: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending.. The next action above identifies unfinished work.
+- Open problems and decisions: Physical phone mic/camera and owner real media remain unverified; automated phone-size browser and synthetic media cover the software path. No real staging keys.
 - Paytm mode: simulated.
 
 ## Implementation log
@@ -37,6 +37,7 @@
 - 2026-10-31 11:15:32 IST | Step 7: Mac media compatibility fix | PyAV audio-duration test passes; corrected manual form compiles. Mac rejects resource-limit setters, so worker now uses parent RSS watchdog with timeout/respawn fallback | Tests: 19/20 focused checks passed; remaining initializer failure addressed by watchdog. Need updated tests after psutil install. | Commit: `bd4a20e`
 - 2026-10-31 11:17:26 IST | Step 7: final test fixes pass; operator tools added | Mac media compatibility fixed; operator voice/AI switches and read-only 14:30 payment preflight scripts added; calculation modal now explains actual arithmetic | Tests: Full suite/build just completed after media fix; check output. Prior HTTPS E2E passed with model-verified audit fields. | Commit: `82bde45`
 - 2026-10-31 11:20:14 IST | Step 7: ready for final production-build rehearsals | Added golden-media A/B/no-fabrication runner (no media supplied), startup pin reload, timed 14:30 read-only key check, and fallback-video/live-voice browser rehearsal support | Tests: 105 tests passed before these small operator/test additions; golden runner reports 0 clips/0 photos and pins v4. Final checks next. | Commit: `e04766e`
+- 2026-10-31 11:22:57 IST | Step 7: final HTTPS rehearsals about to run | 105 tests and latest production build passed; DEMO.md stage/operator guide drafted; audio/media/cap/manual fallbacks verified | Tests: Golden runner confirms no supplied files; actual-model HTTPS audit previously verified all 11 fields. Final three runs pending. | Commit: `b15bc83`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
