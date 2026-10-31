@@ -87,7 +87,7 @@ def cover_start(plan: Plan, d0: date, condition: str, declared: set[str], kind='
             candidates.append((d0+relativedelta(months=plan.ped_wait.value),'ped_wait',plan.ped_wait.clause_ref))
     if condition in plan.specific_list:
         candidates.append((d0+relativedelta(months=plan.specific_wait.value),'specific_wait',plan.specific_wait.clause_ref))
-    start,rule,clause=max(candidates,key=lambda c:c[0])
+    start,rule,clause=max(candidates,key=lambda c:(c[0],{'initial_wait':0,'instant_cover':1,'ped_wait':1,'specific_wait':2}[c[1]]))
     return fact(start,rule,clause,'The latest applicable waiting-period end controls this illustrative claim. Confirm boundary dates with the insurer/advisor.','लागू प्रतीक्षा अवधियों में सबसे बाद की तारीख ली गई है। सीमा की तारीख सलाहकार से जाँचें।')
 
 def payout(plan:Plan,d0:date,declared:set[str],claim:Claim)->dict:

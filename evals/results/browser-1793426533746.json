@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "base": "https://shortcuts-foreign-categories-medicines.trycloudflare.com",
+  "full": true,
+  "ranking": [
+    "Plan B",
+    "Plan C",
+    "Plan A"
+  ],
+  "browserErrors": 0,
+  "durationSeconds": 30
+}

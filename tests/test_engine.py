@@ -53,3 +53,8 @@ def test_permanent_exclusion():
 
 def test_negative_money_is_rejected():
  with pytest.raises(ValueError):Claim(date=D0,condition_key='accident',billed_inr=-1)
+
+def test_instant_cover_tie_cites_the_addon_not_only_initial_wait():
+ result=cover_start(plans()['care_supreme_ic'],D0,'hypertension',{'hypertension'})
+ assert result.value=='2026-11-30' and result.rule_id=='instant_cover'
+ assert result.clause_ref.section=='3.2.5' and '31st day' in result.clause_ref.quote
