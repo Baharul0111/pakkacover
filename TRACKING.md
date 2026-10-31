@@ -1,14 +1,14 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 11:57:00 IST. Revised build: plan recorded; demo payment/reset/notifications first.
-- Next action: Run the existing required tests to verify the baseline, cancel obsolete key-check process, then replace staging/simulated adapter with demo-only paid order + notification API and Reset demo.
+- Time: 2026-10-31 11:59:36 IST. Hosting add-on: GitHub audit and first push now.
+- Next action: Scan tracked/staged files and history for actual secrets/private media, then set main and push to the authenticated GitHub repo before further implementation.
 - Run app: `scripts/run_demo` / `scripts/run_demo --status`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: Prior stage API/tunnel running at https://slide-stage-seller-republican.trycloudflare.com; obsolete preflight .run/preflight.pid must be cancelled. Caffeinate/PG55432 remain active.
-- Done and verified / half-done: Read the entire change of plan; updated AGENTS.md and TRACKING.md with the 14:30 deadline, revised schedule, demo-only payment and full new UI requirements; verification: Previous frozen baseline: 121 tests, 44 verified clauses, 3 HTTPS runs. Baseline verification next.. The next action above identifies unfinished work.
-- Open problems and decisions: Prior freeze is superseded; revised UI/payment/reset features not yet implemented. Keep engine/quotes/confirmation/numeric guard intact. No Paytm keys required.
-- Paytm mode: demo required; current running prior build still simulated until adapter replacement.
+- Background processes: Current fallback API/tunnel plus obsolete key preflight; cancel preflight after first push. PG55432 and caffeinate active.
+- Done and verified / half-done: Recorded GitHub/Vercel add-on in AGENTS.md and TRACKING.md; strengthened private-media/dump/env exclusions while allowing labels.csv; added README; verification: Prior baseline test run pending result; secret/media push audit next. The next action above identifies unfinished work.
+- Open problems and decisions: Revised UI/payment not implemented yet. Vercel DB must resolve a real Supabase pooler, not the current local fallback. No tokens will be requested.
+- Paytm mode: demo required; old running build still simulated.
 
 ## Implementation log
 - 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
@@ -68,6 +68,7 @@ The earlier 11:51 freeze is superseded. Deadline is **14:30 IST**; owner testing
 
 Payment decision: `demo` only; remove real staging code and scheduled credential checks. UI: #00BAF2 / #002E6E, white/grey cards, big icons/buttons, minimal copy. Full current requirements are in AGENTS.md.
 - 2026-10-31 11:57:00 IST | Revised build: plan recorded; demo payment/reset/notifications first | Read the entire change of plan; updated AGENTS.md and TRACKING.md with the 14:30 deadline, revised schedule, demo-only payment and full new UI requirements | Tests: Previous frozen baseline: 121 tests, 44 verified clauses, 3 HTTPS runs. Baseline verification next. | Commit: `9ed31d6`
+- 2026-10-31 11:59:36 IST | Hosting add-on: GitHub audit and first push now | Recorded GitHub/Vercel add-on in AGENTS.md and TRACKING.md; strengthened private-media/dump/env exclusions while allowing labels.csv; added README | Tests: Prior baseline test run pending result; secret/media push audit next | Commit: `60c06b3`
 
 ## Original orientation notes
 
