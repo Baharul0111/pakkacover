@@ -83,3 +83,5 @@ Authority: AGENTS.md, 31 Oct 2026. Original goal.md, architecture.md and setup.m
 - Prior demo-1/demo-2 tags remain unchanged. The new finishing-step revision will use demo-3 after its tests and browser checks; no frozen engine/payment/date behavior is changed.
 
 - 13:56 IST tunnel recovery: the old anonymous tunnel returned Tunnel not found and stopped resolving; local API remained healthy. Replaced only the tunnel. New stage URL: https://camping-leon-rider-performer.trycloudflare.com. New hostname means a new browser origin/session; no cross-owner session merging was introduced.
+
+- Finishing-step freeze 2026-10-31T13:59:11.210950+05:30: demo-3;150 Python tests,44 clauses, build and scoped local/new-HTTPS completion browser checks pass. Base demo-2 live rehearsals remain separately identified; expensive model calls were not repeated for an isolated completion addition. Prior tags and engine/date/payment semantics remain unchanged.

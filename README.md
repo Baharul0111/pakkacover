@@ -12,4 +12,4 @@ Paytm payment is a demo screen; PG test keys could not be obtained.
 
 Stage instructions: [DEMO.md](DEMO.md). Progress: [TRACKING.md](TRACKING.md).
 
-Frozen build: `demo-2`. Original safe fallback: `demo-1` (unchanged).
+Frozen build: `demo-3` (adds Finish review). Safe fallbacks: `demo-1` and `demo-2` (unchanged).
