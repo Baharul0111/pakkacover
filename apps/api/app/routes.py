@@ -251,3 +251,10 @@ async def medicine_choose(jid:str,body:MedicineChoice,owner=Depends(principal)):
   else:s.add(Line(journey_id=owner,slot='medicine',payload=payload))
   await s.commit()
  return {'accepted':True,'node':fsm.next_node(j.payload),'condition_choices':['BP / hypertension','Heart','Kidney','I do not know']}
+
+class LanguageIn(Body):lang:str=Field(pattern='^(hi|en)$')
+@router.post('/journeys/{jid}/language')
+async def language(jid:str,body:LanguageIn,owner=Depends(principal)):
+ async with Session() as s:
+  j=await owned(s,Journey,jid,owner);j.lang=body.lang;await s.commit()
+ return {'lang':body.lang}
