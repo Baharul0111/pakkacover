@@ -92,7 +92,7 @@ The owner’s 20 clips and 15 labelled photos are optional until supplied under 
 
 Final browser rehearsals use fictional details and a **synthetic printed test label**, not a real medicine-strip photo. The live-speech rehearsal uses a synthetic spoken answer and the actual voice endpoint. These checks do not replace testing the physical phone’s microphone/camera or the owner’s real golden media. Runtime results are in `evals/results/`; screenshots and the silent browser fallback video are in ignored `.run/`.
 
-The stable fallback recording path is `.run/sunita-fallback.webm` after the recorded rehearsal. Open it with your normal video player. It shows the browser demo with synthetic test inputs; narrate the stage script over it if needed.
+The fallback recordings are `.run/sunita-fallback.mp4` (normal video player) and `.run/sunita-fallback.webm` (Chrome/VLC). It shows the browser demo with synthetic test inputs; narrate the stage script over it if needed.
 
 ## Scope
 
@@ -105,4 +105,12 @@ This is the local hackathon demo, **not a pilot**. Retention jobs, export/delete
 - Three consecutive full HTTPS mobile-browser rehearsals: **39 s, 44 s, 40 s**, no browser runtime errors; each included accepted live speech, live dual-reader synthetic photo, per-line confirmation, correct Instant Cover clause tap, Promise Card and simulated payment.
 - Each rehearsal ran all four audits through real model extraction: all **11 fields** quote verified, planted flags **1 / 1 / 1**, clean flags **0**.
 - Owner golden files at freeze: **0 clips, 0 photos**; synthetic checks are clearly separate from real-media/hardware testing.
-- Machine-readable evidence: `evals/results/freeze-verification.json`. Frozen source tag: `demo-1` once final bookkeeping is committed.
+- Machine-readable evidence: `evals/results/freeze-verification.json`. Frozen source tag: `demo-1`.
+
+## Live stage instance
+
+https://slide-stage-seller-republican.trycloudflare.com
+
+The QA API/tunnel were stopped after tests; this is a fresh running stage instance of the same verified build. Quick-tunnel URLs change on a full restart. The read-only 14:30 key check is active.
+
+**FROZEN:** 2026-10-31T11:51:16.358210+05:30 — all requested demo gates passed before 14:45 IST.
