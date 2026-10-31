@@ -1,17 +1,17 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:33:50 IST. Step 1 — initialize the demo build, then policy sources and rules engine.
-- Next action: inspect local tools; create Python 3.12 environment; download Plans A/B/C PDFs and implement clause-linked rules and G1/G2 tests.
-- Run app: pending Step 1 runnable shell; target command `scripts/run_demo`.
-- Run tests: pending environment; target `.venv/bin/python -m pytest`.
-- Background processes: none.
-- Done: requirements reviewed; Git initialized; `.gitignore` excludes credentials, runtime files and dependencies. Half-done: Step 1 not yet implemented.
-- Decisions: macOS/Homebrew; today's AGENTS schedule supersedes old dates; retention out of scope; app-side spend caps; live model IDs checked at startup.
-- Paytm: simulated pending secret-safe key-presence check; adapter will select staging only with both keys.
+- Time: 2026-10-31 10:34:15 IST. Step 1: dependencies and policy sources.
+- Next action: Install Python dependencies and fetch policy wording PDFs into data/plans/src/; implement rules and G1/G2.
+- Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
+- Run tests: `.venv/bin/python -m pytest -q`
+- Background processes: None. Inspect `.run/` PID files; stop with `scripts/run_demo --stop` once implemented.
+- Done and verified / half-done: Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper; verification: Git initialized; .env excluded. The next action above identifies unfinished work.
+- Open problems and decisions: macOS and today schedule accepted; retention deferred; caps enforced in app; model discovery at startup. App shell not built yet.
+- Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
-
+- 2026-10-31 10:34:15 IST | Step 1: dependencies and policy sources | Initialized Git, secret exclusions, hackathon deviations, and resumable checkpoint helper | Tests: Git initialized; .env excluded | Commit: `7ccc385`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
