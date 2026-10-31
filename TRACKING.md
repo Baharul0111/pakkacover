@@ -1,13 +1,13 @@
 # Pakka Cover — Work Tracker
 
 ## Resume here
-- Time: 2026-10-31 10:42:14 IST. Step 2: encrypted database and provider discovery.
-- Next action: Use local Postgres fallback for unresolved supplied DB hostname, migrate schema, then implement gateway and Sunita FSM.
+- Time: 2026-10-31 10:45:36 IST. Step 2: backend and interview written.
+- Next action: Run G0 ownership/encryption, numeric guard and Sunita interview tests, plus live model/STT/TTS smoke; fix failures before Step 3.
 - Run app: `.venv/bin/python -m uvicorn apps.api.app.main:app --host 0.0.0.0 --port 8000` (once shell exists); final `scripts/run_demo`
 - Run tests: `.venv/bin/python -m pytest -q`
-- Background processes: None. Inspect `.run/` PID files; stop with `scripts/run_demo --stop` once implemented.
-- Done and verified / half-done: Added encrypted SQLAlchemy schema, Alembic migration, owner-scoped repository and secret bootstrap; verification: Secret-safe model discovery verified all requested OpenAI/Anthropic IDs; supplied DB failed DNS resolution. The next action above identifies unfinished work.
-- Open problems and decisions: Supplied DATABASE_URL host does not resolve; preserving it privately and using local Postgres for this Mac-only demo. No golden clips/photos present; v4 pinned pending their arrival.
+- Background processes: Local PostgreSQL: pg_ctl -D .run/postgres status; stop with pg_ctl -D .run/postgres stop. No HTTP server/tunnel running.
+- Done and verified / half-done: Migrated local encrypted Postgres; implemented per-purpose consent, member attestation, explicit FSM, Sarvam and bounded model gateway, confirmation, saved sessions and kill switches; verification: Database migration succeeded; all requested model IDs verified; 0 golden media files currently. The next action above identifies unfinished work.
+- Open problems and decisions: Supplied remote DB unavailable by DNS; local PostgreSQL16 on 55432 used. Full backend tests pending.
 - Paytm mode: simulated — keys not yet verified.
 
 ## Implementation log
@@ -16,6 +16,7 @@
 - 2026-10-31 10:39:16 IST | Step 1: engine and rules written; verification next | Authored Plans A/B/C with page-linked quotes, Decimal/date engine, scenario ranking, Promise Card facts, method, and G1/G2 tests | Tests: Hand calculation: B ₹644000, C ₹300000, A ₹100000; automated tests pending | Commit: `935cc08`
 - 2026-10-31 10:39:57 IST | Step 1 COMPLETE; Step 2 starting | Step 1 complete: A/B/C engine, 29 verified clause references, method and runnable FastAPI shell | Tests: G1/G2: 14 passed; FastAPI shell and B>C>A API smoke passed | Commit: `756f69c`
 - 2026-10-31 10:42:14 IST | Step 2: encrypted database and provider discovery | Added encrypted SQLAlchemy schema, Alembic migration, owner-scoped repository and secret bootstrap | Tests: Secret-safe model discovery verified all requested OpenAI/Anthropic IDs; supplied DB failed DNS resolution | Commit: `e4123b7`
+- 2026-10-31 10:45:36 IST | Step 2: backend and interview written | Migrated local encrypted Postgres; implemented per-purpose consent, member attestation, explicit FSM, Sarvam and bounded model gateway, confirmation, saved sessions and kill switches | Tests: Database migration succeeded; all requested model IDs verified; 0 golden media files currently | Commit: `04c3d72`
 
 Updated: 2026-10-31 (Asia/Kolkata)
 
