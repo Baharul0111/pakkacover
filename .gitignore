@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+secrets/
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+.run/
+*.log
+.DS_Store
+data/plans/src/
+evals/golden/
